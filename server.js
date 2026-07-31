@@ -15,6 +15,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Trust proxy for secure cookies behind reverse proxies (like Render)
+app.set('trust proxy', 1);
+
 // Session Setup
 app.use(session({
     secret: process.env.SESSION_SECRET || 'fallback-secret',
