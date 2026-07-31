@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Primary SEO Meta Tags -->
+    <title>Sri Madhuri Makeovers | Premium Luxury Beauty Salon in Khammam</title>
+    <meta name="description"
+        content="Sri Madhuri Makeovers — Khammam's premier luxury beauty salon offering bridal makeup, hair styling, skincare, nail art, and fashion styling. Book your appointment today.">
+    <meta name="keywords"
+        content="beauty salon khammam, bridal makeup khammam, hair salon khammam, makeover khammam, sri madhuri makeovers, best salon khammam, bridal makeover telangana, hair spa khammam, facial khammam, nail art khammam">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Sri Madhuri Makeovers">
+    <link rel="canonical" href="https://srimadhurimakeovers.com">
+
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://srimadhurimakeovers.com">
+    <meta property="og:title" content="Sri Madhuri Makeovers | Premium Luxury Beauty Salon in Khammam">
+    <meta property="og:description"
+        content="Khammam's premier luxury beauty salon — bridal makeup, hair styling, skincare, nail art. Book your transformation today.">
+    <meta property="og:image" content="WhatsApp Image 2026-07-18 at 9.24.10 PM.jpeg">
+    <meta property="og:locale" content="en_IN">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sri Madhuri Makeovers | Premium Luxury Beauty Salon">
+    <meta name="twitter:description"
+        content="Khammam's premier luxury salon — bridal makeup, hair styling, skincare, nail art.">
+    <meta name="twitter:image" content="WhatsApp Image 2026-07-18 at 9.24.10 PM.jpeg">
+
+    <!-- Schema.org Structured Data — LocalBusiness + BeautySalon -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": ["BeautySalon", "LocalBusiness"],
+        "name": "Sri Madhuri Makeovers",
+        "image": "WhatsApp Image 2026-07-18 at 9.24.10 PM.jpeg",
+        "url": "https://srimadhurimakeovers.com",
+        "telephone": "+918985291053",
+        "email": "hello@srimadhurimakeovers.com",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Mustafa Nagar, Opposite Chakri School",
+            "addressLocality": "Khammam",
+            "addressRegion": "Telangana",
+            "addressCountry": "IN"
+        },
+        "openingHoursSpecification": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+            "opens": "10:00",
+            "closes": "21:00"
+        },
+        "priceRange": "₹₹",
+        "sameAs": [
+            "https://www.instagram.com/sri__madhuri_makevoers",
+            "https://youtube.com/@srimadhurimakeovers"
+        ],
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "5",
+            "reviewCount": "150"
+        }
+    }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- PWA Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('Service Worker Registered'))
+                    .catch(err => console.log('Service Worker Error', err));
+            });
+        }
+    </script>
+</head>
+
+<body class="loading">
+
+    <!-- Skip Navigation (Accessibility) -->
+    <a href="#main-content" class="skip-nav">Skip to main content</a>
+
+    <!-- Loading Screen -->
+    <div class="loader" id="loader" aria-hidden="true">
+        <div class="loader-brand">Sri Madhuri <span>Makeovers</span></div>
+        <div class="loader-line"></div>
+    </div>
+
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+    <!-- Cursor Glow Effect -->
+    <div class="cursor-glow" id="cursor-glow" aria-hidden="true"></div>
+
+    <!-- ═══ Navigation ═══ -->
+    <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <a href="#" class="logo" aria-label="Sri Madhuri Makeovers — Home">
+                Sri Madhuri <span>Makeovers</span>
+            </a>
+            <button class="menu-toggle" id="mobile-menu" aria-label="Toggle navigation menu"
+                aria-expanded="false" aria-controls="nav-menu-list">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-menu" id="nav-menu-list" role="menubar">
+                <li role="none"><a href="#home" class="nav-link" role="menuitem">Home</a></li>
+                <li role="none"><a href="#about" class="nav-link" role="menuitem">About</a></li>
+                <li role="none"><a href="#services" class="nav-link" role="menuitem">Services</a></li>
+                <li role="none"><a href="#gallery" class="nav-link" role="menuitem">Gallery</a></li>
+                <li role="none"><a href="#testimonials" class="nav-link" role="menuitem">Reviews</a></li>
+                <li role="none"><a href="#contact" class="nav-link" role="menuitem">Contact</a></li>
+                <li role="none" class="nav-cta">
+                    <a href="#booking" class="btn btn-primary btn-sm">Book Now</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/918985291053" class="whatsapp-float" target="_blank" rel="noopener noreferrer"
+        aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- ═══ Main Content ═══ -->
+    <main id="main-content">
+
+        <!-- ─── Hero Section ─── -->
+        <header class="hero" id="home">
+            <div class="hero-bg" style="background-image: url('banner.jpeg');"
+                role="img" aria-label="Sri Madhuri Makeovers Salon Interior"></div>
+            <div class="hero-overlay"></div>
+
+            <!-- Particles -->
+            <div class="hero-particles" id="hero-particles" aria-hidden="true"></div>
+
+            <div class="hero-content">
+                <div class="hero-label">
+                    <span class="diamond"></span>
+                    Premium Beauty Salon
+                    <span class="diamond"></span>
+                </div>
+                <h1>
+                    Where Beauty
+                    <span class="gold-text">Meets Confidence</span>
+                </h1>
+                <p class="hero-subtitle">Premium Beauty Services & Professional Makeovers in Khammam</p>
+                <div class="hero-buttons">
+                    <a href="#booking" class="btn btn-primary">
+                        <i class="fas fa-calendar-check"></i> Book Appointment
+                    </a>
+                    <a href="#services" class="btn btn-outline">
+                        <i class="fas fa-spa"></i> Explore Services
+                    </a>
+                </div>
+            </div>
+
+            <div class="hero-scroll" aria-hidden="true">
+                <span>Scroll</span>
+                <div class="scroll-line"></div>
+            </div>
+        </header>
+
+        <!-- ─── Stats Section ─── -->
+        <section class="stats-section" aria-label="Our achievements">
+            <div class="container">
+                <div class="stats-grid" id="stats-grid">
+                    <div class="stat-item reveal">
+                        <div class="stat-icon"><i class="fas fa-smile"></i></div>
+                        <div class="stat-number" data-target="1000" data-suffix="+">0</div>
+                        <div class="stat-label">Happy Clients</div>
+                    </div>
+                    <div class="stat-item reveal delay-1">
+                        <div class="stat-icon"><i class="fas fa-ring"></i></div>
+                        <div class="stat-number" data-target="500" data-suffix="+">0</div>
+                        <div class="stat-label">Bridal Makeovers</div>
+                    </div>
+                    <div class="stat-item reveal delay-2">
+                        <div class="stat-icon"><i class="fas fa-heart"></i></div>
+                        <div class="stat-number" data-target="1000" data-suffix="+">0</div>
+                        <div class="stat-label">Happy Smiles</div>
+                    </div>
+                    <div class="stat-item reveal delay-3">
+                        <div class="stat-icon"><i class="fas fa-award"></i></div>
+                        <div class="stat-number" data-target="5" data-suffix="+">0</div>
+                        <div class="stat-label">Years Experience</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── About Section ─── -->
+        <section class="about-section" id="about" aria-label="About us">
+            <div class="container">
+                <div class="section-header reveal">
+                    <div class="section-label">Our Story</div>
+                    <h2 class="section-title">About <span class="gold">Sri Madhuri</span></h2>
+                    <p class="section-subtitle">A passion for beauty, a commitment to elegance</p>
+                </div>
+
+                <div class="about-grid">
+                    <div class="about-image-wrapper reveal-left">
+                        <div class="about-image">
+                            <img src="WhatsApp Image 2026-07-18 at 9.24.10 PM.jpeg"
+                                alt="Sri Madhuri Makeovers — Premium Beauty Salon Interior in Khammam"
+                                loading="lazy">
+                        </div>
+                        <div class="about-image-frame" aria-hidden="true"></div>
+                        <div class="about-experience-badge floating" aria-hidden="true">
+                            <div class="badge-number">5+</div>
+                            <div class="badge-text">Years of Excellence</div>
+                        </div>
+                    </div>
+
+                    <div class="about-content reveal-right">
+                        <h3>Where Beauty Meets Confidence</h3>
+                        <p>Sri Madhuri Makeovers is a professional beauty salon dedicated to enhancing confidence
+                            through high-quality beauty and grooming services. We specialize in bridal makeovers,
+                            party makeup, hair styling, skincare, and personalized beauty treatments for women. Our
+                            experienced team combines modern beauty techniques with premium products to deliver
+                            elegant, long-lasting results for every occasion.</p>
+                        <p>Whether it's your wedding day, a festive celebration, or a regular self-care visit, we
+                            focus on providing a relaxing, hygienic, and customer-friendly experience. Our goal is
+                            to become one of the most trusted beauty destinations in Khammam.</p>
+
+                        <div class="about-features">
+                            <div class="feature-item">
+                                <div class="feature-icon"><i class="fas fa-user-tie"></i></div>
+                                <div>
+                                    <h4>Expert Beauticians</h4>
+                                    <p>Professional and experienced team delivering timely, excellent results.</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon"><i class="fas fa-spa"></i></div>
+                                <div>
+                                    <h4>Premium Experience</h4>
+                                    <p>Hygienic, comfortable salon environment with top-quality products.</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon"><i class="fas fa-heart"></i></div>
+                                <div>
+                                    <h4>Personalized Care</h4>
+                                    <p>Affordable packages and personalized beauty consultations.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── Services Section ─── -->
+        <section class="services-section" id="services" aria-label="Our services">
+            <div class="container">
+                <div class="section-header reveal">
+                    <div class="section-label">What We Offer</div>
+                    <h2 class="section-title">Our Premium <span class="gold">Services</span></h2>
+                    <p class="section-subtitle">Curated luxury beauty experiences crafted for you</p>
+                </div>
+
+                <div class="services-grid" id="services-grid">
+                    <% if (services && services.length > 0) { %>
+                        <% services.forEach((service, i) => { %>
+                            <div class="service-card reveal <%= i > 0 ? 'delay-' + (i % 3) : '' %>">
+                                <div class="service-card-body" style="padding-top: 2rem;">
+                                    <div class="service-card-icon"><i class="fas fa-spa"></i></div>
+                                    <h3><%= service.name %></h3>
+                                    <p class="service-card-desc">Premium luxury service crafted for you.</p>
+                                    <div class="service-meta">
+                                        <span class="service-price"><%= service.price %></span>
+                                        <span class="service-duration"><%= service.duration %></span>
+                                    </div>
+                                    <a href="#booking" class="service-book-btn">
+                                        <i class="fas fa-calendar-check"></i> Book Now
+                                    </a>
+                                </div>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <p style="text-align: center; grid-column: 1 / -1; color: var(--text-muted);">More services coming soon!</p>
+                    <% } %>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── Gallery Section ─── -->
+        <section class="gallery-section" id="gallery" aria-label="Gallery">
+            <div class="container">
+                <div class="section-header reveal">
+                    <div class="section-label">Portfolio</div>
+                    <h2 class="section-title">Our <span class="gold">Masterpieces</span></h2>
+                    <p class="section-subtitle">Every look tells a beautiful story</p>
+                </div>
+
+                <!-- Gallery Filters -->
+                <div class="gallery-filters reveal" role="tablist" aria-label="Gallery category filters">
+                    <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">All</button>
+                    <button class="filter-btn" data-filter="bridal" role="tab" aria-selected="false">Bridal</button>
+                    <button class="filter-btn" data-filter="hair" role="tab" aria-selected="false">Hair</button>
+                    <button class="filter-btn" data-filter="skincare" role="tab"
+                        aria-selected="false">Skincare</button>
+                    <button class="filter-btn" data-filter="nailart" role="tab"
+                        aria-selected="false">Nail Art</button>
+                    <button class="filter-btn" data-filter="styling" role="tab"
+                        aria-selected="false">Styling</button>
+                </div>
+
+                <!-- Gallery Grid -->
+                <div class="gallery-masonry" id="gallery-grid">
+                    <% if (gallery && gallery.length > 0) { %>
+                        <% gallery.forEach((img, index) => { %>
+                            <div class="gallery-item reveal <%= index > 0 ? 'delay-' + (index % 3) : '' %>" data-category="<%= img.category.toLowerCase() %>">
+                                <img src="<%= img.image %>" alt="<%= img.category %> Makeup" loading="lazy">
+                                <div class="gallery-item-overlay">
+                                    <div class="gallery-item-info">
+                                        <h4>Sri Madhuri Makeovers</h4>
+                                        <span><%= img.category %></span>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <p style="text-align: center; color: var(--text-muted); grid-column: 1 / -1;">New gallery images coming soon!</p>
+                    <% } %>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lightbox Modal -->
+        <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
+            <button class="lightbox-close" id="lightbox-close" aria-label="Close image preview">
+                <i class="fas fa-times"></i>
+            </button>
+            <img src="" alt="Full-size preview" id="lightbox-img">
+        </div>
+
+        <!-- ─── Testimonials Section ─── -->
+        <section class="testimonials-section" id="testimonials" aria-label="Client testimonials">
+            <div class="container">
+                <div class="section-header reveal">
+                    <div class="section-label">Testimonials</div>
+                    <h2 class="section-title">What Our <span class="gold">Clients Say</span></h2>
+                    <p class="section-subtitle">Real stories from real people who trusted us</p>
+                </div>
+
+                <!-- Testimonial Carousel -->
+                <div class="testimonials-carousel reveal" role="region" aria-label="Testimonial carousel">
+                    <div class="testimonials-track" id="testimonials-track">
+                        <% if (testimonials && testimonials.length > 0) { %>
+                            <% testimonials.forEach((t, index) => { %>
+                                <div class="testimonial-slide">
+                                    <div class="testimonial-card">
+                                        <div class="testimonial-stars" aria-label="<%= t.rating %> out of 5 stars">
+                                            <% for(let i=0; i<t.rating; i++) { %><i class="fas fa-star"></i><% } %>
+                                        </div>
+                                        <p class="testimonial-text">"<%= t.text %>"</p>
+                                        <div class="testimonial-author">
+                                            <div class="testimonial-author-avatar">
+                                                <% if (t.image) { %>
+                                                    <img src="<%= t.image %>" alt="<%= t.name %>" loading="lazy" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold);">
+                                                <% } else { %>
+                                                    <i class="fas fa-user-circle" style="font-size: 2.5rem; color: var(--gold);"></i>
+                                                <% } %>
+                                            </div>
+                                            <div class="testimonial-author-info" style="margin-left: 15px;">
+                                                <h4><%= t.name %></h4>
+                                                <span><%= t.role || 'Happy Client' %></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        <% } else { %>
+                            <div class="testimonial-slide">
+                                <div class="testimonial-card">
+                                    <p class="testimonial-text">"Amazing service! We'll be adding more reviews soon."</p>
+                                    <div class="testimonial-author">
+                                        <div class="testimonial-author-info">
+                                            <h4>Sri Madhuri Makeovers</h4>
+                                            <span>Team</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+
+                    <!-- Carousel Controls -->
+                    <div class="carousel-controls" id="carousel-controls" role="tablist"
+                        aria-label="Testimonial slides">
+                        <% if (testimonials && testimonials.length > 0) { %>
+                            <% testimonials.forEach((t, index) => { %>
+                                <button class="carousel-dot <%= index === 0 ? 'active' : '' %>" data-slide="<%= index %>" role="tab"
+                                    aria-label="Slide <%= index + 1 %>" aria-selected="<%= index === 0 ? 'true' : 'false' %>"></button>
+                            <% }) %>
+                        <% } else { %>
+                            <button class="carousel-dot active" data-slide="0" role="tab" aria-label="Slide 1" aria-selected="true"></button>
+                        <% } %>
+                    </div>
+                </div>
+
+                <!-- Google Reviews CTA -->
+                <div class="google-reviews-cta reveal">
+                    <h3>Love Our Services?</h3>
+                    <p>Help us grow by sharing your experience on Google!</p>
+                    <a href="https://search.google.com/local/writereview?placeid=ChIJXWHVBQBXNDoRARWlA1BqItA" target="_blank" rel="noopener noreferrer"
+                        class="btn btn-google">
+                        <i class="fab fa-google"></i> Write a Google Review
+                    </a>
+
+                    <!-- Google Reviews Widget Container -->
+                    <div id="google-reviews-widget" style="margin-top: 3rem; width: 100%; min-height: 200px;">
+                        <!-- Elfsight Google Reviews | Untitled Google Reviews -->
+                        <script src="https://elfsightcdn.com/platform.js" async></script>
+                        <div class="elfsight-app-7c6783af-90ef-4d7f-bf20-fee0b8e7fbad" data-elfsight-app-lazy></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ─── Offers Section (Dynamic) ─── -->
+        <% if (offers && offers.length > 0) { %>
+        <section class="offers-section" id="offers" aria-label="Special offers">
+            <div class="container">
+                <div class="section-header reveal">
+                    <div class="section-label">Limited Time</div>
+                    <h2 class="section-title">Special <span class="gold">Offers</span></h2>
+                    <p class="section-subtitle">Exclusive deals crafted for our valued clients</p>
+                </div>
+
+                <div class="offers-grid" id="offers-grid">
+                    <% offers.forEach((offer, index) => { %>
+                    <div class="offer-card reveal <%= index > 0 ? 'delay-1' : '' %>">
+                        <% if (offer.badge) { %>
+                        <span class="offer-badge"><%= offer.badge %></span>
+                        <% } %>
+                        <h3><%= offer.title %></h3>
+                        <p class="offer-card-desc"><%= offer.description %></p>
+                        <div class="offer-pricing">
+                            <span class="offer-original"><%= offer.originalPrice %></span>
+                            <span class="offer-price"><%= offer.offerPrice %></span>
+                            <% if (offer.discount) { %>
+                            <span class="offer-discount"><%= offer.discount %></span>
+                            <% } %>
+                        </div>
+                        <% if (offer.endDate) { %>
+                        <div class="offer-countdown" data-end="<%= offer.endDate %>">
+                            <div class="countdown-item">
+                                <span class="countdown-number" data-unit="days">00</span>
+                                <span class="countdown-label">Days</span>
+                            </div>
+                            <div class="countdown-item">
+                                <span class="countdown-number" data-unit="hours">00</span>
+                                <span class="countdown-label">Hours</span>
+                            </div>
+                            <div class="countdown-item">
+                                <span class="countdown-number" data-unit="minutes">00</span>
+                                <span class="countdown-label">Mins</span>
+                            </div>
+                            <div class="countdown-item">
+                                <span class="countdown-number" data-unit="seconds">00</span>
+                                <span class="countdown-label">Secs</span>
+                            </div>
+                        </div>
+                        <% } %>
+                        <a href="#booking" class="btn btn-primary">Claim Offer</a>
+                    </div>
+                    <% }); %>
+                </div>
+            </div>
+        </section>
+        <% } %>
+
+        <!-- ─── Team Section ─── -->
+        <section class="team-section" id="team" aria-label="Our team">
+            <div class="container">
+                <div class="section-header reveal">
+                    <div class="section-label">Our Experts</div>
+                    <h2 class="section-title">Meet The <span class="gold">Team</span></h2>
+                    <p class="section-subtitle">Passionate artists dedicated to your beauty</p>
+                </div>
+
+                <div class="team-grid">
+                    <!-- Team Member 1 -->
+                    <div class="team-card reveal">
+                        <div class="team-card-image">
+                            <img src="WhatsApp Image 2026-07-18 at 9.24.10 PM.jpeg" alt="Sri Madhuri"
+                                loading="lazy">
+                            <div class="team-overlay"></div>
+                        </div>
+                        <div class="team-card-body">
+                            <h3>Sri Madhuri</h3>
+                            <p class="team-role">Founder & Lead Artist</p>
+                            <p class="team-experience">5+ Years Experience</p>
+                            <div class="team-skills">
+                                <span class="team-skill-tag">Bridal Makeup</span>
+                                <span class="team-skill-tag">HD Makeup</span>
+                                <span class="team-skill-tag">Fashion Styling</span>
+                            </div>
+                            <div class="team-social">
+                                <a href="https://www.instagram.com/sri__madhuri_makevoers?igsh=Y3Jtb2htY3BoN2tk"
+                                    target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Team Member 2 -->
+                    <div class="team-card reveal delay-1">
+                        <div class="team-card-image">
+                            <img src="image_search_1784394131419.jpg.jpeg" alt="Expert Stylist" loading="lazy">
+                            <div class="team-overlay"></div>
+                        </div>
+                        <div class="team-card-body">
+                            <h3>Expert Stylist</h3>
+                            <p class="team-role">Senior Hair Stylist</p>
+                            <p class="team-experience">4+ Years Experience</p>
+                            <div class="team-skills">
+                                <span class="team-skill-tag">Hair Coloring</span>
+                                <span class="team-skill-tag">Keratin</span>
+                                <span class="team-skill-tag">Hair Spa</span>
+                            </div>
+                            <div class="team-social">
+                                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Team Member 3 -->
+                    <div class="team-card reveal delay-2">
+                        <div class="team-card-image">
+                            <img src="image_search_1784394187949.jpg.jpeg" alt="Skin Specialist" loading="lazy">
+                            <div class="team-overlay"></div>
+                        </div>
+                        <div class="team-card-body">
+                            <h3>Skin Specialist</h3>
+                            <p class="team-role">Skincare Expert</p>
+                            <p class="team-experience">3+ Years Experience</p>
+                            <div class="team-skills">
+                                <span class="team-skill-tag">Facials</span>
+                                <span class="team-skill-tag">Skin Analysis</span>
+                                <span class="team-skill-tag">Anti-aging</span>
+                            </div>
+                            <div class="team-social">
+                                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── Booking Section ─── -->
+        <section class="booking-section" id="booking" aria-label="Book an appointment">
+            <div class="container">
+                <div class="section-header reveal">
+                    <div class="section-label">Appointments</div>
+                    <h2 class="section-title">Book Your <span class="gold">Experience</span></h2>
+                    <p class="section-subtitle">Reserve your spot for a luxurious transformation</p>
+                </div>
+
+                <div class="booking-wrapper">
+                    <div class="booking-info reveal-left">
+                        <h3>Your Beauty Journey Begins Here</h3>
+                        <p>Book your appointment via WhatsApp and our team will confirm your preferred date and
+                            time. Walk-ins are welcome but appointments are recommended for a premium experience.
+                        </p>
+                        <div class="booking-perks">
+                            <div class="perk-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Instant WhatsApp confirmation</span>
+                            </div>
+                            <div class="perk-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Free consultation included</span>
+                            </div>
+                            <div class="perk-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Flexible rescheduling</span>
+                            </div>
+                            <div class="perk-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Premium products guaranteed</span>
+                            </div>
+                            <div class="perk-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Hygienic & sanitized environment</span>
+                            </div>
+                            <div class="perk-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Personalized beauty advice</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="booking-form-container reveal-right">
+                        <h3>Book an Appointment</h3>
+                        <p class="booking-form-subtitle">Fill in your details and we'll reach out on WhatsApp</p>
+                        <form id="booking-form" novalidate>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="booking-name">Your Name</label>
+                                    <input type="text" id="booking-name" placeholder="Enter your name" required
+                                        autocomplete="name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="booking-phone">Phone Number</label>
+                                    <input type="tel" id="booking-phone" placeholder="Your phone number" required
+                                        autocomplete="tel">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="booking-email">Email (Optional)</label>
+                                    <input type="email" id="booking-email" placeholder="Your email"
+                                        autocomplete="email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="booking-date">Preferred Date</label>
+                                    <input type="date" id="booking-date" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="booking-service">Select Service</label>
+                                    <select id="booking-service" required>
+                                        <option value="" disabled selected>Choose a service</option>
+                                        <option value="Bridal Makeup">Bridal Makeup</option>
+                                        <option value="Party Makeup">Party Makeup</option>
+                                        <option value="Hair Styling & Color">Hair Styling & Color</option>
+                                        <option value="Hair Spa & Keratin">Hair Spa & Keratin</option>
+                                        <option value="Skin Care & Facial">Skin Care & Facial</option>
+                                        <option value="Nail Art & Spa">Nail Art & Spa</option>
+                                        <option value="Fashion Styling">Fashion Styling</option>
+                                        <option value="Saree Draping">Saree Draping</option>
+                                        <option value="Waxing & Threading">Waxing & Threading</option>
+                                        <option value="Pre-Bridal Package">Pre-Bridal Package</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="booking-time">Preferred Time</label>
+                                    <select id="booking-time">
+                                        <option value="" disabled selected>Choose a time</option>
+                                        <option value="10:00 AM">10:00 AM</option>
+                                        <option value="10:30 AM">10:30 AM</option>
+                                        <option value="11:00 AM">11:00 AM</option>
+                                        <option value="11:30 AM">11:30 AM</option>
+                                        <option value="12:00 PM">12:00 PM</option>
+                                        <option value="12:30 PM">12:30 PM</option>
+                                        <option value="1:00 PM">1:00 PM</option>
+                                        <option value="1:30 PM">1:30 PM</option>
+                                        <option value="2:00 PM">2:00 PM</option>
+                                        <option value="2:30 PM">2:30 PM</option>
+                                        <option value="3:00 PM">3:00 PM</option>
+                                        <option value="3:30 PM">3:30 PM</option>
+                                        <option value="4:00 PM">4:00 PM</option>
+                                        <option value="4:30 PM">4:30 PM</option>
+                                        <option value="5:00 PM">5:00 PM</option>
+                                        <option value="5:30 PM">5:30 PM</option>
+                                        <option value="6:00 PM">6:00 PM</option>
+                                        <option value="6:30 PM">6:30 PM</option>
+                                        <option value="7:00 PM">7:00 PM</option>
+                                        <option value="7:30 PM">7:30 PM</option>
+                                        <option value="8:00 PM">8:00 PM</option>
+                                        <option value="8:30 PM">8:30 PM</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="booking-message">Special Requests</label>
+                                <textarea id="booking-message" rows="3"
+                                    placeholder="Any special requests or details..."></textarea>
+                            </div>
+                            <button type="submit" class="form-submit-btn">
+                                <i class="fab fa-whatsapp"></i>
+                                Book via WhatsApp
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── Contact Section ─── -->
+        <section class="contact-section" id="contact" aria-label="Contact us">
+            <div class="container">
+                <div class="section-header reveal">
+                    <div class="section-label">Get In Touch</div>
+                    <h2 class="section-title">Visit Our <span class="gold">Studio</span></h2>
+                    <p class="section-subtitle">Experience luxury firsthand at our flagship location</p>
+                </div>
+
+                <div class="contact-grid">
+                    <div class="contact-details reveal-left">
+                        <h3>We'd Love to Hear From You</h3>
+                        <div class="contact-list">
+                            <div class="contact-item">
+                                <div class="contact-item-icon"><i class="fas fa-map-marker-alt"></i></div>
+                                <div class="contact-item-text">
+                                    <h4>Address</h4>
+                                    <p>Mustafa Nagar, Opposite Chakri School, Khammam, Telangana</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-item-icon"><i class="fas fa-phone-alt"></i></div>
+                                <div class="contact-item-text">
+                                    <h4>Phone</h4>
+                                    <a href="tel:+918985291053">+91 89852 91053</a>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-item-icon"><i class="fas fa-envelope"></i></div>
+                                <div class="contact-item-text">
+                                    <h4>Email</h4>
+                                    <a href="mailto:hello@srimadhurimakeovers.com">hello@srimadhurimakeovers.com</a>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-item-icon"><i class="fas fa-clock"></i></div>
+                                <div class="contact-item-text">
+                                    <h4>Working Hours</h4>
+                                    <p>Mon - Sat: 10:00 AM - 9:00 PM</p>
+                                    <p>Sunday: By Appointment Only</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-item-icon"><i class="fas fa-parking"></i></div>
+                                <div class="contact-item-text">
+                                    <h4>Parking</h4>
+                                    <p>Free parking available near Chakri School</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-social">
+                            <a href="https://www.instagram.com/sri__madhuri_makevoers?igsh=Y3Jtb2htY3BoN2tk"
+                                target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://youtube.com/@srimadhurimakeovers?si=hzkMdaR8oxfKjiCg" target="_blank"
+                                rel="noopener noreferrer" aria-label="YouTube">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                            <a href="https://wa.me/918985291053" target="_blank" rel="noopener noreferrer"
+                                aria-label="WhatsApp">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="contact-map reveal-right">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3826.5!2d80.15!3d17.25!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTfCsDE1JzAwLjAiTiA4MMKwMDknMDAuMCJF!5e0!3m2!1sen!2sin!4v1"
+                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                            title="Sri Madhuri Makeovers Location on Google Maps"></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── Newsletter Section ─── -->
+        <section class="newsletter-section" aria-label="Newsletter signup">
+            <div class="container">
+                <div class="newsletter-content reveal">
+                    <h3>Stay <span class="shimmer-text">Beautiful</span></h3>
+                    <p>Subscribe for exclusive beauty tips, offers, and inspiration delivered to your inbox.</p>
+                    <form class="newsletter-form" id="newsletter-form">
+                        <input type="email" placeholder="Enter your email address" required
+                            aria-label="Email address">
+                        <button type="submit" aria-label="Subscribe to newsletter">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ═══ Footer ═══ -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Brand -->
+                <div class="footer-brand">
+                    <h2>Sri Madhuri <span>Makeovers</span></h2>
+                    <p>Your premier destination for luxury beauty services in Khammam. Where every visit is a
+                        transformative experience.</p>
+                    <div class="footer-social">
+                        <a href="https://www.instagram.com/sri__madhuri_makevoers?igsh=Y3Jtb2htY3BoN2tk"
+                            target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://youtube.com/@srimadhurimakeovers?si=hzkMdaR8oxfKjiCg" target="_blank"
+                            rel="noopener noreferrer" aria-label="YouTube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                    <div style="margin-top: 12px;">
+                        <a href="/admin" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; font-size: 0.7rem; color: rgba(255,255,255,0.35); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; text-decoration: none; transition: all 0.3s ease; letter-spacing: 0.5px;" onmouseover="this.style.color='rgba(255,255,255,0.7)'; this.style.borderColor='rgba(255,255,255,0.3)';" onmouseout="this.style.color='rgba(255,255,255,0.35)'; this.style.borderColor='rgba(255,255,255,0.1)';">
+                            <i class="fas fa-lock" style="font-size: 0.6rem;"></i> Admin
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#gallery">Gallery</a></li>
+                        <li><a href="#membership">Membership</a></li>
+                        <li><a href="#booking">Book Now</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support -->
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#contact">Contact Us</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+
+                <!-- Hours -->
+                <div class="footer-col">
+                    <h4>Working Hours</h4>
+                    <ul class="footer-hours">
+                        <li><span>Monday - Friday</span><span>10 AM - 9 PM</span></li>
+                        <li><span>Saturday</span><span>10 AM - 9 PM</span></li>
+                        <li><span>Sunday</span><span>By Appointment</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Sri Madhuri Makeovers. All rights reserved. Made with
+                    <span class="heart">&hearts;</span> in Khammam.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

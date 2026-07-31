@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login — Sri Madhuri Makeovers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+        body {
+            background: #0a0a0f;
+            color: #f0ede8;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Radial background */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 70% 60% at 30% 20%, rgba(212,175,55,0.07) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 40% at 70% 80%, rgba(99,102,241,0.04) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        /* Floating particles */
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            background: rgba(212,175,55,0.15);
+            animation: float 8s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%,100% { transform: translateY(0) rotate(0deg); opacity:0.6; }
+            50%      { transform: translateY(-30px) rotate(180deg); opacity:0.3; }
+        }
+
+        .login-wrapper {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 420px;
+            padding: 1.5rem;
+        }
+
+        .login-card {
+            background: rgba(20,20,31,0.9);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(212,175,55,0.18);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.02);
+            animation: slideUp 0.5s ease forwards;
+        }
+        @keyframes slideUp {
+            from { opacity:0; transform:translateY(24px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+
+        /* Top accent line */
+        .login-card::before {
+            content:'';
+            position: absolute;
+            top: 0; left: 10%; right: 10%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(212,175,55,0.6), transparent);
+            border-radius: 1px;
+        }
+
+        .brand-area {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .brand-crown {
+            width: 56px; height: 56px;
+            background: linear-gradient(135deg, #D4AF37, #A8882A);
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem;
+            color: #0a0a0f;
+            margin: 0 auto 1rem;
+            box-shadow: 0 6px 20px rgba(212,175,55,0.3);
+        }
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: #D4AF37;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .brand-sub {
+            font-size: 0.75rem;
+            color: #60556a;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 4px;
+        }
+
+        .alert {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .alert-error   { background:rgba(239,68,68,0.12);  color:#fca5a5; border:1px solid rgba(239,68,68,0.2); }
+        .alert-success { background:rgba(16,185,129,0.12); color:#6ee7b7; border:1px solid rgba(16,185,129,0.2); }
+
+        .form-group { margin-bottom: 1rem; }
+        label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #a09080;
+            margin-bottom: 0.5rem;
+        }
+        .input-wrap {
+            position: relative;
+        }
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #60556a;
+            font-size: 0.85rem;
+            pointer-events: none;
+        }
+        input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 2.5rem;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #f0ede8;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            box-sizing: border-box;
+        }
+        input::placeholder { color: rgba(255,255,255,0.2); }
+        input:focus {
+            outline: none;
+            border-color: rgba(212,175,55,0.5);
+            box-shadow: 0 0 0 3px rgba(212,175,55,0.1);
+            background: rgba(255,255,255,0.06);
+        }
+        .eye-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #60556a;
+            cursor: pointer;
+            font-size: 0.85rem;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+        .eye-btn:hover { color: #D4AF37; }
+
+        .btn-login {
+            width: 100%;
+            padding: 0.875rem;
+            background: linear-gradient(135deg, #D4AF37, #A8882A);
+            color: #0a0a0f;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 16px rgba(212,175,55,0.25);
+        }
+        .btn-login:hover {
+            background: linear-gradient(135deg, #e0be48, #D4AF37);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(212,175,55,0.35);
+        }
+        .btn-login:active { transform: translateY(0); }
+
+        .links {
+            margin-top: 1.5rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .link {
+            color: #60556a;
+            text-decoration: none;
+            font-size: 0.82rem;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .link:hover { color: #D4AF37; }
+        .link-secondary { color: rgba(255,255,255,0.2); font-size: 0.75rem; }
+        .link-secondary:hover { color: #a09080; }
+    </style>
+</head>
+<body>
+    <!-- Floating particles -->
+    <div class="particle" style="width:8px;height:8px;top:15%;left:10%;animation-delay:0s;animation-duration:10s;"></div>
+    <div class="particle" style="width:5px;height:5px;top:70%;left:85%;animation-delay:2s;animation-duration:8s;"></div>
+    <div class="particle" style="width:6px;height:6px;top:40%;left:92%;animation-delay:4s;animation-duration:12s;"></div>
+    <div class="particle" style="width:4px;height:4px;top:85%;left:20%;animation-delay:1s;animation-duration:9s;"></div>
+
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="brand-area">
+                <div class="brand-crown"><i class="fas fa-crown"></i></div>
+                <div class="brand-name">Sri Madhuri Makeovers</div>
+                <div class="brand-sub">Admin Console</div>
+            </div>
+
+            <% if (typeof success !== 'undefined' && success) { %>
+                <div class="alert alert-success"><i class="fas fa-circle-check"></i> <%= success %></div>
+            <% } %>
+            <% if (error) { %>
+                <div class="alert alert-error"><i class="fas fa-circle-exclamation"></i> <%= error %></div>
+            <% } %>
+
+            <form action="/admin/login" method="POST">
+                <div class="form-group">
+                    <label>Username</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" name="username" placeholder="Enter username" required autofocus>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" name="password" id="pass" placeholder="Enter password" required>
+                        <button type="button" class="eye-btn" onclick="togglePwd()"><i class="fas fa-eye" id="eye-icon"></i></button>
+                    </div>
+                </div>
+                <button type="submit" class="btn-login">
+                    <i class="fas fa-right-to-bracket"></i> Sign In to Dashboard
+                </button>
+            </form>
+
+            <div class="links">
+                <a href="/admin/forgot-password" class="link"><i class="fas fa-key"></i> Forgot password?</a>
+                <a href="/" class="link link-secondary"><i class="fas fa-arrow-left"></i> Back to website</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePwd() {
+            const p = document.getElementById('pass');
+            const icon = document.getElementById('eye-icon');
+            if (p.type === 'password') {
+                p.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                p.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+    </div><!-- /.page-body -->
+</div><!-- /.main-content -->
+
+<script>
+    // Close sidebar on outside click (mobile)
+    document.addEventListener('click', function(e) {
+        const sidebar = document.getElementById('sidebar');
+        const toggle  = document.querySelector('.menu-toggle');
+        if (window.innerWidth <= 900 && sidebar && sidebar.classList.contains('active')) {
+            if (!sidebar.contains(e.target) && e.target !== toggle && !toggle.contains(e.target)) {
+                sidebar.classList.remove('active');
+            }
+        }
+    });
+
+    // Register Service Worker for PWA (Install to Mobile)
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').catch(err => {
+                console.error('ServiceWorker registration failed: ', err);
+            });
+        });
+    }
+</script>
+
+</body>
+</html>

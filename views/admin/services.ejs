@@ -1,0 +1,87 @@
+<%- include('partials/header') %>
+
+<div class="page-header animate-in">
+    <div class="page-title-group">
+        <div class="page-title">Services</div>
+        <div class="page-subtitle">Add and manage salon services shown on the website</div>
+    </div>
+</div>
+
+<div class="grid-2">
+    <!-- Add New Service -->
+    <div class="card animate-in">
+        <div class="card-title-main" style="margin-bottom:1.25rem;"><i class="fas fa-plus-circle"></i> Add New Service</div>
+        <form action="/admin/services/add" method="POST">
+            <div class="form-group">
+                <label>Service Name</label>
+                <input type="text" name="name" required placeholder="e.g. Signature Bridal Makeup">
+            </div>
+            <div class="grid-2" style="gap:1rem;">
+                <div class="form-group">
+                    <label>Price</label>
+                    <input type="text" name="price" required placeholder="e.g. From ₹15,000">
+                </div>
+                <div class="form-group">
+                    <label>Duration</label>
+                    <input type="text" name="duration" required placeholder="e.g. 3–4 Hours">
+                </div>
+            </div>
+            <label class="checkbox-label" style="margin-bottom:1.5rem;">
+                <input type="checkbox" name="active" checked>
+                Show on website (Active)
+            </label>
+            <div style="text-align:right;">
+                <button type="submit" class="btn"><i class="fas fa-plus"></i> Add Service</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Existing Services -->
+    <div class="card animate-in" style="padding:0;overflow:hidden;">
+        <div style="padding:1.25rem 1.5rem 0;margin-bottom:0.5rem;">
+            <div class="card-title-main"><i class="fas fa-list-check"></i> Current Services</div>
+        </div>
+        <% if (services && services.length > 0) { %>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% services.forEach(s => { %>
+                            <tr>
+                                <td>
+                                    <div style="font-weight:600;color:var(--text-primary)"><%= s.name %></div>
+                                    <div style="font-size:0.75rem;color:var(--gold);margin-top:2px"><%= s.price %> &bull; <span style="color:var(--text-muted)"><%= s.duration %></span></div>
+                                </td>
+                                <td>
+                                    <% if(s.active) { %>
+                                        <span class="badge badge-confirmed"><i class="fas fa-eye" style="font-size:0.6rem"></i> Active</span>
+                                    <% } else { %>
+                                        <span class="badge badge-hidden"><i class="fas fa-eye-slash" style="font-size:0.6rem"></i> Hidden</span>
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <form action="/admin/services/delete/<%= s.id %>" method="POST" onsubmit="return confirm('Delete this service permanently?');">
+                                        <button type="submit" class="btn btn-danger btn-icon" title="Delete"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        <% } else { %>
+            <div class="empty-state">
+                <i class="fas fa-spa"></i>
+                <p>No services yet. Add your first one!</p>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

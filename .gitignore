@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Environment variables (NEVER commit this!)
+.env
+
+# Uploaded images (too large for git, use cloud storage in production)
+uploads/
+
+# Old JSON database (replaced by MongoDB)
+db/data.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+*.log
