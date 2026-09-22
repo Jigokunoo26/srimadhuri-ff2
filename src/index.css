@@ -1,0 +1,323 @@
+/* ================================================================
+   SRI MADHURI MAKEOVERS — DESIGN SYSTEM v2
+   Direction: Forest + Bone + Amber editorial luxury
+   Differentiator: deep evergreen-tinted dark, ivory typography,
+   single warm-amber accent. NOT the gold+obsidian AI default.
+   ================================================================ */
+
+:root {
+  /* Forest dark base — green-tinted, never pure black */
+  --bg-primary: #0c1410;
+  --bg-secondary: #131d18;
+  --bg-tertiary: #1a2620;
+  --bg-card: rgba(26, 38, 32, 0.72);
+  --bg-card-hover: rgba(34, 48, 40, 0.85);
+  --bg-input: rgba(15, 22, 18, 0.85);
+  --bg-glass: rgba(19, 29, 24, 0.55);
+
+  /* Bone — warm ivory, used for body text and cards */
+  --bone: #f0e8d8;
+  --bone-soft: #d8cfbe;
+  --bone-muted: #8a8170;
+
+  /* Amber — single accent, muted from neon */
+  --amber: #c8975a;
+  --amber-light: #e0b478;
+  --amber-dark: #8a6736;
+  --amber-gradient: linear-gradient(135deg, #e8c89a 0%, #c8975a 60%, #8a6736 100%);
+
+  /* Botanical green — used sparingly as functional signal */
+  --moss: #4a6b4e;
+  --moss-light: #7a9b7e;
+
+  /* Status (functional only) */
+  --success: #5a9b6e;
+  --success-bg: rgba(90, 155, 110, 0.12);
+  --warning: #d4a23a;
+  --warning-bg: rgba(212, 162, 58, 0.12);
+  --danger: #c25a5a;
+  --danger-bg: rgba(194, 90, 90, 0.12);
+  --info: #5a8bc2;
+  --info-bg: rgba(90, 139, 194, 0.12);
+
+  /* Text */
+  --text-primary: var(--bone);
+  --text-secondary: var(--bone-soft);
+  --text-muted: var(--bone-muted);
+  --text-accent: var(--amber-light);
+
+  /* Borders — never gold-tinted (signature differentiation) */
+  --border-subtle: rgba(200, 151, 90, 0.12);
+  --border-medium: rgba(200, 151, 90, 0.28);
+  --border-strong: rgba(200, 151, 90, 0.55);
+
+  /* Shadows */
+  --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.7);
+
+  /* Radii — one system: soft, never pill, never sharp */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-full: 9999px;
+
+  --transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Reset */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; color-scheme: dark; }
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-feature-settings: 'ss01', 'ss02';
+  line-height: 1.65;
+  overflow-x: hidden;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(200, 151, 90, 0.06), transparent),
+    radial-gradient(ellipse 60% 40% at 90% 100%, rgba(74, 107, 78, 0.05), transparent);
+  background-attachment: fixed;
+}
+
+/* Typography — display uses Playfair Display (allowed, rotating from Cormorant) */
+h1, h2, .font-display {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.08;
+}
+h1 em, h2 em, .font-display em {
+  font-style: italic;
+  color: var(--amber-light);
+  font-weight: 500;
+}
+h3, h4 { font-weight: 600; letter-spacing: -0.005em; }
+h2 { font-size: clamp(2.4rem, 4.5vw, 3.8rem); }
+h3 { font-size: clamp(1.4rem, 2.2vw, 1.8rem); }
+h4 { font-size: 1.15rem; }
+
+a { color: inherit; text-decoration: none; transition: var(--transition); }
+button, input, select, textarea { font-family: inherit; font-size: 0.95rem; color: inherit; }
+img { display: block; max-width: 100%; }
+
+::selection { background: var(--amber); color: var(--bg-primary); }
+
+/* Layout */
+.container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
+.container-narrow { max-width: 880px; margin: 0 auto; padding: 0 1.5rem; }
+
+/* Accent text */
+.text-amber {
+  color: var(--amber-light);
+  font-style: italic;
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.section-subtitle {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  max-width: 580px;
+  margin: 1.25rem auto 0;
+  font-weight: 400;
+}
+
+/* Buttons — uniform soft-pill shape, single accent */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0.85rem 1.8rem;
+  border-radius: var(--radius-full);
+  font-weight: 500;
+  font-size: 0.92rem;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: var(--transition);
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--amber);
+  color: var(--bg-primary);
+  border-color: var(--amber);
+}
+.btn-primary:hover {
+  background: var(--amber-light);
+  border-color: var(--amber-light);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(200, 151, 90, 0.3);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-medium);
+}
+.btn-ghost:hover {
+  border-color: var(--amber);
+  color: var(--amber-light);
+  background: rgba(200, 151, 90, 0.04);
+}
+
+.btn-link {
+  background: transparent;
+  color: var(--amber-light);
+  padding: 0;
+  border: none;
+  border-bottom: 1px solid var(--border-medium);
+  border-radius: 0;
+  padding-bottom: 2px;
+}
+.btn-link:hover {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+
+.btn-sm { padding: 0.55rem 1.1rem; font-size: 0.85rem; }
+.btn-whatsapp { background: #1f7a5a; color: white; border-color: #1f7a5a; }
+.btn-whatsapp:hover { background: #2a9b73; border-color: #2a9b73; }
+.btn-danger { background: var(--danger-bg); color: var(--danger); border-color: rgba(194, 90, 90, 0.3); }
+.btn-danger:hover { background: var(--danger); color: white; }
+
+/* Cards — flat, no glassmorphism (differentiator from AI default) */
+.surface {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  transition: var(--transition);
+}
+.surface:hover {
+  border-color: var(--border-medium);
+  background: var(--bg-card-hover);
+}
+.surface-tall { padding: 2.5rem; }
+.surface-flat { background: var(--bg-secondary); }
+
+/* Form controls */
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.25rem; }
+.form-label { font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); }
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.8rem 1rem;
+  color: var(--text-primary);
+  outline: none;
+  transition: var(--transition-fast);
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px rgba(200, 151, 90, 0.12);
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+.badge-amber { background: rgba(200, 151, 90, 0.1); color: var(--amber-light); border-color: var(--border-medium); }
+.badge-pending { background: var(--warning-bg); color: var(--warning); border-color: rgba(212, 162, 58, 0.3); }
+.badge-confirmed { background: var(--info-bg); color: var(--info); border-color: rgba(90, 139, 194, 0.3); }
+.badge-completed { background: var(--success-bg); color: var(--success); border-color: rgba(90, 155, 110, 0.3); }
+.badge-cancelled { background: var(--danger-bg); color: var(--danger); border-color: rgba(194, 90, 90, 0.3); }
+
+/* Modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 12, 10, 0.88);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: fadeIn 0.2s ease;
+}
+.modal-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 580px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 2.25rem;
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* WhatsApp FAB */
+.whatsapp-floating {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 999;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #1f7a5a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 6px 20px rgba(31, 122, 90, 0.4);
+  cursor: pointer;
+  transition: var(--transition);
+}
+.whatsapp-floating:hover { transform: scale(1.08); background: #2a9b73; }
+
+/* Section spacing */
+.section { padding: 7rem 0; }
+.section-tight { padding: 4rem 0; }
+
+/* Divider */
+.hairline {
+  height: 1px;
+  background: var(--border-subtle);
+  border: none;
+  margin: 0;
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* Admin tables (preserve existing, recolor) */
+.admin-table-container { width: 100%; overflow-x: auto; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); }
+.admin-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
+.admin-table th { background: var(--bg-secondary); padding: 1rem 1.25rem; color: var(--amber-light); font-weight: 500; border-bottom: 1px solid var(--border-subtle); }
+.admin-table td { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary); }
+.admin-table tr:hover td { background: rgba(200, 151, 90, 0.03); }
+
+@media (max-width: 768px) {
+  .section { padding: 4.5rem 0; }
+  h2 { font-size: 2.2rem; }
+  .modal-card { padding: 1.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

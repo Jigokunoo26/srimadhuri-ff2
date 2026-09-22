@@ -1,23 +1,22 @@
 {
   "name": "sri-madhuri-makeovers",
   "version": "1.0.0",
-  "description": "Luxury salon backend and admin panel",
-  "main": "server.js",
+  "description": "Sri Madhuri Makeovers - Luxury salon React web app and admin management portal",
+  "type": "module",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js",
-    "seed": "node db/seed.js"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "ejs": "^3.1.10",
-    "express": "^4.19.2",
-    "express-session": "^1.18.0",
-    "mongoose": "^9.9.0",
-    "multer": "^1.4.5-lts.1",
-    "nodemailer": "^6.9.13",
-    "twilio": "^6.0.2"
+    "@supabase/supabase-js": "^2.115.0",
+    "canvas-confetti": "^1.9.4",
+    "lucide-react": "^1.40.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.1.1",
+    "vite": "^8.2.2"
   }
 }
