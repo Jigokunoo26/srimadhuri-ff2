@@ -9,21 +9,30 @@ const ContactSection = () => {
   const [copied, setCopied] = useState(false);
   const [lightbox, setLightbox] = useState(false);
 
-  const lat = storeInfo?.map_lat;
-  const lng = storeInfo?.map_lng;
+  const lat = storeInfo?.map_lat || 17.226191;
+  const lng = storeInfo?.map_lng || 80.1508772;
   const zoom = storeInfo?.map_zoom || 17;
   const directionsUrl = (lat && lng)
     ? `https://www.google.com/maps/place/Sri+Madhuri's+Makeovers+%26+Beauty+Saloon/@${lat},${lng},17z`
     : 'https://maps.app.goo.gl/dJHpaipbUKYNW7SA7';
 
-  // OpenStreetMap embed — no API key, no Google services
-  const embedSrc = (lat && lng)
-    ? `https://www.openstreetmap.org/export/embed.html?bbox=${lng - 0.005},${lat - 0.005},${lng + 0.005},${lat + 0.005}&layer=mapnik&marker=${lat},${lng}`
-    : null;
+  // Compute reliable Google Maps embed URL
+  const getMapEmbedSrc = () => {
+    if (storeInfo?.map_embed_url && storeInfo.map_embed_url.trim()) {
+      return storeInfo.map_embed_url.trim();
+    }
+    if (storeInfo?.map_iframe_html) {
+      const match = storeInfo.map_iframe_html.match(/src=["']([^"']+)["']/);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+    return `https://maps.google.com/maps?q=${lat},${lng}+(Sri+Madhuri's+Makeovers+%26+Beauty+Saloon)&t=&z=${zoom}&ie=UTF8&iwloc=B&output=embed`;
+  };
 
-  const externalMapUrl = (lat && lng)
-    ? `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=${zoom}/${lat}/${lng}`
-    : 'https://maps.app.goo.gl/dJHpaipbUKYNW7SA7';
+  const mapSrc = getMapEmbedSrc();
+
+  const externalMapUrl = directionsUrl;
 
   const copyAddress = () => {
     if (storeInfo?.address) {
@@ -101,36 +110,21 @@ const ContactSection = () => {
             </a>
           </div>
 
-          {/* MAP WIDGET — admin-pasteable embed (raw iframe HTML) */}
+          {/* MAP WIDGET */}
           <div
             className="surface"
             style={{ padding: 0, overflow: 'hidden', height: 520, position: 'relative' }}
           >
-            {storeInfo?.map_iframe_html ? (
-              <div
-                style={{ width: '100%', height: '100%' }}
-                dangerouslySetInnerHTML={{ __html: storeInfo.map_iframe_html }}
-              />
-            ) : embedSrc ? (
-              <iframe
-                title="Sri Madhuri Makeovers location"
-                src={embedSrc}
-                width="100%"
-                height="520"
-                style={{ border: 0, display: 'block' }}
-                loading="lazy"
-              />
-            ) : (
-              <div style={{ height: '100%', minHeight: 520, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem', textAlign: 'center' }}>
-                <MapPin size={40} style={{ color: 'var(--amber)', marginBottom: '1rem' }} />
-                <div style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.3rem', color: 'var(--bone)', marginBottom: '0.5rem' }}>
-                  Find us in Khammam
-                </div>
-                <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                  Paste a Google Maps embed iframe in admin settings.
-                </div>
-              </div>
-            )}
+            <iframe
+              title="Sri Madhuri Makeovers location"
+              src={mapSrc}
+              width="100%"
+              height="100%"
+              style={{ border: 0, width: '100%', height: '100%', display: 'block', minHeight: '520px' }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
 
             {/* Floating action bar over the map */}
             <div
@@ -272,9 +266,10 @@ const ContactSection = () => {
               </button>
               <iframe
                 title="Sri Madhuri Makeovers location enlarged"
-                src={embedSrc}
+                src={mapSrc}
                 style={{ width: '100%', height: '100%', border: 0, borderRadius: 'var(--radius-md)' }}
                 loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
               />
             </div>
           </div>

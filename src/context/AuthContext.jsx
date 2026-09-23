@@ -31,6 +31,30 @@ export const AuthProvider = ({ children }) => {
     }
   });
 
+  const [adminUsername, setAdminUsername] = useState(() => {
+    try {
+      const saved = localStorage.getItem('sri_madhuri_admin_custom_creds');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.username) return parsed.username;
+      }
+    } catch {}
+    return import.meta.env.VITE_ADMIN_USERNAME || 'admin';
+  });
+
+  const [adminEmail, setAdminEmail] = useState(() => {
+    try {
+      const savedEmail = localStorage.getItem('sri_madhuri_admin_email');
+      if (savedEmail) return savedEmail;
+      const savedCreds = localStorage.getItem('sri_madhuri_admin_custom_creds');
+      if (savedCreds) {
+        const parsed = JSON.parse(savedCreds);
+        if (parsed.email) return parsed.email;
+      }
+    } catch {}
+    return import.meta.env.VITE_ADMIN_EMAIL || 'nandhiniverma031@gmail.com';
+  });
+
   const login = async (username, password) => {
     const trimmedUser = (username || '').trim();
     const cleanPassword = password || '';
@@ -39,7 +63,7 @@ export const AuthProvider = ({ children }) => {
       return { success: false, error: 'Please enter both username and password' };
     }
 
-    // 1. Check custom saved credentials in localStorage
+    // 1. Check custom saved credentials in localStorage first
     const savedCreds = localStorage.getItem('sri_madhuri_admin_custom_creds');
     if (savedCreds) {
       try {
@@ -47,6 +71,7 @@ export const AuthProvider = ({ children }) => {
         if (trimmedUser === creds.username && cleanPassword === creds.password) {
           const session = {
             username: creds.username,
+            email: creds.email || adminEmail,
             role: 'owner',
             loggedInAt: new Date().toISOString()
           };
@@ -59,7 +84,22 @@ export const AuthProvider = ({ children }) => {
       }
     }
 
-    // 2. Verify against Supabase admin_users table if configured
+    // 2. Verify against credentials configured in .env (ADMIN_USERNAME & ADMIN_PASSWORD)
+    const envUser = (import.meta.env.VITE_ADMIN_USERNAME || '').trim();
+    const envPass = import.meta.env.VITE_ADMIN_PASSWORD || '';
+    if (envUser && envPass && trimmedUser === envUser && cleanPassword === envPass) {
+      const session = {
+        username: envUser,
+        email: adminEmail,
+        role: 'owner',
+        loggedInAt: new Date().toISOString()
+      };
+      setAdminUser(session);
+      localStorage.setItem('sri_madhuri_admin_session', JSON.stringify(session));
+      return { success: true };
+    }
+
+    // 3. Verify against Supabase admin_users table if configured
     if (isSupabaseConfigured && supabase) {
       try {
         const { data: dbUser, error: dbError } = await supabase
@@ -96,7 +136,7 @@ export const AuthProvider = ({ children }) => {
       }
     }
 
-    // 3. Verify against hashed default administrative credentials
+    // 4. Verify against hashed default administrative credentials
     const [uHash, pHash] = await Promise.all([
       sha256Hex(trimmedUser),
       sha256Hex(cleanPassword)
@@ -105,6 +145,7 @@ export const AuthProvider = ({ children }) => {
     if (uHash === DEFAULT_USER_HASH && pHash === DEFAULT_PASS_HASH) {
       const session = {
         username: trimmedUser,
+        email: adminEmail,
         role: 'owner',
         loggedInAt: new Date().toISOString()
       };
@@ -122,16 +163,68 @@ export const AuthProvider = ({ children }) => {
   };
 
   const updateCredentials = (newUsername, newPassword) => {
-    const creds = { username: newUsername, password: newPassword };
+    return updateAdminCredentials({ username: newUsername, password: newPassword });
+  };
+
+  const updateAdminCredentials = async ({ username, password, email }) => {
+    const trimmedUser = (username || adminUsername || 'admin').trim();
+    const cleanEmail = (email || adminEmail || 'nandhiniverma031@gmail.com').trim();
+
+    let currentPassword = import.meta.env.VITE_ADMIN_PASSWORD || 'admin';
+    try {
+      const existing = JSON.parse(localStorage.getItem('sri_madhuri_admin_custom_creds') || '{}');
+      if (existing.password) currentPassword = existing.password;
+    } catch {}
+
+    const newPass = (password && password.trim()) ? password.trim() : currentPassword;
+    const creds = { username: trimmedUser, password: newPass, email: cleanEmail };
+
     localStorage.setItem('sri_madhuri_admin_custom_creds', JSON.stringify(creds));
+    localStorage.setItem('sri_madhuri_admin_email', cleanEmail);
+
+    setAdminUsername(trimmedUser);
+    setAdminEmail(cleanEmail);
+
     if (adminUser) {
-      setAdminUser({ ...adminUser, username: newUsername });
+      const updatedSession = { ...adminUser, username: trimmedUser, email: cleanEmail };
+      setAdminUser(updatedSession);
+      localStorage.setItem('sri_madhuri_admin_session', JSON.stringify(updatedSession));
     }
-    return true;
+
+    // Call Vite backend API to persist to .env file on disk
+    let diskUpdated = false;
+    try {
+      const res = await fetch('/api/update-credentials', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: trimmedUser,
+          password: newPass,
+          email: cleanEmail
+        })
+      });
+      const data = await res.json();
+      diskUpdated = Boolean(data.success);
+    } catch (err) {
+      console.warn('Notice: /api/update-credentials endpoint:', err);
+    }
+
+    return { success: true, diskUpdated, username: trimmedUser, email: cleanEmail };
   };
 
   return (
-    <AuthContext.Provider value={{ adminUser, login, logout, updateCredentials, isAuthenticated: !!adminUser }}>
+    <AuthContext.Provider
+      value={{
+        adminUser,
+        adminUsername,
+        adminEmail,
+        login,
+        logout,
+        updateCredentials,
+        updateAdminCredentials,
+        isAuthenticated: !!adminUser
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

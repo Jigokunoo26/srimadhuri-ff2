@@ -1,20 +1,20 @@
 {
   "name": "Sri Madhuri Makeovers",
-  "short_name": "SMM Admin",
+  "short_name": "Sri Madhuri",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#0f172a",
+  "background_color": "#0a0e17",
+  "theme_color": "#0a0e17",
   "icons": [
     {
-      "src": "/icons/icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      "src": "/banner.jpeg",
+      "sizes": "192x192 512x512",
+      "type": "image/jpeg"
     },
     {
-      "src": "/icons/icon-512x512.png",
+      "src": "/WhatsApp%20Image%202026-07-18%20at%209.24.10%20PM.jpeg",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/jpeg"
     }
   ]
 }

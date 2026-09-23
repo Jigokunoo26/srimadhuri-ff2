@@ -1,14 +1,168 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useStore } from '../../context/StoreContext';
+import { useAuth } from '../../context/AuthContext';
+import { sendAdminResetOtp } from '../../lib/emailService';
 import ImageUploader from '../../components/ImageUploader';
-import { Save, Check, Store, Phone, Clock, Share2, Image, MessageSquare, Plus, X } from 'lucide-react';
+import {
+  Save, Check, Store, Phone, Clock, Share2, Image, MessageSquare, Plus, X,
+  Shield, Key, Lock, Mail, User, CheckCircle2, AlertCircle, RefreshCw, KeyRound
+} from 'lucide-react';
 
 const AdminSettings = () => {
   const { storeInfo, updateStoreInfo } = useStore();
+  const { adminUsername, adminEmail, updateAdminCredentials } = useAuth();
   const [formData, setFormData] = useState({ ...storeInfo });
   const [saved, setSaved] = useState(false);
   const [newFaqQ, setNewFaqQ] = useState('');
   const [newFaqA, setNewFaqA] = useState('');
+
+  // Credentials management state
+  const [credForm, setCredForm] = useState({
+    username: adminUsername || 'admin',
+    email: adminEmail || 'nandhiniverma031@gmail.com',
+    password: '',
+    confirmPassword: ''
+  });
+  const [credError, setCredError] = useState('');
+  const [credSuccess, setCredSuccess] = useState('');
+  const [otpModalOpen, setOtpModalOpen] = useState(false);
+  const [otpCode, setOtpCode] = useState('');
+  const [activeOtpSession, setActiveOtpSession] = useState(null);
+  const [otpCountdown, setOtpCountdown] = useState(0);
+  const [sendingOtp, setSendingOtp] = useState(false);
+  const [verifyingOtp, setVerifyingOtp] = useState(false);
+
+  useEffect(() => {
+    setCredForm(prev => ({
+      ...prev,
+      username: adminUsername || 'admin',
+      email: adminEmail || 'nandhiniverma031@gmail.com'
+    }));
+  }, [adminUsername, adminEmail]);
+
+  useEffect(() => {
+    if (otpCountdown <= 0) return;
+    const timer = setInterval(() => {
+      setOtpCountdown(prev => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [otpCountdown]);
+
+  const handleInitiateOtpRequest = async (e) => {
+    e.preventDefault();
+    setCredError('');
+    setCredSuccess('');
+
+    if (!credForm.username.trim()) {
+      setCredError('Username cannot be empty.');
+      return;
+    }
+
+    if (!credForm.email.trim() || !credForm.email.includes('@')) {
+      setCredError('Please enter a valid administrative email address.');
+      return;
+    }
+
+    if (credForm.password) {
+      if (credForm.password.length < 5) {
+        setCredError('New password must be at least 5 characters long.');
+        return;
+      }
+      if (credForm.password !== credForm.confirmPassword) {
+        setCredError('New password and confirmation do not match.');
+        return;
+      }
+    }
+
+    // Check if anything changed
+    const isUserChanged = credForm.username.trim() !== adminUsername;
+    const isEmailChanged = credForm.email.trim() !== adminEmail;
+    const isPassChanged = Boolean(credForm.password.trim());
+
+    if (!isUserChanged && !isEmailChanged && !isPassChanged) {
+      setCredError('No changes detected in username, email, or password.');
+      return;
+    }
+
+    setSendingOtp(true);
+    const genOtp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = Date.now() + 10 * 60 * 1000;
+
+    try {
+      // Send OTP to CURRENT admin email to verify authorization
+      await sendAdminResetOtp({
+        toEmail: adminEmail,
+        adminUsername: adminUsername || 'Administrator',
+        otpCode: genOtp,
+        expiresMinutes: 10
+      });
+
+      setActiveOtpSession({
+        code: genOtp,
+        expiresAt,
+        newUsername: credForm.username.trim(),
+        newEmail: credForm.email.trim(),
+        newPassword: credForm.password.trim()
+      });
+      setOtpCode('');
+      setOtpCountdown(600);
+      setOtpModalOpen(true);
+    } catch (err) {
+      console.error(err);
+      setCredError('Failed to dispatch OTP email. Please verify EmailJS settings.');
+    } finally {
+      setSendingOtp(false);
+    }
+  };
+
+  const handleVerifyOtpAndSave = async (e) => {
+    e.preventDefault();
+    setCredError('');
+
+    if (!activeOtpSession) {
+      setCredError('No active OTP session. Please request a new code.');
+      setOtpModalOpen(false);
+      return;
+    }
+
+    if (Date.now() > activeOtpSession.expiresAt) {
+      setCredError('The OTP code has expired. Please request a fresh one.');
+      return;
+    }
+
+    if (otpCode.trim() !== activeOtpSession.code) {
+      setCredError('Incorrect OTP verification code. Please check your email.');
+      return;
+    }
+
+    setVerifyingOtp(true);
+    try {
+      await updateAdminCredentials({
+        username: activeOtpSession.newUsername,
+        password: activeOtpSession.newPassword,
+        email: activeOtpSession.newEmail
+      });
+
+      setOtpModalOpen(false);
+      setActiveOtpSession(null);
+      setCredForm(prev => ({ ...prev, password: '', confirmPassword: '' }));
+      setCredSuccess(
+        `Admin credentials & email successfully updated! Changes saved to .env on disk and active session.`
+      );
+      setTimeout(() => setCredSuccess(''), 7000);
+    } catch (err) {
+      console.error(err);
+      setCredError('Failed to update credentials. Please try again.');
+    } finally {
+      setVerifyingOtp(false);
+    }
+  };
+
+  const formatCountdown = (secs) => {
+    const m = Math.floor(secs / 60);
+    const s = secs % 60;
+    return `${m}:${s < 10 ? '0' : ''}${s}`;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,13 +192,207 @@ const AdminSettings = () => {
           Salon & Store Configuration
         </h2>
         <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-          Update store phone numbers, WhatsApp booking links, working hours, and social profiles.
+          Update admin security credentials, store phone numbers, WhatsApp booking links, working hours, and social profiles.
         </p>
       </div>
 
       {saved && (
         <div style={{ background: 'var(--success-bg)', border: '1px solid var(--success)', color: 'var(--success)', padding: '12px 20px', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1.5rem' }}>
           <Check size={18} /> Salon configuration saved successfully!
+        </div>
+      )}
+
+      {/* Admin Login Credentials & Security Card */}
+      <div
+        className="glass-card"
+        style={{
+          padding: '2rem',
+          marginBottom: '2rem',
+          border: '1px solid rgba(212, 175, 55, 0.35)',
+          background: 'radial-gradient(ellipse at top right, rgba(212, 175, 55, 0.06), transparent 70%), rgba(12, 18, 28, 0.65)'
+        }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.25rem' }}>
+          <div>
+            <h3 style={{ fontSize: '1.35rem', color: 'var(--gold-light)', display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
+              <Shield size={22} color="var(--gold-primary)" /> Admin Login Credentials & Security
+            </h3>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.86rem' }}>
+              Update your administrative username, password, and email address. Updates require 6-digit OTP verification sent to your current admin email.
+            </p>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(212, 175, 55, 0.1)', border: '1px solid var(--border-subtle)', padding: '6px 12px', borderRadius: 'var(--radius-full)', fontSize: '0.78rem', color: 'var(--gold-light)' }}>
+            <Lock size={13} /> OTP Verification Active
+          </div>
+        </div>
+
+        {/* Current Active Credentials Badges */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginBottom: '1.5rem', background: 'rgba(255, 255, 255, 0.02)', padding: '1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' }}>
+          <div>
+            <span style={{ fontSize: '0.74rem', textTransform: 'uppercase', color: 'var(--text-muted)', letterSpacing: '0.5px' }}>Current Username</span>
+            <div style={{ fontWeight: '600', color: 'var(--text-primary)', fontSize: '0.95rem', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <User size={14} color="var(--gold-primary)" /> {adminUsername}
+            </div>
+          </div>
+          <div>
+            <span style={{ fontSize: '0.74rem', textTransform: 'uppercase', color: 'var(--text-muted)', letterSpacing: '0.5px' }}>Current Admin Email</span>
+            <div style={{ fontWeight: '600', color: 'var(--text-primary)', fontSize: '0.95rem', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Mail size={14} color="var(--gold-primary)" /> {adminEmail}
+            </div>
+          </div>
+        </div>
+
+        {credSuccess && (
+          <div style={{ background: 'rgba(16, 185, 129, 0.15)', border: '1px solid #10b981', color: '#10b981', padding: '12px 18px', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1.25rem', fontSize: '0.88rem' }}>
+            <Check size={18} /> {credSuccess}
+          </div>
+        )}
+
+        {credError && (
+          <div style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid var(--danger)', color: '#f87171', padding: '12px 18px', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1.25rem', fontSize: '0.88rem' }}>
+            <AlertCircle size={18} /> {credError}
+          </div>
+        )}
+
+        <form onSubmit={handleInitiateOtpRequest}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+            <div className="form-group" style={{ margin: 0 }}>
+              <label className="form-label">New Username</label>
+              <input
+                type="text"
+                className="form-input"
+                value={credForm.username}
+                onChange={e => setCredForm({ ...credForm, username: e.target.value })}
+                placeholder="admin"
+                required
+              />
+              <small style={{ color: 'var(--text-muted)', fontSize: '0.75rem', marginTop: '3px', display: 'block' }}>
+                Used to log into the Admin Vendor Portal (/admin)
+              </small>
+            </div>
+
+            <div className="form-group" style={{ margin: 0 }}>
+              <label className="form-label">New Admin Email</label>
+              <input
+                type="email"
+                className="form-input"
+                value={credForm.email}
+                onChange={e => setCredForm({ ...credForm, email: e.target.value })}
+                placeholder="newadmin@gmail.com"
+                required
+              />
+              <small style={{ color: 'var(--text-muted)', fontSize: '0.75rem', marginTop: '3px', display: 'block' }}>
+                Where future password resets and OTPs will be delivered
+              </small>
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
+            <div className="form-group" style={{ margin: 0 }}>
+              <label className="form-label">New Password (leave blank to keep current)</label>
+              <input
+                type="password"
+                className="form-input"
+                value={credForm.password}
+                onChange={e => setCredForm({ ...credForm, password: e.target.value })}
+                placeholder="Enter new password..."
+              />
+            </div>
+
+            <div className="form-group" style={{ margin: 0 }}>
+              <label className="form-label">Confirm New Password</label>
+              <input
+                type="password"
+                className="form-input"
+                value={credForm.confirmPassword}
+                onChange={e => setCredForm({ ...credForm, confirmPassword: e.target.value })}
+                placeholder="Re-type new password..."
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={sendingOtp}
+            className="btn btn-primary"
+            style={{ gap: '8px', padding: '0.75rem 1.75rem' }}
+          >
+            <KeyRound size={16} />
+            {sendingOtp ? 'Sending OTP to current email...' : 'Send Verification OTP to Apply Changes'}
+          </button>
+        </form>
+      </div>
+
+      {/* OTP Verification Modal */}
+      {otpModalOpen && activeOtpSession && (
+        <div className="modal-backdrop" onClick={() => setOtpModalOpen(false)}>
+          <div className="modal-card" style={{ maxWidth: '460px' }} onClick={e => e.stopPropagation()}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+              <h3 style={{ fontSize: '1.4rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <KeyRound size={20} color="var(--gold-primary)" /> Verify Administrator OTP
+              </h3>
+              <button onClick={() => setOtpModalOpen(false)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
+                <X size={18} />
+              </button>
+            </div>
+
+            <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', marginBottom: '1.25rem', lineHeight: 1.5 }}>
+              For security, a 6-digit verification code has been dispatched to your current admin email:
+              <br />
+              <strong style={{ color: 'var(--gold-light)' }}>{adminEmail}</strong>
+            </p>
+
+            {credError && (
+              <div style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid var(--danger)', color: '#f87171', padding: '10px 14px', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1rem', fontSize: '0.85rem' }}>
+                <AlertCircle size={16} /> {credError}
+              </div>
+            )}
+
+            <form onSubmit={handleVerifyOtpAndSave}>
+              <div className="form-group">
+                <label className="form-label" style={{ textAlign: 'center', display: 'block' }}>Enter 6-Digit OTP Code</label>
+                <input
+                  type="text"
+                  maxLength={6}
+                  autoFocus
+                  className="form-input"
+                  value={otpCode}
+                  onChange={e => setOtpCode(e.target.value.replace(/\D/g, ''))}
+                  placeholder="• • • • • •"
+                  style={{
+                    fontSize: '1.75rem',
+                    textAlign: 'center',
+                    letterSpacing: '10px',
+                    fontFamily: 'monospace',
+                    padding: '0.75rem',
+                    borderColor: 'var(--gold-primary)'
+                  }}
+                  required
+                />
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+                <span>Expires in: <strong style={{ color: otpCountdown < 60 ? 'var(--danger)' : 'var(--gold-light)' }}>{formatCountdown(otpCountdown)}</strong></span>
+                <button
+                  type="button"
+                  onClick={handleInitiateOtpRequest}
+                  disabled={sendingOtp || otpCountdown > 540}
+                  style={{ background: 'none', border: 'none', color: 'var(--gold-primary)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
+                >
+                  <RefreshCw size={12} /> Resend Code
+                </button>
+              </div>
+
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button type="button" onClick={() => setOtpModalOpen(false)} className="btn btn-outline" style={{ flex: 1 }}>
+                  Cancel
+                </button>
+                <button type="submit" disabled={verifyingOtp || otpCode.length !== 6} className="btn btn-primary" style={{ flex: 2 }}>
+                  {verifyingOtp ? 'Verifying...' : 'Verify OTP & Save'}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
 

@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@supabase/supabase-js": "^2.115.0",
     "canvas-confetti": "^1.9.4",
     "lucide-react": "^1.40.0",

@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useStore } from '../../context/StoreContext';
-import { Plus, Search, Filter, Download, MessageCircle, Calendar, Clock, User, Phone, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import { Plus, Search, Filter, Download, MessageCircle, Calendar, Clock, User, Phone, CheckCircle, XCircle, AlertCircle, Mail, Send, Check } from 'lucide-react';
 
 const AdminBookings = () => {
-  const { bookings, updateBookingStatus, addBooking, services } = useStore();
+  const { bookings, updateBookingStatus, addBooking, sendConfirmationEmailForBooking, services } = useStore();
   const [statusFilter, setStatusFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
+  const [actionFeedback, setActionFeedback] = useState(null);
+  const [sendingEmailId, setSendingEmailId] = useState(null);
   const [manualBooking, setManualBooking] = useState({
     name: '',
     phone: '',
@@ -23,12 +25,66 @@ const AdminBookings = () => {
     const matchesSearch =
       b.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       b.phone?.includes(searchTerm) ||
+      b.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       b.service?.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesStatus && matchesSearch;
   });
 
   const handleStatusChange = async (id, newStatus) => {
-    await updateBookingStatus(id, newStatus);
+    const booking = bookings.find(b => b.id === id);
+    const result = await updateBookingStatus(id, newStatus);
+
+    if (newStatus === 'confirmed') {
+      if (booking?.email && booking.email.trim()) {
+        const clientEmail = booking.email.trim();
+        if (result?.emailResult?.success) {
+          setActionFeedback({
+            type: 'success',
+            message: `Appointment confirmed! Confirmation email dispatched to client: ${clientEmail}`
+          });
+        } else {
+          setActionFeedback({
+            type: 'warning',
+            message: `Appointment confirmed, but email delivery to ${clientEmail} failed: ${result?.emailResult?.error || 'Check EmailJS configuration'}`
+          });
+        }
+      } else {
+        setActionFeedback({
+          type: 'info',
+          message: `Appointment confirmed. (No email provided by customer — connect via WhatsApp)`
+        });
+      }
+    } else {
+      setActionFeedback({
+        type: 'info',
+        message: `Status updated to ${newStatus}.`
+      });
+    }
+
+    setTimeout(() => setActionFeedback(null), 6000);
+  };
+
+  const handleManualEmailSend = async (booking) => {
+    if (!booking.email || !booking.email.trim()) {
+      alert('This customer did not provide an email address.');
+      return;
+    }
+    const clientEmail = booking.email.trim();
+    setSendingEmailId(booking.id);
+    const res = await sendConfirmationEmailForBooking(booking);
+    setSendingEmailId(null);
+    if (res?.success) {
+      setActionFeedback({
+        type: 'success',
+        message: `Confirmation email dispatched to ${clientEmail}!`
+      });
+    } else {
+      setActionFeedback({
+        type: 'warning',
+        message: `Email delivery to ${clientEmail} failed: ${res?.error || 'Please check EmailJS settings'}`
+      });
+    }
+    setTimeout(() => setActionFeedback(null), 6000);
   };
 
   const handleAddManualBooking = async (e) => {
@@ -38,12 +94,21 @@ const AdminBookings = () => {
       return;
     }
 
-    await addBooking({
+    const created = await addBooking({
       ...manualBooking,
+      email: manualBooking.email.trim(),
       amount: Number(manualBooking.amount) || 0,
       source: 'manual',
       status: 'confirmed'
     });
+
+    if (manualBooking.email.trim()) {
+      setActionFeedback({
+        type: 'success',
+        message: `Walk-in appointment recorded and confirmation email dispatched to ${manualBooking.email.trim()}!`
+      });
+      setTimeout(() => setActionFeedback(null), 6000);
+    }
 
     setShowAddModal(false);
     setManualBooking({
@@ -77,10 +142,10 @@ const AdminBookings = () => {
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
         <div>
           <h2 style={{ fontSize: '2rem', color: 'var(--text-primary)', marginBottom: '4px' }}>
-            Appointments & Bookings Central
+            Appointments & Client Leads Central
           </h2>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-            Complete view of all online, WhatsApp, and walk-in client records with live status management.
+            Live status management for client leads. Changing status to Confirmed automatically sends a confirmation email to clients with an email on file.
           </p>
         </div>
         <div style={{ display: 'flex', gap: '10px' }}>
@@ -92,6 +157,46 @@ const AdminBookings = () => {
           </button>
         </div>
       </div>
+
+      {/* Action Notification Banner */}
+      {actionFeedback && (
+        <div
+          style={{
+            padding: '12px 18px',
+            borderRadius: 'var(--radius-sm)',
+            marginBottom: '1.5rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            fontSize: '0.9rem',
+            fontWeight: '500',
+            animation: 'fadeIn 0.2s ease-in',
+            background:
+              actionFeedback.type === 'success'
+                ? 'rgba(16, 185, 129, 0.15)'
+                : actionFeedback.type === 'warning'
+                ? 'rgba(245, 158, 11, 0.15)'
+                : 'rgba(59, 130, 246, 0.15)',
+            border:
+              actionFeedback.type === 'success'
+                ? '1px solid #10b981'
+                : actionFeedback.type === 'warning'
+                ? '1px solid #f59e0b'
+                : '1px solid #3b82f6',
+            color:
+              actionFeedback.type === 'success'
+                ? '#10b981'
+                : actionFeedback.type === 'warning'
+                ? '#f59e0b'
+                : '#60a5fa'
+          }}
+        >
+          {actionFeedback.type === 'success' && <CheckCircle size={18} />}
+          {actionFeedback.type === 'warning' && <AlertCircle size={18} />}
+          {actionFeedback.type === 'info' && <Mail size={18} />}
+          <span>{actionFeedback.message}</span>
+        </div>
+      )}
 
       {/* Filter and Search Bar */}
       <div
@@ -136,7 +241,7 @@ const AdminBookings = () => {
             type="text"
             className="form-input"
             style={{ paddingLeft: '2.4rem', paddingRight: '1rem', fontSize: '0.86rem' }}
-            placeholder="Search by client or phone..."
+            placeholder="Search by client, phone, or email..."
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
           />
@@ -155,7 +260,7 @@ const AdminBookings = () => {
               <th>Amount</th>
               <th>Source</th>
               <th>Current Status</th>
-              <th style={{ textAlign: 'right' }}>Update Status</th>
+              <th style={{ textAlign: 'right' }}>Update Status / Email</th>
             </tr>
           </thead>
           <tbody>
@@ -179,7 +284,7 @@ const AdminBookings = () => {
                   {/* Customer Info */}
                   <td>
                     <div style={{ fontWeight: '600', color: 'var(--text-primary)' }}>{b.name}</div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '3px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '3px', flexWrap: 'wrap' }}>
                       <a
                         href={`https://wa.me/${b.phone.replace(/\D/g, '')}`}
                         target="_blank"
@@ -189,6 +294,11 @@ const AdminBookings = () => {
                       >
                         <MessageCircle size={13} /> {b.phone}
                       </a>
+                      {b.email && (
+                        <span style={{ color: 'var(--gold-light)', fontSize: '0.78rem', display: 'flex', alignItems: 'center', gap: '3px' }} title={`Customer Email: ${b.email}`}>
+                          <Mail size={12} /> {b.email}
+                        </span>
+                      )}
                     </div>
                     {b.message && (
                       <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={b.message}>
@@ -221,19 +331,45 @@ const AdminBookings = () => {
                     </span>
                   </td>
 
-                  {/* Status Dropdown Action */}
+                  {/* Status Dropdown Action & Email Controls */}
                   <td style={{ textAlign: 'right' }}>
-                    <select
-                      className="form-select"
-                      style={{ padding: '6px 10px', fontSize: '0.8rem', width: '130px', margin: 0 }}
-                      value={b.status}
-                      onChange={e => handleStatusChange(b.id, e.target.value)}
-                    >
-                      <option value="pending">⏳ Pending</option>
-                      <option value="confirmed">✅ Confirmed</option>
-                      <option value="completed">✨ Completed</option>
-                      <option value="cancelled">❌ Cancelled</option>
-                    </select>
+                    <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'flex-end', gap: '5px' }}>
+                      <select
+                        className="form-select"
+                        style={{ padding: '6px 10px', fontSize: '0.8rem', width: '130px', margin: 0 }}
+                        value={b.status}
+                        onChange={e => handleStatusChange(b.id, e.target.value)}
+                      >
+                        <option value="pending">⏳ Pending</option>
+                        <option value="confirmed">✅ Confirmed</option>
+                        <option value="completed">✨ Completed</option>
+                        <option value="cancelled">❌ Cancelled</option>
+                      </select>
+
+                      {b.email && (
+                        <button
+                          type="button"
+                          onClick={() => handleManualEmailSend(b)}
+                          disabled={sendingEmailId === b.id}
+                          style={{
+                            background: 'rgba(212, 175, 55, 0.08)',
+                            border: '1px solid var(--border-subtle)',
+                            borderRadius: 'var(--radius-sm)',
+                            padding: '3px 8px',
+                            fontSize: '0.72rem',
+                            color: 'var(--gold-light)',
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                            transition: 'var(--transition)'
+                          }}
+                          title={`Dispatch confirmation email to ${b.email}`}
+                        >
+                          <Mail size={11} /> {sendingEmailId === b.id ? 'Sending...' : 'Send Mail'}
+                        </button>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))
@@ -255,7 +391,7 @@ const AdminBookings = () => {
 
             <form onSubmit={handleAddManualBooking}>
               <div className="form-group">
-                <label className="form-label">Customer Name</label>
+                <label className="form-label">Customer Name *</label>
                 <input
                   type="text"
                   className="form-input"
@@ -268,7 +404,7 @@ const AdminBookings = () => {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <div className="form-group">
-                  <label className="form-label">Phone Number</label>
+                  <label className="form-label">Phone Number *</label>
                   <input
                     type="tel"
                     className="form-input"
@@ -280,15 +416,26 @@ const AdminBookings = () => {
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Service</label>
-                  <select
-                    className="form-select"
-                    value={manualBooking.service}
-                    onChange={e => setManualBooking({ ...manualBooking, service: e.target.value })}
-                  >
-                    {services.map(s => <option key={s.id} value={s.name}>{s.name} ({s.price})</option>)}
-                  </select>
+                  <label className="form-label">Customer Email (optional)</label>
+                  <input
+                    type="email"
+                    className="form-input"
+                    placeholder="For confirmation receipt"
+                    value={manualBooking.email}
+                    onChange={e => setManualBooking({ ...manualBooking, email: e.target.value })}
+                  />
                 </div>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Service</label>
+                <select
+                  className="form-select"
+                  value={manualBooking.service}
+                  onChange={e => setManualBooking({ ...manualBooking, service: e.target.value })}
+                >
+                  {services.map(s => <option key={s.id} value={s.name}>{s.name} ({s.price})</option>)}
+                </select>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
@@ -328,7 +475,7 @@ const AdminBookings = () => {
               </div>
 
               <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '1rem', padding: '0.85rem' }}>
-                Save Appointment
+                Save Appointment & Confirm
               </button>
             </form>
           </div>

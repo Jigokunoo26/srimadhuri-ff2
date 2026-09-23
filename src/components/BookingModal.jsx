@@ -45,6 +45,7 @@ const BookingModal = ({ isOpen, onClose, preselectedService }) => {
         message: form.message.trim(),
         source: 'website'
       });
+
       try { confetti({ particleCount: 70, spread: 70, origin: { y: 0.6 }, colors: ['#c8975a', '#e0b478', '#f0e8d8'] }); } catch {}
       setSuccess(true);
       const phone = storeInfo?.whatsapp_number || '918985291053';
@@ -87,9 +88,14 @@ const BookingModal = ({ isOpen, onClose, preselectedService }) => {
             <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'var(--success-bg)', color: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem', border: '1px solid var(--success)' }}>
               <CheckCircle size={32} />
             </div>
-            <p style={{ color: 'var(--text-secondary)', maxWidth: 340, margin: '0 auto 2rem', lineHeight: 1.6 }}>
+            <p style={{ color: 'var(--text-secondary)', maxWidth: 360, margin: '0 auto 1.25rem', lineHeight: 1.6 }}>
               Thank you, {form.name}. We have noted your interest in <em style={{ color: 'var(--bone)' }}>{form.service}</em> on {form.date} at {form.time}.
             </p>
+            {form.email && (
+              <p style={{ fontSize: '0.82rem', color: 'var(--gold-light)', maxWidth: 360, margin: '0 auto 1.75rem', background: 'rgba(212, 175, 55, 0.08)', padding: '0.65rem 1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', lineHeight: 1.4 }}>
+                ✉️ A booking confirmation email will be delivered to <strong>{form.email}</strong> once our team confirms your appointment.
+              </p>
+            )}
             <button onClick={reset} className="btn btn-primary" style={{ minWidth: 160 }}>Done</button>
           </div>
         ) : (

@@ -11,6 +11,7 @@ import {
   initialTeam,
   initialCategories
 } from '../lib/supabase';
+import { sendBookingConfirmation } from '../lib/emailService';
 
 const StoreContext = createContext();
 
@@ -181,6 +182,39 @@ export const StoreProvider = ({ children }) => {
   };
 
   // ── BOOKINGS ──
+  const sendConfirmationEmailForBooking = async (bookingOrId) => {
+    const booking = typeof bookingOrId === 'string'
+      ? bookings.find(b => b.id === bookingOrId)
+      : bookingOrId;
+
+    if (!booking) {
+      return { success: false, error: 'Booking not found' };
+    }
+
+    const cleanEmail = booking.email?.trim();
+    if (!cleanEmail || !cleanEmail.includes('@')) {
+      return { success: false, noEmail: true, message: 'No client email provided for this booking' };
+    }
+
+    try {
+      const result = await sendBookingConfirmation({
+        clientName: booking.name,
+        clientEmail: cleanEmail,
+        clientPhone: booking.phone,
+        serviceName: booking.service,
+        bookingDate: booking.date,
+        bookingTime: booking.time,
+        bookingNotes: booking.message || booking.notes || '',
+        salonAddress: storeInfo?.address || 'Opposite Chakri School, Mustafa Nagar, Khammam, Telangana',
+        salonPhone: storeInfo?.phone || '+91 89852 91053'
+      });
+      return result;
+    } catch (err) {
+      console.warn('sendConfirmationEmailForBooking error:', err);
+      return { success: false, error: err?.message || 'Failed to dispatch email' };
+    }
+  };
+
   const addBooking = async (bookingData) => {
     const matchedService = services.find(s => s.name === bookingData.service);
     let amount = bookingData.amount || 0;
@@ -188,9 +222,10 @@ export const StoreProvider = ({ children }) => {
       amount = parseFloat(matchedService.price.replace(/[^0-9.]/g, '')) || 0;
     }
 
+    const initialStatus = bookingData.status || 'pending';
     const newBooking = {
       id: `b-${Date.now()}`,
-      status: 'pending',
+      status: initialStatus,
       amount,
       source: bookingData.source || 'website',
       created_at: new Date().toISOString(),
@@ -203,16 +238,36 @@ export const StoreProvider = ({ children }) => {
     if (isSupabaseConfigured && supabase) {
       try { await supabase.from('bookings').insert([newBooking]); } catch (e) { console.error(e); }
     }
-    return newBooking;
+
+    // Only dispatch confirmation email if status is explicitly confirmed AND client provided an email
+    let emailResult = null;
+    if (newBooking.status === 'confirmed' && newBooking.email && newBooking.email.trim().includes('@')) {
+      emailResult = await sendConfirmationEmailForBooking(newBooking);
+    }
+
+    return { ...newBooking, emailResult };
   };
 
-  const updateBookingStatus = async (id, status) => {
+  const updateBookingStatus = async (id, status, options = {}) => {
+    const target = bookings.find(b => b.id === id);
     const updated = bookings.map(b => b.id === id ? { ...b, status, updated_at: new Date().toISOString() } : b);
     setBookings(updated);
     saveLocal('bookings', updated);
     if (isSupabaseConfigured && supabase) {
       try { await supabase.from('bookings').update({ status }).eq('id', id); } catch (e) { console.error(e); }
     }
+
+    let emailResult = null;
+    // Dispatch confirmation email to client ONLY when admin confirms status
+    if (status === 'confirmed' && target && (target.status !== 'confirmed' || options.forceEmail)) {
+      if (target.email && target.email.trim().includes('@')) {
+        emailResult = await sendConfirmationEmailForBooking({ ...target, status: 'confirmed' });
+      } else {
+        emailResult = { success: false, noEmail: true, message: 'Client did not provide an email address' };
+      }
+    }
+
+    return { success: true, booking: target, emailResult };
   };
 
   // ── STORE INFO / HERO / SETTINGS ──
@@ -361,6 +416,7 @@ export const StoreProvider = ({ children }) => {
         bookings,
         addBooking,
         updateBookingStatus,
+        sendConfirmationEmailForBooking,
         incomeStats,
         gallery,
         addGalleryItem,

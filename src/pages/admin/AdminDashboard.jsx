@@ -1,16 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useStore } from '../../context/StoreContext';
-import { Calendar, CheckCircle, Clock, DollarSign, TrendingUp, Sparkles, MessageCircle, AlertCircle, ArrowRight } from 'lucide-react';
+import { Calendar, CheckCircle, Clock, DollarSign, TrendingUp, Sparkles, MessageCircle, AlertCircle, ArrowRight, Mail } from 'lucide-react';
 
 const AdminDashboard = ({ onNavigateTab }) => {
   const { bookings, services, incomeStats, updateBookingStatus } = useStore();
+  const [actionFeedback, setActionFeedback] = useState(null);
 
   const recentBookings = bookings.slice(0, 6);
+
+  const handleStatusChange = async (b, newStatus) => {
+    const res = await updateBookingStatus(b.id, newStatus);
+    if (newStatus === 'confirmed') {
+      if (b.email && b.email.trim()) {
+        const clientEmail = b.email.trim();
+        if (res?.emailResult?.success) {
+          setActionFeedback({ type: 'success', message: `Confirmed! Email dispatched to ${clientEmail}` });
+        } else {
+          setActionFeedback({ type: 'warning', message: `Marked confirmed. Email failed: ${res?.emailResult?.error || 'Check settings'}` });
+        }
+      } else {
+        setActionFeedback({ type: 'info', message: `Confirmed. (No email provided by customer)` });
+      }
+    } else {
+      setActionFeedback({ type: 'info', message: `Status updated to ${newStatus}` });
+    }
+    setTimeout(() => setActionFeedback(null), 5000);
+  };
 
   return (
     <div>
       {/* Welcome Banner */}
-      <div style={{ marginBottom: '2.5rem' }}>
+      <div style={{ marginBottom: '2rem' }}>
         <h2 style={{ fontSize: '2.2rem', color: 'var(--text-primary)', marginBottom: '6px' }}>
           Vendor Overview & Revenue
         </h2>
@@ -18,6 +38,27 @@ const AdminDashboard = ({ onNavigateTab }) => {
           Live snapshot of salon performance, appointment requests, and earned revenue.
         </p>
       </div>
+
+      {actionFeedback && (
+        <div
+          style={{
+            padding: '10px 16px',
+            borderRadius: 'var(--radius-sm)',
+            marginBottom: '1.5rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            fontSize: '0.88rem',
+            fontWeight: '500',
+            background: actionFeedback.type === 'success' ? 'rgba(16,185,129,0.15)' : 'rgba(59,130,246,0.15)',
+            border: `1px solid ${actionFeedback.type === 'success' ? '#10b981' : '#3b82f6'}`,
+            color: actionFeedback.type === 'success' ? '#10b981' : '#60a5fa'
+          }}
+        >
+          {actionFeedback.type === 'success' ? <CheckCircle size={16} /> : <Mail size={16} />}
+          <span>{actionFeedback.message}</span>
+        </div>
+      )}
 
       {/* 4 Stat Cards */}
       <div
@@ -169,14 +210,21 @@ const AdminDashboard = ({ onNavigateTab }) => {
                   </td>
                   <td>
                     <div style={{ fontWeight: '600', color: 'var(--text-primary)' }}>{b.name}</div>
-                    <a
-                      href={`https://wa.me/${b.phone.replace(/\D/g, '')}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ color: '#25D366', fontSize: '0.78rem', display: 'flex', alignItems: 'center', gap: '4px' }}
-                    >
-                      <MessageCircle size={12} /> {b.phone}
-                    </a>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px', flexWrap: 'wrap' }}>
+                      <a
+                        href={`https://wa.me/${b.phone.replace(/\D/g, '')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: '#25D366', fontSize: '0.78rem', display: 'flex', alignItems: 'center', gap: '4px' }}
+                      >
+                        <MessageCircle size={12} /> {b.phone}
+                      </a>
+                      {b.email && (
+                        <span style={{ color: 'var(--gold-light)', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '3px' }} title={`Customer Email: ${b.email}`}>
+                          <Mail size={11} /> {b.email}
+                        </span>
+                      )}
+                    </div>
                   </td>
                   <td style={{ color: 'var(--text-secondary)' }}>{b.service}</td>
                   <td>
@@ -187,7 +235,7 @@ const AdminDashboard = ({ onNavigateTab }) => {
                       className="form-select"
                       style={{ padding: '4px 8px', fontSize: '0.78rem', width: '120px', margin: 0 }}
                       value={b.status}
-                      onChange={e => updateBookingStatus(b.id, e.target.value)}
+                      onChange={e => handleStatusChange(b, e.target.value)}
                     >
                       <option value="pending">Pending</option>
                       <option value="confirmed">Confirmed</option>
