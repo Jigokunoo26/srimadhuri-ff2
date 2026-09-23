@@ -50,7 +50,7 @@ const AdminTeam = () => {
   return (
     <div>
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
         <div>
           <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '2rem', color: 'var(--text-primary)', marginBottom: '4px' }}>
             Team <span className="text-gold-gradient">Members</span>
@@ -65,12 +65,12 @@ const AdminTeam = () => {
 
       {/* Form */}
       {showForm && (
-        <div className="glass-card" style={{ padding: '1.75rem', marginBottom: '2rem', border: '1px solid var(--gold-primary)' }}>
+        <div className="glass-card" style={{ padding: 'clamp(1rem, 4vw, 1.75rem)', marginBottom: '2rem', border: '1px solid var(--gold-primary)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
             <h3 style={{ color: 'var(--gold-light)', fontSize: '1.1rem' }}>{editItem ? 'Edit Member' : 'Add Team Member'}</h3>
             <button onClick={resetForm} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}><X size={20} /></button>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+          <div className="admin-grid-2">
             <div>
               <label className="form-label">Full Name *</label>
               <input className="input" placeholder="e.g. Sri Madhuri" value={form.name}
@@ -113,7 +113,7 @@ const AdminTeam = () => {
           <p style={{ color: 'var(--text-muted)' }}>No team members yet. Add your first staff member!</p>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.25rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '1.25rem' }}>
           {team.map(member => (
             <div key={member.id} className="glass-card" style={{ padding: '1.5rem', display: 'flex', gap: '1.25rem', alignItems: 'flex-start' }}>
               {/* Photo */}

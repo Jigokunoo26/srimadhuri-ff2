@@ -36,7 +36,7 @@ const AdminGallery = () => {
   return (
     <div>
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
         <div>
           <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '2rem', color: 'var(--text-primary)', marginBottom: '4px' }}>
             Gallery <span className="text-gold-gradient">Manager</span>
@@ -50,7 +50,7 @@ const AdminGallery = () => {
 
       {/* Add/Edit Form */}
       {showForm && (
-        <div className="glass-card" style={{ padding: '1.75rem', marginBottom: '2rem', border: '1px solid var(--gold-primary)' }}>
+        <div className="glass-card" style={{ padding: 'clamp(1rem, 4vw, 1.75rem)', marginBottom: '2rem', border: '1px solid var(--gold-primary)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
             <h3 style={{ color: 'var(--gold-light)', fontSize: '1.1rem' }}>
               {editItem ? 'Edit Photo' : 'Add New Photo'}
@@ -59,7 +59,7 @@ const AdminGallery = () => {
               <X size={20} />
             </button>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+          <div className="admin-grid-2">
             <div>
               <label className="form-label">Photo Title</label>
               <input className="input" placeholder="e.g. Royal Bridal Makeover" value={form.title}
@@ -89,12 +89,12 @@ const AdminGallery = () => {
       )}
 
       {/* Category Filter */}
-      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
+      <div className="mobile-scroll-x" style={{ display: 'flex', gap: '8px', marginBottom: '1.5rem', paddingBottom: '4px' }}>
         {galleryCategories.map(cat => (
           <button key={cat} onClick={() => setFilterCat(cat)}
             style={{
               padding: '6px 16px', borderRadius: 'var(--radius-full)', fontSize: '0.83rem', fontWeight: '600',
-              cursor: 'pointer', border: '1px solid',
+              cursor: 'pointer', border: '1px solid', whiteSpace: 'nowrap',
               background: filterCat === cat ? 'var(--gold-gradient)' : 'rgba(255,255,255,0.04)',
               borderColor: filterCat === cat ? 'var(--gold-primary)' : 'var(--border-subtle)',
               color: filterCat === cat ? '#080c16' : 'var(--text-muted)'
@@ -110,7 +110,7 @@ const AdminGallery = () => {
           <p style={{ color: 'var(--text-muted)' }}>No photos yet. Add your first gallery image!</p>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '1.25rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '1.25rem' }}>
           {filtered.map(item => (
             <div key={item.id} className="glass-card" style={{ position: 'relative', overflow: 'hidden', borderRadius: 'var(--radius-md)', cursor: 'pointer' }}
               onClick={() => setPreview(item)}>

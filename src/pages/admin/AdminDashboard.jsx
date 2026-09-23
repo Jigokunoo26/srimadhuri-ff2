@@ -30,11 +30,11 @@ const AdminDashboard = ({ onNavigateTab }) => {
   return (
     <div>
       {/* Welcome Banner */}
-      <div style={{ marginBottom: '2rem' }}>
-        <h2 style={{ fontSize: '2.2rem', color: 'var(--text-primary)', marginBottom: '6px' }}>
+      <div style={{ marginBottom: '1.75rem' }}>
+        <h2 style={{ fontSize: 'clamp(1.5rem, 4.2vw, 2.2rem)', color: 'var(--text-primary)', marginBottom: '4px' }}>
           Vendor Overview & Revenue
         </h2>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem' }}>
           Live snapshot of salon performance, appointment requests, and earned revenue.
         </p>
       </div>
@@ -42,17 +42,17 @@ const AdminDashboard = ({ onNavigateTab }) => {
       {actionFeedback && (
         <div
           style={{
-            padding: '10px 16px',
+            padding: '10px 14px',
             borderRadius: 'var(--radius-sm)',
-            marginBottom: '1.5rem',
+            marginBottom: '1.25rem',
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            fontSize: '0.88rem',
+            fontSize: '0.85rem',
             fontWeight: '500',
-            background: actionFeedback.type === 'success' ? 'rgba(16,185,129,0.15)' : 'rgba(59,130,246,0.15)',
-            border: `1px solid ${actionFeedback.type === 'success' ? '#10b981' : '#3b82f6'}`,
-            color: actionFeedback.type === 'success' ? '#10b981' : '#60a5fa'
+            background: actionFeedback.type === 'success' ? 'rgba(90, 155, 110, 0.15)' : 'rgba(90, 139, 194, 0.15)',
+            border: `1px solid ${actionFeedback.type === 'success' ? 'var(--success)' : 'var(--info)'}`,
+            color: actionFeedback.type === 'success' ? 'var(--success)' : 'var(--info)'
           }}
         >
           {actionFeedback.type === 'success' ? <CheckCircle size={16} /> : <Mail size={16} />}
@@ -60,137 +60,150 @@ const AdminDashboard = ({ onNavigateTab }) => {
         </div>
       )}
 
-      {/* 4 Stat Cards */}
+      {/* 4 Stat Cards: 2x2 on mobile, 4-col on desktop */}
       <div
+        className="stats-grid-dashboard"
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-          gap: '1.5rem',
-          marginBottom: '2.5rem'
+          gap: '1.25rem',
+          marginBottom: '2rem'
         }}
       >
         {/* Total Earned Revenue */}
-        <div className="glass-card" style={{ padding: '1.75rem', borderLeft: '4px solid var(--gold-primary)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+        <div className="surface" style={{ padding: '1.25rem 1.4rem', borderLeft: '3px solid var(--amber)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>
               Completed Revenue
             </span>
-            <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'rgba(212,175,55,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--gold-primary)' }}>
-              <TrendingUp size={18} />
+            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(200, 151, 90, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--amber-light)' }}>
+              <TrendingUp size={16} />
             </div>
           </div>
-          <div style={{ fontSize: '2.2rem', fontWeight: '700', color: 'var(--gold-light)', fontFamily: 'Cormorant Garamond, serif' }}>
+          <div style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: '700', color: 'var(--amber-light)', fontFamily: 'Playfair Display, serif' }}>
             ₹{incomeStats.totalRevenue.toLocaleString()}
           </div>
-          <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-            Auto-calculated from completed appointments
+          <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+            From completed slots
           </div>
         </div>
 
         {/* Pending Approvals */}
-        <div className="glass-card" style={{ padding: '1.75rem', borderLeft: '4px solid var(--warning)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+        <div className="surface" style={{ padding: '1.25rem 1.4rem', borderLeft: '3px solid var(--warning)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>
               Pending Approvals
             </span>
-            <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'var(--warning-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--warning)' }}>
-              <Clock size={18} />
+            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--warning-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--warning)' }}>
+              <Clock size={16} />
             </div>
           </div>
-          <div style={{ fontSize: '2.2rem', fontWeight: '700', color: 'var(--warning)' }}>
-            {incomeStats.pendingBookings}
+          <div style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: '700', color: 'var(--warning)', fontFamily: 'Playfair Display, serif' }}>
+            {incomeStats.pendingCount}
           </div>
-          <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+          <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '2px' }}>
             Awaiting confirmation
           </div>
         </div>
 
-        {/* Today's Appointments */}
-        <div className="glass-card" style={{ padding: '1.75rem', borderLeft: '4px solid var(--info)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-              Today's Bookings
+        {/* Confirmed Bookings */}
+        <div className="surface" style={{ padding: '1.25rem 1.4rem', borderLeft: '3px solid var(--info)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>
+              Confirmed Bookings
             </span>
-            <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'var(--info-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--info)' }}>
-              <Calendar size={18} />
+            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--info-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--info)' }}>
+              <Calendar size={16} />
             </div>
           </div>
-          <div style={{ fontSize: '2.2rem', fontWeight: '700', color: 'var(--info)' }}>
-            {incomeStats.todayBookings}
+          <div style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: '700', color: 'var(--info)', fontFamily: 'Playfair Display, serif' }}>
+            {incomeStats.confirmedCount}
           </div>
-          <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-            Scheduled for today
+          <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+            Scheduled upcoming
           </div>
         </div>
 
-        {/* Total Services */}
-        <div className="glass-card" style={{ padding: '1.75rem', borderLeft: '4px solid var(--success)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-              Catalog Services
+        {/* Active Treatments */}
+        <div className="surface" style={{ padding: '1.25rem 1.4rem', borderLeft: '3px solid var(--moss-light)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>
+              Live Treatments
             </span>
-            <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'var(--success-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--success)' }}>
-              <Sparkles size={18} />
+            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(74, 107, 78, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--moss-light)' }}>
+              <Sparkles size={16} />
             </div>
           </div>
-          <div style={{ fontSize: '2.2rem', fontWeight: '700', color: 'var(--success)' }}>
+          <div style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: '700', color: 'var(--bone)', fontFamily: 'Playfair Display, serif' }}>
             {services.filter(s => s.is_active).length}
           </div>
-          <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-            Active on public site
+          <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+            Active in catalog
           </div>
         </div>
       </div>
 
-      {/* Quick Action Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.25rem', marginBottom: '2.5rem' }}>
+      {/* Quick Links Grid */}
+      <div
+        className="quick-actions-grid"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+          gap: '1rem',
+          marginBottom: '2rem'
+        }}
+      >
         <div
-          className="glass-card"
+          className="surface"
           onClick={() => onNavigateTab('services')}
-          style={{ padding: '1.5rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+          style={{ padding: '1.25rem 1.4rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
         >
           <div>
-            <h4 style={{ fontSize: '1.1rem', color: 'var(--text-primary)', marginBottom: '2px' }}>Customize Prices</h4>
-            <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>Modify prices or add new treatments</p>
+            <h4 style={{ fontSize: '1.05rem', color: 'var(--text-primary)', marginBottom: '2px' }}>Customize Prices</h4>
+            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Modify prices or add new treatments</p>
           </div>
-          <ArrowRight size={18} color="var(--gold-primary)" />
+          <ArrowRight size={16} color="var(--amber)" />
         </div>
 
         <div
-          className="glass-card"
+          className="surface"
           onClick={() => onNavigateTab('bookings')}
-          style={{ padding: '1.5rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+          style={{ padding: '1.25rem 1.4rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
         >
           <div>
-            <h4 style={{ fontSize: '1.1rem', color: 'var(--text-primary)', marginBottom: '2px' }}>Manage Bookings</h4>
-            <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>Approve, complete, or add walk-ins</p>
+            <h4 style={{ fontSize: '1.05rem', color: 'var(--text-primary)', marginBottom: '2px' }}>Manage Bookings</h4>
+            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Approve, complete, or add walk-ins</p>
           </div>
-          <ArrowRight size={18} color="var(--gold-primary)" />
+          <ArrowRight size={16} color="var(--amber)" />
         </div>
 
         <div
-          className="glass-card"
+          className="surface"
           onClick={() => onNavigateTab('settings')}
-          style={{ padding: '1.5rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+          style={{ padding: '1.25rem 1.4rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
         >
           <div>
-            <h4 style={{ fontSize: '1.1rem', color: 'var(--text-primary)', marginBottom: '2px' }}>Salon Information</h4>
-            <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>Update WhatsApp, phone & hours</p>
+            <h4 style={{ fontSize: '1.05rem', color: 'var(--text-primary)', marginBottom: '2px' }}>Salon Information</h4>
+            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Update WhatsApp, phone & hours</p>
           </div>
-          <ArrowRight size={18} color="var(--gold-primary)" />
+          <ArrowRight size={16} color="var(--amber)" />
         </div>
       </div>
 
       {/* Recent Bookings Feed */}
-      <div className="glass-card" style={{ padding: '1.75rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
-          <h3 style={{ fontSize: '1.35rem', color: 'var(--text-primary)' }}>Recent Appointment Requests</h3>
-          <button onClick={() => onNavigateTab('bookings')} className="btn btn-outline btn-sm">
+      <div className="surface" style={{ padding: '1.5rem 1.25rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '8px' }}>
+          <div>
+            <h3 style={{ fontSize: '1.25rem', color: 'var(--text-primary)' }}>Recent Appointment Requests</h3>
+            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Latest leads requiring review</p>
+          </div>
+          <button onClick={() => onNavigateTab('bookings')} className="btn btn-ghost btn-sm">
             View All ({bookings.length})
           </button>
         </div>
 
-        <div className="admin-table-container">
+        {/* Desktop / Tablet Table */}
+        <div className="admin-table-container hide-on-mobile">
           <table className="admin-table">
             <thead>
               <tr>
@@ -206,7 +219,7 @@ const AdminDashboard = ({ onNavigateTab }) => {
                 <tr key={b.id}>
                   <td>
                     <div style={{ fontWeight: '600' }}>{b.date}</div>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--gold-light)' }}>{b.time}</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--amber-light)' }}>{b.time}</div>
                   </td>
                   <td>
                     <div style={{ fontWeight: '600', color: 'var(--text-primary)' }}>{b.name}</div>
@@ -220,7 +233,7 @@ const AdminDashboard = ({ onNavigateTab }) => {
                         <MessageCircle size={12} /> {b.phone}
                       </a>
                       {b.email && (
-                        <span style={{ color: 'var(--gold-light)', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '3px' }} title={`Customer Email: ${b.email}`}>
+                        <span style={{ color: 'var(--amber-light)', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '3px' }} title={`Customer Email: ${b.email}`}>
                           <Mail size={11} /> {b.email}
                         </span>
                       )}
@@ -233,7 +246,7 @@ const AdminDashboard = ({ onNavigateTab }) => {
                   <td>
                     <select
                       className="form-select"
-                      style={{ padding: '4px 8px', fontSize: '0.78rem', width: '120px', margin: 0 }}
+                      style={{ padding: '6px 8px', fontSize: '0.8rem', width: '120px', margin: 0 }}
                       value={b.status}
                       onChange={e => handleStatusChange(b, e.target.value)}
                     >
@@ -248,7 +261,72 @@ const AdminDashboard = ({ onNavigateTab }) => {
             </tbody>
           </table>
         </div>
+
+        {/* Mobile Booking Cards (< 768px) */}
+        <div className="show-on-mobile" style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+          {recentBookings.map(b => (
+            <div
+              key={b.id}
+              style={{
+                background: 'var(--bg-tertiary)',
+                borderRadius: 'var(--radius-sm)',
+                padding: '1rem',
+                border: '1px solid var(--border-subtle)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px'
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <div>
+                  <div style={{ fontWeight: '600', color: 'var(--text-primary)', fontSize: '0.95rem' }}>{b.name}</div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--amber-light)', marginTop: '2px' }}>{b.service}</div>
+                </div>
+                <span className={`badge badge-${b.status}`}>{b.status}</span>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem', color: 'var(--text-muted)', paddingTop: '6px', borderTop: '1px solid var(--border-subtle)' }}>
+                <span>{b.date} · {b.time}</span>
+                <a
+                  href={`https://wa.me/${b.phone.replace(/\D/g, '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: '#25D366', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 500 }}
+                >
+                  <MessageCircle size={14} /> WhatsApp
+                </a>
+              </div>
+
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginTop: '4px' }}>
+                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Status:</span>
+                <select
+                  className="form-select"
+                  style={{ padding: '6px 8px', fontSize: '0.85rem', flexGrow: 1, margin: 0 }}
+                  value={b.status}
+                  onChange={e => handleStatusChange(b, e.target.value)}
+                >
+                  <option value="pending">⏳ Pending</option>
+                  <option value="confirmed">✅ Confirmed</option>
+                  <option value="completed">✨ Completed</option>
+                  <option value="cancelled">❌ Cancelled</option>
+                </select>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
+
+      <style>{`
+        @media (max-width: 600px) {
+          .stats-grid-dashboard {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 0.75rem !important;
+          }
+          .stats-grid-dashboard > div {
+            padding: 1rem 0.9rem !important;
+          }
+        }
+      `}</style>
     </div>
   );
 };

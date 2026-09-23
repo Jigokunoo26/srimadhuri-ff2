@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useStore } from '../context/StoreContext';
 import { useAuth } from '../context/AuthContext';
-import { Menu, X, Shield } from 'lucide-react';
+import { Menu, X, Shield, Calendar, Phone } from 'lucide-react';
 
 const Navbar = ({ onOpenBooking, currentTab, setCurrentTab }) => {
   const { storeInfo } = useStore();
@@ -10,10 +10,22 @@ const Navbar = ({ onOpenBooking, currentTab, setCurrentTab }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 30);
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Lock body scroll when mobile menu is active
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
 
   const navLinks = [
     { name: 'Services', href: '#services' },
@@ -38,28 +50,66 @@ const Navbar = ({ onOpenBooking, currentTab, setCurrentTab }) => {
           height: 64,
           display: 'flex',
           alignItems: 'center',
-          background: isScrolled ? 'rgba(12, 20, 16, 0.92)' : 'transparent',
-          backdropFilter: isScrolled ? 'blur(14px)' : 'none',
-          borderBottom: isScrolled ? '1px solid var(--border-subtle)' : '1px solid transparent',
+          background: isScrolled ? 'rgba(12, 20, 16, 0.94)' : 'rgba(12, 20, 16, 0.4)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          borderBottom: isScrolled ? '1px solid var(--border-subtle)' : '1px solid rgba(200, 151, 90, 0.08)',
           transition: 'var(--transition)'
         }}
       >
-        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '2rem', width: '100%' }}>
-          <a href="#home" style={{ display: 'flex', alignItems: 'baseline', gap: '8px', textDecoration: 'none' }}>
-            <span style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.25rem', fontWeight: 500, color: 'var(--bone)', letterSpacing: '-0.01em' }}>
+        <div
+          className="container"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '1rem',
+            width: '100%'
+          }}
+        >
+          {/* Logo */}
+          <a
+            href="#home"
+            style={{
+              display: 'flex',
+              alignItems: 'baseline',
+              gap: '6px',
+              textDecoration: 'none',
+              flexShrink: 0
+            }}
+          >
+            <span
+              style={{
+                fontFamily: 'Playfair Display, serif',
+                fontSize: 'clamp(1.15rem, 3.8vw, 1.35rem)',
+                fontWeight: 600,
+                color: 'var(--bone)',
+                letterSpacing: '-0.01em',
+                whiteSpace: 'nowrap'
+              }}
+            >
               {studioName}
             </span>
-            <span style={{ fontSize: '0.7rem', color: 'var(--amber-light)', textTransform: 'uppercase', letterSpacing: '0.18em', fontWeight: 500 }}>
+            <span
+              style={{
+                fontSize: '0.68rem',
+                color: 'var(--amber-light)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.16em',
+                fontWeight: 600
+              }}
+            >
               {studioType}
             </span>
           </a>
 
-          <nav className="desktop-nav" style={{ display: 'flex', gap: '2.25rem', alignItems: 'center' }}>
+          {/* Desktop Navigation */}
+          <nav className="desktop-nav" style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
             {navLinks.map(link => (
               <a
                 key={link.name}
                 href={link.href}
-                style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', fontWeight: 400 }}
+                style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 400 }}
                 onMouseEnter={e => (e.currentTarget.style.color = 'var(--amber-light)')}
                 onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-secondary)')}
               >
@@ -68,52 +118,153 @@ const Navbar = ({ onOpenBooking, currentTab, setCurrentTab }) => {
             ))}
           </nav>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          {/* Right Action Icons */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {/* Admin Portal Shortcut */}
             <button
               onClick={() => setCurrentTab('admin')}
               style={{
-                background: 'transparent',
+                background: 'rgba(200, 151, 90, 0.08)',
                 border: '1px solid var(--border-subtle)',
-                color: 'var(--text-muted)',
-                width: 34, height: 34, borderRadius: '50%',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                cursor: 'pointer'
+                color: 'var(--amber-light)',
+                width: 38,
+                height: 38,
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                touchAction: 'manipulation'
               }}
               title={isAuthenticated ? 'Admin Dashboard' : 'Admin Login'}
+              aria-label="Admin Portal"
             >
-              <Shield size={15} />
+              <Shield size={16} />
             </button>
-            <button onClick={onOpenBooking} className="btn btn-primary btn-sm desktop-nav" style={{ gap: '6px' }}>
-              Reserve
+
+            {/* Desktop Reserve Button */}
+            <button
+              onClick={onOpenBooking}
+              className="btn btn-primary btn-sm desktop-nav"
+              style={{ gap: '6px' }}
+            >
+              <Calendar size={13} /> Reserve
             </button>
+
+            {/* Mobile Hamburger Toggle */}
             <button
               onClick={() => setMobileMenuOpen(true)}
               className="mobile-toggle"
-              style={{ background: 'transparent', border: '1px solid var(--border-subtle)', color: 'var(--text-primary)', width: 36, height: 36, borderRadius: '50%', display: 'none', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
-              aria-label="Open menu"
+              style={{
+                background: 'transparent',
+                border: '1px solid var(--border-medium)',
+                color: 'var(--text-primary)',
+                width: 42,
+                height: 42,
+                borderRadius: '50%',
+                display: 'none',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                touchAction: 'manipulation'
+              }}
+              aria-label="Open mobile menu"
             >
-              <Menu size={18} />
+              <Menu size={20} />
             </button>
           </div>
         </div>
       </header>
 
+      {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
         <div
           onClick={() => setMobileMenuOpen(false)}
-          style={{ position: 'fixed', inset: 0, background: 'rgba(8, 12, 10, 0.96)', backdropFilter: 'blur(20px)', zIndex: 1000, padding: '5rem 1.5rem 2rem' }}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(8, 12, 10, 0.97)',
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
+            zIndex: 1000,
+            padding: '5rem 1.5rem 2.5rem',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            animation: 'fadeIn 0.25s ease'
+          }}
         >
-          <button onClick={() => setMobileMenuOpen(false)} style={{ position: 'absolute', top: 18, right: 18, background: 'transparent', border: '1px solid var(--border-subtle)', color: 'var(--text-primary)', width: 40, height: 40, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-            <X size={20} />
+          {/* Close button */}
+          <button
+            onClick={() => setMobileMenuOpen(false)}
+            style={{
+              position: 'absolute',
+              top: 14,
+              right: 14,
+              background: 'rgba(26, 38, 32, 0.7)',
+              border: '1px solid var(--border-medium)',
+              color: 'var(--text-primary)',
+              width: 44,
+              height: 44,
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer'
+            }}
+            aria-label="Close menu"
+          >
+            <X size={22} />
           </button>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+
+          {/* Links list */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+            <div style={{ fontSize: '0.72rem', color: 'var(--amber-light)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: '0.5rem' }}>
+              Navigation
+            </div>
             {navLinks.map(link => (
-              <a key={link.name} href={link.href} onClick={() => setMobileMenuOpen(false)} style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.8rem', color: 'var(--bone)' }}>
-                {link.name}
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  fontFamily: 'Playfair Display, serif',
+                  fontSize: '1.75rem',
+                  color: 'var(--bone)',
+                  padding: '4px 0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <span>{link.name}</span>
+                <span style={{ fontSize: '0.9rem', color: 'var(--amber-light)', opacity: 0.7 }}>→</span>
               </a>
             ))}
-            <button onClick={() => { setMobileMenuOpen(false); onOpenBooking(); }} className="btn btn-primary" style={{ marginTop: '1rem', width: '100%' }}>
-              Reserve Appointment
+          </div>
+
+          {/* Bottom quick actions */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenBooking();
+              }}
+              className="btn btn-primary"
+              style={{ width: '100%', padding: '0.95rem', gap: '8px', fontSize: '1rem' }}
+            >
+              <Calendar size={18} /> Reserve Appointment
+            </button>
+
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setCurrentTab('admin');
+              }}
+              className="btn btn-ghost"
+              style={{ width: '100%', padding: '0.75rem', gap: '8px', fontSize: '0.88rem' }}
+            >
+              <Shield size={16} /> Admin Portal ({isAuthenticated ? 'Logged In' : 'Sign In'})
             </button>
           </div>
         </div>

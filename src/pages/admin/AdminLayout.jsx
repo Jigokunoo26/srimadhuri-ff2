@@ -27,15 +27,15 @@ import {
 } from 'lucide-react';
 
 const AdminLayout = ({ onExitAdmin }) => {
-  const { logout } = useAuth();
+  const { logout, adminUser } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'bookings', label: 'Bookings Central', icon: Calendar },
     { id: 'services', label: 'Services & Prices', icon: Sparkles },
     { id: 'categories', label: 'Categories', icon: Layers },
-    { id: 'bookings', label: 'Bookings Central', icon: Calendar },
-    { id: 'offers', label: 'Special Deals', icon: Tag },
+    { id: 'offers', label: 'Deals & Offers', icon: Tag },
     { id: 'gallery', label: 'Gallery Photos', icon: Image },
     { id: 'testimonials', label: 'Testimonials', icon: MessageSquare },
     { id: 'team', label: 'Team', icon: Users },
@@ -45,73 +45,89 @@ const AdminLayout = ({ onExitAdmin }) => {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)', display: 'flex', flexDirection: 'column' }}>
-      {/* Top Admin Bar */}
+      {/* Top Admin Sticky Bar */}
       <header
         style={{
-          background: 'rgba(10, 15, 26, 0.96)',
+          background: 'rgba(12, 20, 16, 0.97)',
           borderBottom: '1px solid var(--border-medium)',
-          padding: '0.9rem 1.5rem',
+          padding: '0.75rem 1rem',
           position: 'sticky',
           top: 0,
           zIndex: 999,
-          backdropFilter: 'blur(16px)'
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)'
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '1400px', margin: '0 auto' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '1400px', margin: '0 auto', gap: '8px' }}>
           {/* Logo & Portal Label */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
             <div
               style={{
                 width: '36px',
                 height: '36px',
                 borderRadius: '8px',
-                background: 'var(--gold-gradient)',
+                background: 'var(--amber-gradient)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#080c16'
+                color: 'var(--bg-primary)',
+                flexShrink: 0
               }}
             >
-              <Shield size={20} />
+              <Shield size={18} />
             </div>
-            <div>
-              <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '1.25rem', fontWeight: '700', color: 'var(--text-primary)' }}>
+            <div style={{ minWidth: 0 }}>
+              <div
+                style={{
+                  fontFamily: 'Playfair Display, serif',
+                  fontSize: 'clamp(1rem, 3.2vw, 1.2rem)',
+                  fontWeight: 600,
+                  color: 'var(--bone)',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis'
+                }}
+              >
                 Sri Madhuri Makeovers
               </div>
-              <div style={{ fontSize: '0.72rem', color: 'var(--gold-primary)', letterSpacing: '1px', textTransform: 'uppercase' }}>
-                Vendor Control Center
+              <div style={{ fontSize: '0.66rem', color: 'var(--amber-light)', letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 600 }}>
+                Vendor Portal
               </div>
             </div>
           </div>
 
           {/* Action Buttons */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
             <button
               onClick={onExitAdmin}
-              className="btn btn-outline btn-sm"
-              style={{ gap: '6px' }}
+              className="btn btn-ghost btn-sm"
+              style={{ gap: '5px', padding: '6px 12px' }}
+              title="View Public Website"
             >
-              <ExternalLink size={14} /> View Public Website
+              <ExternalLink size={14} />
+              <span className="hide-on-mobile">Website</span>
             </button>
             <button
               onClick={logout}
               className="btn btn-danger btn-sm"
-              style={{ gap: '6px' }}
+              style={{ gap: '5px', padding: '6px 12px' }}
+              title="Logout"
             >
-              <LogOut size={14} /> Logout
+              <LogOut size={14} />
+              <span className="hide-on-mobile">Logout</span>
             </button>
           </div>
         </div>
 
-        {/* Tab Navigation Menu */}
+        {/* Tab Navigation Menu (Horizontal touch swiping on mobile) */}
         <div
+          className="mobile-scroll-x"
           style={{
-            display: 'flex',
-            gap: '6px',
-            overflowX: 'auto',
             maxWidth: '1400px',
-            margin: '0.75rem auto 0',
-            paddingBottom: '4px'
+            margin: '0.5rem auto 0',
+            paddingBottom: '2px',
+            borderTop: '1px solid rgba(200, 151, 90, 0.08)',
+            paddingTop: '6px'
           }}
         >
           {navItems.map(item => {
@@ -125,20 +141,21 @@ const AdminLayout = ({ onExitAdmin }) => {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '6px',
-                  padding: '7px 14px',
-                  borderRadius: 'var(--radius-sm)',
+                  padding: '7px 13px',
+                  borderRadius: 'var(--radius-full)',
                   fontSize: '0.82rem',
-                  fontWeight: '600',
+                  fontWeight: 500,
                   cursor: 'pointer',
-                  border: 'none',
-                  background: isActive ? 'rgba(212, 175, 55, 0.15)' : 'transparent',
-                  color: isActive ? 'var(--gold-light)' : 'var(--text-muted)',
-                  borderBottom: isActive ? '2px solid var(--gold-primary)' : '2px solid transparent',
+                  border: '1px solid',
+                  background: isActive ? 'var(--bg-tertiary)' : 'transparent',
+                  borderColor: isActive ? 'var(--amber)' : 'transparent',
+                  color: isActive ? 'var(--amber-light)' : 'var(--text-muted)',
                   whiteSpace: 'nowrap',
-                  transition: 'var(--transition)'
+                  transition: 'var(--transition)',
+                  touchAction: 'manipulation'
                 }}
               >
-                <Icon size={15} /> {item.label}
+                <Icon size={14} /> {item.label}
               </button>
             );
           })}
@@ -146,11 +163,20 @@ const AdminLayout = ({ onExitAdmin }) => {
       </header>
 
       {/* Main Admin Content Container */}
-      <main style={{ flexGrow: 1, padding: '2.5rem 1.5rem', maxWidth: '1400px', width: '100%', margin: '0 auto' }}>
+      <main
+        className="admin-main-wrapper"
+        style={{
+          flexGrow: 1,
+          padding: '2rem 1.5rem',
+          maxWidth: '1400px',
+          width: '100%',
+          margin: '0 auto'
+        }}
+      >
         {activeTab === 'dashboard' && <AdminDashboard onNavigateTab={setActiveTab} />}
+        {activeTab === 'bookings' && <AdminBookings />}
         {activeTab === 'services' && <AdminServices />}
         {activeTab === 'categories' && <AdminCategories />}
-        {activeTab === 'bookings' && <AdminBookings />}
         {activeTab === 'offers' && <AdminOffers />}
         {activeTab === 'gallery' && <AdminGallery />}
         {activeTab === 'testimonials' && <AdminTestimonials />}
@@ -158,6 +184,14 @@ const AdminLayout = ({ onExitAdmin }) => {
         {activeTab === 'hero' && <AdminHero />}
         {activeTab === 'settings' && <AdminSettings />}
       </main>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .admin-main-wrapper {
+            padding: 1.25rem 0.85rem !important;
+          }
+        }
+      `}</style>
     </div>
   );
 };

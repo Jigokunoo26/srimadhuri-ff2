@@ -63,8 +63,8 @@ const AdminOffers = () => {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-          gap: '1.5rem'
+          gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+          gap: '1.25rem'
         }}
       >
         {offers.map(offer => {
@@ -75,7 +75,7 @@ const AdminOffers = () => {
               key={offer.id}
               className="glass-card"
               style={{
-                padding: '1.75rem',
+                padding: 'clamp(1rem, 4vw, 1.75rem)',
                 border: '1px solid var(--border-medium)',
                 display: 'flex',
                 flexDirection: 'column',
@@ -221,7 +221,7 @@ const AdminOffers = () => {
                 />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div className="admin-grid-2">
                 <div className="form-group">
                   <label className="form-label">Offer Price</label>
                   <input
@@ -245,7 +245,7 @@ const AdminOffers = () => {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div className="admin-grid-2">
                 <div className="form-group">
                   <label className="form-label">Discount Badge</label>
                   <input

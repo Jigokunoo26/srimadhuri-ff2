@@ -74,7 +74,6 @@ const AdminSettings = () => {
       }
     }
 
-    // Check if anything changed
     const isUserChanged = credForm.username.trim() !== adminUsername;
     const isEmailChanged = credForm.email.trim() !== adminEmail;
     const isPassChanged = Boolean(credForm.password.trim());
@@ -89,7 +88,6 @@ const AdminSettings = () => {
     const expiresAt = Date.now() + 10 * 60 * 1000;
 
     try {
-      // Send OTP to CURRENT admin email to verify authorization
       await sendAdminResetOtp({
         toEmail: adminEmail,
         adminUsername: adminUsername || 'Administrator',
@@ -186,76 +184,77 @@ const AdminSettings = () => {
   };
 
   return (
-    <div style={{ maxWidth: '900px' }}>
-      <div style={{ marginBottom: '2rem' }}>
-        <h2 style={{ fontSize: '2rem', color: 'var(--text-primary)', marginBottom: '4px' }}>
+    <div style={{ maxWidth: '960px' }}>
+      {/* Header */}
+      <div style={{ marginBottom: '1.75rem' }}>
+        <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', color: 'var(--text-primary)', marginBottom: '4px' }}>
           Salon & Store Configuration
         </h2>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.86rem' }}>
           Update admin security credentials, store phone numbers, WhatsApp booking links, working hours, and social profiles.
         </p>
       </div>
 
       {saved && (
-        <div style={{ background: 'var(--success-bg)', border: '1px solid var(--success)', color: 'var(--success)', padding: '12px 20px', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1.5rem' }}>
+        <div style={{ background: 'var(--success-bg)', border: '1px solid var(--success)', color: 'var(--success)', padding: '12px 18px', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1.25rem', fontSize: '0.9rem' }}>
           <Check size={18} /> Salon configuration saved successfully!
         </div>
       )}
 
       {/* Admin Login Credentials & Security Card */}
       <div
-        className="glass-card"
+        className="surface settings-card"
         style={{
-          padding: '2rem',
-          marginBottom: '2rem',
-          border: '1px solid rgba(212, 175, 55, 0.35)',
-          background: 'radial-gradient(ellipse at top right, rgba(212, 175, 55, 0.06), transparent 70%), rgba(12, 18, 28, 0.65)'
+          padding: '1.75rem',
+          marginBottom: '1.75rem',
+          border: '1px solid rgba(200, 151, 90, 0.35)',
+          borderRadius: 'var(--radius-md)'
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.25rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '1.25rem' }}>
           <div>
-            <h3 style={{ fontSize: '1.35rem', color: 'var(--gold-light)', display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
-              <Shield size={22} color="var(--gold-primary)" /> Admin Login Credentials & Security
+            <h3 style={{ fontSize: '1.25rem', color: 'var(--amber-light)', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+              <Shield size={20} color="var(--amber)" /> Admin Login Credentials & Security
             </h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.86rem' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.84rem' }}>
               Update your administrative username, password, and email address. Updates require 6-digit OTP verification sent to your current admin email.
             </p>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(212, 175, 55, 0.1)', border: '1px solid var(--border-subtle)', padding: '6px 12px', borderRadius: 'var(--radius-full)', fontSize: '0.78rem', color: 'var(--gold-light)' }}>
-            <Lock size={13} /> OTP Verification Active
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(200, 151, 90, 0.1)', border: '1px solid var(--border-subtle)', padding: '4px 10px', borderRadius: 'var(--radius-full)', fontSize: '0.75rem', color: 'var(--amber-light)' }}>
+            <Lock size={12} /> OTP Verification Active
           </div>
         </div>
 
         {/* Current Active Credentials Badges */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginBottom: '1.5rem', background: 'rgba(255, 255, 255, 0.02)', padding: '1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' }}>
+        <div className="admin-grid-2" style={{ marginBottom: '1.25rem', background: 'rgba(255, 255, 255, 0.02)', padding: '0.85rem 1rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' }}>
           <div>
-            <span style={{ fontSize: '0.74rem', textTransform: 'uppercase', color: 'var(--text-muted)', letterSpacing: '0.5px' }}>Current Username</span>
-            <div style={{ fontWeight: '600', color: 'var(--text-primary)', fontSize: '0.95rem', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <User size={14} color="var(--gold-primary)" /> {adminUsername}
+            <span style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: 'var(--text-muted)', letterSpacing: '0.08em' }}>Current Username</span>
+            <div style={{ fontWeight: '600', color: 'var(--text-primary)', fontSize: '0.92rem', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <User size={14} color="var(--amber)" /> {adminUsername}
             </div>
           </div>
           <div>
-            <span style={{ fontSize: '0.74rem', textTransform: 'uppercase', color: 'var(--text-muted)', letterSpacing: '0.5px' }}>Current Admin Email</span>
-            <div style={{ fontWeight: '600', color: 'var(--text-primary)', fontSize: '0.95rem', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Mail size={14} color="var(--gold-primary)" /> {adminEmail}
+            <span style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: 'var(--text-muted)', letterSpacing: '0.08em' }}>Current Admin Email</span>
+            <div style={{ fontWeight: '600', color: 'var(--text-primary)', fontSize: '0.92rem', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '6px', wordBreak: 'break-all' }}>
+              <Mail size={14} color="var(--amber)" /> {adminEmail}
             </div>
           </div>
         </div>
 
         {credSuccess && (
-          <div style={{ background: 'rgba(16, 185, 129, 0.15)', border: '1px solid #10b981', color: '#10b981', padding: '12px 18px', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1.25rem', fontSize: '0.88rem' }}>
-            <Check size={18} /> {credSuccess}
+          <div style={{ background: 'rgba(90, 155, 110, 0.15)', border: '1px solid var(--success)', color: 'var(--success)', padding: '10px 14px', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1.25rem', fontSize: '0.85rem' }}>
+            <Check size={16} /> {credSuccess}
           </div>
         )}
 
         {credError && (
-          <div style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid var(--danger)', color: '#f87171', padding: '12px 18px', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1.25rem', fontSize: '0.88rem' }}>
-            <AlertCircle size={18} /> {credError}
+          <div style={{ background: 'rgba(194, 90, 90, 0.15)', border: '1px solid var(--danger)', color: '#f87171', padding: '10px 14px', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1.25rem', fontSize: '0.85rem' }}>
+            <AlertCircle size={16} /> {credError}
           </div>
         )}
 
         <form onSubmit={handleInitiateOtpRequest}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+          <div className="admin-grid-2" style={{ marginBottom: '1rem' }}>
             <div className="form-group" style={{ margin: 0 }}>
               <label className="form-label">New Username</label>
               <input
@@ -266,7 +265,7 @@ const AdminSettings = () => {
                 placeholder="admin"
                 required
               />
-              <small style={{ color: 'var(--text-muted)', fontSize: '0.75rem', marginTop: '3px', display: 'block' }}>
+              <small style={{ color: 'var(--text-muted)', fontSize: '0.72rem', marginTop: '2px', display: 'block' }}>
                 Used to log into the Admin Vendor Portal (/admin)
               </small>
             </div>
@@ -281,13 +280,13 @@ const AdminSettings = () => {
                 placeholder="newadmin@gmail.com"
                 required
               />
-              <small style={{ color: 'var(--text-muted)', fontSize: '0.75rem', marginTop: '3px', display: 'block' }}>
+              <small style={{ color: 'var(--text-muted)', fontSize: '0.72rem', marginTop: '2px', display: 'block' }}>
                 Where future password resets and OTPs will be delivered
               </small>
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
+          <div className="admin-grid-2" style={{ marginBottom: '1.25rem' }}>
             <div className="form-group" style={{ margin: 0 }}>
               <label className="form-label">New Password (leave blank to keep current)</label>
               <input
@@ -315,10 +314,10 @@ const AdminSettings = () => {
             type="submit"
             disabled={sendingOtp}
             className="btn btn-primary"
-            style={{ gap: '8px', padding: '0.75rem 1.75rem' }}
+            style={{ gap: '8px', padding: '0.75rem 1.5rem', width: '100%', maxWidth: '380px' }}
           >
             <KeyRound size={16} />
-            {sendingOtp ? 'Sending OTP to current email...' : 'Send Verification OTP to Apply Changes'}
+            {sendingOtp ? 'Sending OTP to email...' : 'Send Verification OTP to Apply'}
           </button>
         </form>
       </div>
@@ -326,25 +325,25 @@ const AdminSettings = () => {
       {/* OTP Verification Modal */}
       {otpModalOpen && activeOtpSession && (
         <div className="modal-backdrop" onClick={() => setOtpModalOpen(false)}>
-          <div className="modal-card" style={{ maxWidth: '460px' }} onClick={e => e.stopPropagation()}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
-              <h3 style={{ fontSize: '1.4rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <KeyRound size={20} color="var(--gold-primary)" /> Verify Administrator OTP
+          <div className="modal-card" style={{ maxWidth: '440px', width: '95%' }} onClick={e => e.stopPropagation()}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <h3 style={{ fontSize: '1.25rem', color: 'var(--bone)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <KeyRound size={18} color="var(--amber)" /> Verify Administrator OTP
               </h3>
               <button onClick={() => setOtpModalOpen(false)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
                 <X size={18} />
               </button>
             </div>
 
-            <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', marginBottom: '1.25rem', lineHeight: 1.5 }}>
-              For security, a 6-digit verification code has been dispatched to your current admin email:
+            <p style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', marginBottom: '1.25rem', lineHeight: 1.5 }}>
+              For security, a 6-digit verification code has been dispatched to:
               <br />
-              <strong style={{ color: 'var(--gold-light)' }}>{adminEmail}</strong>
+              <strong style={{ color: 'var(--amber-light)', wordBreak: 'break-all' }}>{adminEmail}</strong>
             </p>
 
             {credError && (
-              <div style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid var(--danger)', color: '#f87171', padding: '10px 14px', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1rem', fontSize: '0.85rem' }}>
-                <AlertCircle size={16} /> {credError}
+              <div style={{ background: 'rgba(194, 90, 90, 0.15)', border: '1px solid var(--danger)', color: '#f87171', padding: '8px 12px', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1rem', fontSize: '0.82rem' }}>
+                <AlertCircle size={15} /> {credError}
               </div>
             )}
 
@@ -360,35 +359,35 @@ const AdminSettings = () => {
                   onChange={e => setOtpCode(e.target.value.replace(/\D/g, ''))}
                   placeholder="• • • • • •"
                   style={{
-                    fontSize: '1.75rem',
+                    fontSize: 'clamp(1.4rem, 5vw, 1.8rem)',
                     textAlign: 'center',
-                    letterSpacing: '10px',
+                    letterSpacing: 'clamp(6px, 2vw, 10px)',
                     fontFamily: 'monospace',
                     padding: '0.75rem',
-                    borderColor: 'var(--gold-primary)'
+                    borderColor: 'var(--amber)'
                   }}
                   required
                 />
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', fontSize: '0.82rem', color: 'var(--text-muted)' }}>
-                <span>Expires in: <strong style={{ color: otpCountdown < 60 ? 'var(--danger)' : 'var(--gold-light)' }}>{formatCountdown(otpCountdown)}</strong></span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                <span>Expires: <strong style={{ color: otpCountdown < 60 ? 'var(--danger)' : 'var(--amber-light)' }}>{formatCountdown(otpCountdown)}</strong></span>
                 <button
                   type="button"
                   onClick={handleInitiateOtpRequest}
                   disabled={sendingOtp || otpCountdown > 540}
-                  style={{ background: 'none', border: 'none', color: 'var(--gold-primary)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
+                  style={{ background: 'none', border: 'none', color: 'var(--amber-light)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
                 >
                   <RefreshCw size={12} /> Resend Code
                 </button>
               </div>
 
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <button type="button" onClick={() => setOtpModalOpen(false)} className="btn btn-outline" style={{ flex: 1 }}>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button type="button" onClick={() => setOtpModalOpen(false)} className="btn btn-ghost" style={{ flex: 1 }}>
                   Cancel
                 </button>
                 <button type="submit" disabled={verifyingOtp || otpCode.length !== 6} className="btn btn-primary" style={{ flex: 2 }}>
-                  {verifyingOtp ? 'Verifying...' : 'Verify OTP & Save'}
+                  {verifyingOtp ? 'Verifying...' : 'Verify & Save'}
                 </button>
               </div>
             </form>
@@ -396,18 +395,19 @@ const AdminSettings = () => {
         </div>
       )}
 
+      {/* Main Settings Form */}
       <form onSubmit={handleSubmit}>
         {/* Salon Identity */}
-        <div className="glass-card" style={{ padding: '2rem', marginBottom: '1.5rem' }}>
-          <h3 style={{ fontSize: '1.2rem', color: 'var(--gold-light)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div className="surface settings-card" style={{ padding: '1.75rem', marginBottom: '1.5rem', borderRadius: 'var(--radius-md)' }}>
+          <h3 style={{ fontSize: '1.15rem', color: 'var(--amber-light)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Store size={18} /> Salon Identity
           </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-            <div className="form-group">
+          <div className="admin-grid-2">
+            <div className="form-group" style={{ margin: 0 }}>
               <label className="form-label">Salon Name</label>
               <input type="text" className="form-input" value={formData.name || ''} onChange={e => setFormData({ ...formData, name: e.target.value })} required />
             </div>
-            <div className="form-group">
+            <div className="form-group" style={{ margin: 0 }}>
               <label className="form-label">Tagline</label>
               <input type="text" className="form-input" value={formData.tagline || ''} onChange={e => setFormData({ ...formData, tagline: e.target.value })} />
             </div>
@@ -415,43 +415,43 @@ const AdminSettings = () => {
         </div>
 
         {/* Contact & WhatsApp */}
-        <div className="glass-card" style={{ padding: '2rem', marginBottom: '1.5rem' }}>
-          <h3 style={{ fontSize: '1.2rem', color: 'var(--gold-light)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div className="surface settings-card" style={{ padding: '1.75rem', marginBottom: '1.5rem', borderRadius: 'var(--radius-md)' }}>
+          <h3 style={{ fontSize: '1.15rem', color: 'var(--amber-light)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Phone size={18} /> Contact & WhatsApp Booking
           </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
-            <div className="form-group">
+          <div className="admin-grid-3" style={{ marginBottom: '1rem' }}>
+            <div className="form-group" style={{ margin: 0 }}>
               <label className="form-label">Display Phone</label>
               <input type="text" className="form-input" value={formData.phone || ''} onChange={e => setFormData({ ...formData, phone: e.target.value })} />
             </div>
-            <div className="form-group">
+            <div className="form-group" style={{ margin: 0 }}>
               <label className="form-label">WhatsApp Number (No +)</label>
               <input type="text" className="form-input" value={formData.whatsapp_number || ''} onChange={e => setFormData({ ...formData, whatsapp_number: e.target.value })} placeholder="e.g. 918985291053" required />
             </div>
-            <div className="form-group">
+            <div className="form-group" style={{ margin: 0 }}>
               <label className="form-label">Email</label>
               <input type="email" className="form-input" value={formData.email || ''} onChange={e => setFormData({ ...formData, email: e.target.value })} />
             </div>
           </div>
-          <div className="form-group">
+          <div className="form-group" style={{ margin: 0 }}>
             <label className="form-label">Salon Address</label>
             <input type="text" className="form-input" value={formData.address || ''} onChange={e => setFormData({ ...formData, address: e.target.value })} />
           </div>
         </div>
 
         {/* About Section */}
-        <div className="glass-card" style={{ padding: '2rem', marginBottom: '1.5rem' }}>
-          <h3 style={{ fontSize: '1.2rem', color: 'var(--gold-light)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div className="surface settings-card" style={{ padding: '1.75rem', marginBottom: '1.5rem', borderRadius: 'var(--radius-md)' }}>
+          <h3 style={{ fontSize: '1.15rem', color: 'var(--amber-light)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <MessageSquare size={18} /> About Section (Homepage)
           </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-            <div className="form-group">
+          <div className="admin-grid-2" style={{ marginBottom: '1rem' }}>
+            <div className="form-group" style={{ margin: 0 }}>
               <label className="form-label">About Title</label>
-              <input type="text" className="form-input" value={formData.about_title || ''} onChange={e => setFormData({ ...formData, about_title: e.target.value })} placeholder="e.g. Crafting Confidence, One Makeover at a Time" />
+              <input type="text" className="form-input" value={formData.about_title || ''} onChange={e => setFormData({ ...formData, about_title: e.target.value })} placeholder="Crafting Confidence, One Makeover at a Time" />
             </div>
-            <div className="form-group">
+            <div className="form-group" style={{ margin: 0 }}>
               <label className="form-label">Award Label</label>
-              <input type="text" className="form-input" value={formData.about_award_label || ''} onChange={e => setFormData({ ...formData, about_award_label: e.target.value })} placeholder="e.g. Of Excellence in Khammam" />
+              <input type="text" className="form-input" value={formData.about_award_label || ''} onChange={e => setFormData({ ...formData, about_award_label: e.target.value })} placeholder="Of Excellence in Khammam" />
             </div>
           </div>
           <div className="form-group">
@@ -471,21 +471,21 @@ const AdminSettings = () => {
           </div>
         </div>
 
-        {/* Working Hours */}
-        <div className="glass-card" style={{ padding: '2rem', marginBottom: '1.5rem' }}>
-          <h3 style={{ fontSize: '1.2rem', color: 'var(--gold-light)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        {/* Operating Hours */}
+        <div className="surface settings-card" style={{ padding: '1.75rem', marginBottom: '1.5rem', borderRadius: 'var(--radius-md)' }}>
+          <h3 style={{ fontSize: '1.15rem', color: 'var(--amber-light)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Clock size={18} /> Operating Hours
           </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
-            <div className="form-group">
+          <div className="admin-grid-3">
+            <div className="form-group" style={{ margin: 0 }}>
               <label className="form-label">Mon - Fri Hours</label>
               <input type="text" className="form-input" value={formData.hours_weekday || ''} onChange={e => setFormData({ ...formData, hours_weekday: e.target.value })} />
             </div>
-            <div className="form-group">
+            <div className="form-group" style={{ margin: 0 }}>
               <label className="form-label">Saturday Hours</label>
               <input type="text" className="form-input" value={formData.hours_saturday || ''} onChange={e => setFormData({ ...formData, hours_saturday: e.target.value })} />
             </div>
-            <div className="form-group">
+            <div className="form-group" style={{ margin: 0 }}>
               <label className="form-label">Sunday Hours</label>
               <input type="text" className="form-input" value={formData.hours_sunday || ''} onChange={e => setFormData({ ...formData, hours_sunday: e.target.value })} />
             </div>
@@ -493,110 +493,57 @@ const AdminSettings = () => {
         </div>
 
         {/* Social Links */}
-        <div className="glass-card" style={{ padding: '2rem', marginBottom: '1.5rem' }}>
-          <h3 style={{ fontSize: '1.2rem', color: 'var(--gold-light)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div className="surface settings-card" style={{ padding: '1.75rem', marginBottom: '1.5rem', borderRadius: 'var(--radius-md)' }}>
+          <h3 style={{ fontSize: '1.15rem', color: 'var(--amber-light)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Share2 size={18} /> Social Media & Reviews
           </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-            <div className="form-group">
+          <div className="admin-grid-2">
+            <div className="form-group" style={{ margin: 0 }}>
               <label className="form-label">Instagram Profile URL</label>
               <input type="url" className="form-input" value={formData.social_instagram || ''} onChange={e => setFormData({ ...formData, social_instagram: e.target.value })} />
             </div>
-            <div className="form-group">
+            <div className="form-group" style={{ margin: 0 }}>
               <label className="form-label">YouTube Channel URL</label>
               <input type="url" className="form-input" value={formData.social_youtube || ''} onChange={e => setFormData({ ...formData, social_youtube: e.target.value })} />
             </div>
-            <div className="form-group">
+            <div className="form-group" style={{ margin: 0 }}>
               <label className="form-label">Facebook Page URL</label>
               <input type="url" className="form-input" value={formData.social_facebook || ''} onChange={e => setFormData({ ...formData, social_facebook: e.target.value })} />
             </div>
-            <div className="form-group">
+            <div className="form-group" style={{ margin: 0 }}>
               <label className="form-label">Google Review URL</label>
               <input type="url" className="form-input" value={formData.google_review_url || ''} onChange={e => setFormData({ ...formData, google_review_url: e.target.value })} />
             </div>
-            <div className="form-group">
+            <div className="form-group" style={{ margin: 0 }}>
               <label className="form-label">Google Review Count</label>
               <input type="number" className="form-input" value={formData.google_review_count || ''} onChange={e => setFormData({ ...formData, google_review_count: parseInt(e.target.value) || 0 })} placeholder="247" />
-              <small style={{ color: 'var(--text-muted)', fontSize: '0.78rem', marginTop: '4px', display: 'block' }}>
-                Total number of Google reviews to display
-              </small>
             </div>
-          </div>
-        </div>
-
-        {/* Map Embed */}
-        <div className="glass-card" style={{ padding: '2rem', marginBottom: '1.5rem' }}>
-          <h3 style={{ fontSize: '1.2rem', color: 'var(--gold-light)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Image size={18} /> Google Maps Embed
-          </h3>
-          <div className="form-group">
-            <label className="form-label">Google Maps Embed URL (optional)</label>
-            <input type="url" className="form-input" value={formData.map_embed_url || ''} onChange={e => setFormData({ ...formData, map_embed_url: e.target.value })} placeholder="https://www.google.com/maps/embed?pb=..." />
-            <small style={{ color: 'var(--text-muted)', fontSize: '0.78rem', marginTop: '4px', display: 'block' }}>
-              Get embed URL from Google Maps → Share → Embed a map → Copy HTML. Leave empty to use coordinates below.
-            </small>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
-            <div className="form-group">
-              <label className="form-label">Latitude</label>
-              <input type="number" step="any" className="form-input" value={formData.map_lat ?? ''} onChange={e => setFormData({ ...formData, map_lat: parseFloat(e.target.value) || 0 })} placeholder="17.2264" />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Longitude</label>
-              <input type="number" step="any" className="form-input" value={formData.map_lng ?? ''} onChange={e => setFormData({ ...formData, map_lng: parseFloat(e.target.value) || 0 })} placeholder="80.1509" />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Zoom (1-21)</label>
-              <input type="number" min="1" max="21" className="form-input" value={formData.map_zoom ?? ''} onChange={e => setFormData({ ...formData, map_zoom: parseInt(e.target.value) || 16 })} placeholder="16" />
-            </div>
-          </div>
-          <a
-            href={`https://www.google.com/maps?q=${formData.map_lat},${formData.map_lng}`}
-            target="_blank"
-            rel="noreferrer"
-            className="btn btn-outline btn-sm"
-            style={{ marginTop: '0.5rem', gap: '6px', display: 'inline-flex' }}
-          >
-            Open in Google Maps
-          </a>
-          <div className="form-group" style={{ marginTop: '1rem' }}>
-            <label className="form-label">Google Maps Embed (paste iframe HTML)</label>
-            <textarea
-              className="form-textarea"
-              rows={4}
-              value={formData.map_iframe_html || ''}
-              onChange={e => setFormData({ ...formData, map_iframe_html: e.target.value })}
-              placeholder='<iframe src="https://www.google.com/maps/embed?pb=..." width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>'
-            />
-            <small style={{ color: 'var(--text-muted)', fontSize: '0.78rem', marginTop: '4px', display: 'block' }}>
-              Go to Google Maps → Share → Embed a map → Copy HTML → paste the entire iframe tag here.
-            </small>
           </div>
         </div>
 
         {/* FAQs */}
-        <div className="glass-card" style={{ padding: '2rem', marginBottom: '1.5rem' }}>
-          <h3 style={{ fontSize: '1.2rem', color: 'var(--gold-light)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div className="surface settings-card" style={{ padding: '1.75rem', marginBottom: '1.5rem', borderRadius: 'var(--radius-md)' }}>
+          <h3 style={{ fontSize: '1.15rem', color: 'var(--amber-light)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <MessageSquare size={18} /> FAQs (Frequently Asked Questions)
           </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-            <div className="form-group">
+          <div className="admin-grid-2" style={{ marginBottom: '1rem' }}>
+            <div className="form-group" style={{ margin: 0 }}>
               <label className="form-label">Question</label>
               <input type="text" className="form-input" value={newFaqQ} onChange={e => setNewFaqQ(e.target.value)} placeholder="e.g. Do you take appointments on Sundays?" />
             </div>
-            <div className="form-group">
+            <div className="form-group" style={{ margin: 0 }}>
               <label className="form-label">Answer</label>
               <input type="text" className="form-input" value={newFaqA} onChange={e => setNewFaqA(e.target.value)} placeholder="e.g. Yes, by prior appointment only." />
             </div>
           </div>
-          <button type="button" className="btn btn-outline btn-sm" onClick={addFaq} style={{ gap: '6px', display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+          <button type="button" className="btn btn-ghost btn-sm" onClick={addFaq} style={{ gap: '6px', display: 'inline-flex', marginBottom: '1rem' }}>
             <Plus size={14} /> Add FAQ
           </button>
           {(formData.faqs || []).map((faq, i) => (
-            <div key={i} style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', padding: '0.75rem', background: 'rgba(255,255,255,0.03)', borderRadius: 'var(--radius-sm)', marginBottom: '0.5rem' }}>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: '600', color: 'var(--gold-light)', fontSize: '0.9rem' }}>Q: {faq.question}</div>
-                <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '4px' }}>A: {faq.answer}</div>
+            <div key={i} style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start', padding: '0.75rem', background: 'rgba(255,255,255,0.03)', borderRadius: 'var(--radius-sm)', marginBottom: '0.5rem' }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontWeight: '600', color: 'var(--amber-light)', fontSize: '0.88rem' }}>Q: {faq.question}</div>
+                <div style={{ color: 'var(--text-secondary)', fontSize: '0.84rem', marginTop: '3px' }}>A: {faq.answer}</div>
               </div>
               <button type="button" onClick={() => removeFaq(i)} style={{ background: 'none', border: 'none', color: 'var(--danger)', cursor: 'pointer', padding: '4px' }}>
                 <X size={16} />
@@ -605,10 +552,27 @@ const AdminSettings = () => {
           ))}
         </div>
 
-        <button type="submit" className="btn btn-primary" style={{ padding: '0.9rem 2.5rem', gap: '8px' }}>
+        <button type="submit" className="btn btn-primary" style={{ padding: '0.9rem 2rem', gap: '8px', width: '100%', maxWidth: '320px' }}>
           <Save size={18} /> Save All Settings
         </button>
       </form>
+
+      <style>{`
+        .admin-grid-3 {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1rem;
+        }
+        @media (max-width: 768px) {
+          .settings-card {
+            padding: 1.25rem !important;
+          }
+          .admin-grid-3 {
+            grid-template-columns: 1fr !important;
+            gap: 0.85rem !important;
+          }
+        }
+      `}</style>
     </div>
   );
 };

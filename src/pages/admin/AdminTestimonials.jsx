@@ -50,7 +50,7 @@ const AdminTestimonials = () => {
   return (
     <div>
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
         <div>
           <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '2rem', color: 'var(--text-primary)', marginBottom: '4px' }}>
             Customer <span className="text-gold-gradient">Testimonials</span>
@@ -65,12 +65,12 @@ const AdminTestimonials = () => {
 
       {/* Form */}
       {showForm && (
-        <div className="glass-card" style={{ padding: '1.75rem', marginBottom: '2rem', border: '1px solid var(--gold-primary)' }}>
+        <div className="glass-card" style={{ padding: 'clamp(1rem, 4vw, 1.75rem)', marginBottom: '2rem', border: '1px solid var(--gold-primary)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
             <h3 style={{ color: 'var(--gold-light)', fontSize: '1.1rem' }}>{editItem ? 'Edit Review' : 'Add New Review'}</h3>
             <button onClick={resetForm} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}><X size={20} /></button>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+          <div className="admin-grid-2">
             <div>
               <label className="form-label">Customer Name *</label>
               <input className="input" placeholder="e.g. Kavitha Reddy" value={form.name}
@@ -115,7 +115,7 @@ const AdminTestimonials = () => {
       ) : (
         <div style={{ display: 'grid', gap: '1rem' }}>
           {testimonials.map(t => (
-            <div key={t.id} className="glass-card" style={{ padding: '1.5rem', display: 'flex', gap: '1.25rem', alignItems: 'flex-start' }}>
+            <div key={t.id} className="glass-card" style={{ padding: 'clamp(1rem, 3.5vw, 1.5rem)', display: 'flex', gap: 'clamp(0.75rem, 3vw, 1.25rem)', alignItems: 'flex-start' }}>
               {/* Avatar */}
               <div style={{
                 width: '52px', height: '52px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0,

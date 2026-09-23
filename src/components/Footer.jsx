@@ -9,31 +9,31 @@ const Footer = ({ onSwitchToAdmin }) => {
   const year = new Date().getFullYear();
 
   return (
-    <footer style={{ background: 'var(--bg-primary)', borderTop: '1px solid var(--border-subtle)', padding: '5rem 0 2rem' }}>
+    <footer style={{ background: 'var(--bg-primary)', borderTop: '1px solid var(--border-subtle)', padding: '4rem 0 2rem' }}>
       <div className="container">
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '1.5fr 1fr 1fr 1fr',
-            gap: '3rem',
-            marginBottom: '4rem'
+            gridTemplateColumns: '1.5fr 1fr 1fr 1.2fr',
+            gap: '2.5rem',
+            marginBottom: '3.5rem'
           }}
           className="footer-grid"
         >
           <div>
-            <div style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.4rem', color: 'var(--bone)', marginBottom: '1rem' }}>
+            <div style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.35rem', color: 'var(--bone)', marginBottom: '0.75rem', fontWeight: 600 }}>
               {name}
             </div>
-            <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.6, maxWidth: 320 }}>
+            <p style={{ fontSize: '0.86rem', color: 'var(--text-muted)', lineHeight: 1.6, maxWidth: 320 }}>
               {storeInfo?.tagline || 'A luxury bridal and beauty studio in Khammam.'}
             </p>
           </div>
 
           <div>
-            <div style={{ fontSize: '0.7rem', color: 'var(--amber-light)', textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: '1rem' }}>
-              Visit
+            <div style={{ fontSize: '0.7rem', color: 'var(--amber-light)', textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: '0.85rem', fontWeight: 600 }}>
+              Explore
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
               <a href="#services">Services</a>
               <a href="#offers">Offers</a>
               <a href="#gallery">Portfolio</a>
@@ -43,60 +43,99 @@ const Footer = ({ onSwitchToAdmin }) => {
           </div>
 
           <div>
-            <div style={{ fontSize: '0.7rem', color: 'var(--amber-light)', textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: '1rem' }}>
-              Follow
+            <div style={{ fontSize: '0.7rem', color: 'var(--amber-light)', textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: '0.85rem', fontWeight: 600 }}>
+              Social & Chat
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-              {storeInfo?.social_instagram && <a href={storeInfo.social_instagram} target="_blank" rel="noreferrer">Instagram <ArrowUpRight size={11} style={{ display: 'inline' }} /></a>}
-              {storeInfo?.social_youtube && <a href={storeInfo.social_youtube} target="_blank" rel="noreferrer">YouTube <ArrowUpRight size={11} style={{ display: 'inline' }} /></a>}
-              {storeInfo?.social_facebook && <a href={storeInfo.social_facebook} target="_blank" rel="noreferrer">Facebook <ArrowUpRight size={11} style={{ display: 'inline' }} /></a>}
-              <a href={`https://wa.me/${phone}`} target="_blank" rel="noreferrer">WhatsApp <ArrowUpRight size={11} style={{ display: 'inline' }} /></a>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
+              {storeInfo?.social_instagram && (
+                <a href={storeInfo.social_instagram} target="_blank" rel="noreferrer">
+                  Instagram <ArrowUpRight size={11} style={{ display: 'inline' }} />
+                </a>
+              )}
+              {storeInfo?.social_youtube && (
+                <a href={storeInfo.social_youtube} target="_blank" rel="noreferrer">
+                  YouTube <ArrowUpRight size={11} style={{ display: 'inline' }} />
+                </a>
+              )}
+              {storeInfo?.social_facebook && (
+                <a href={storeInfo.social_facebook} target="_blank" rel="noreferrer">
+                  Facebook <ArrowUpRight size={11} style={{ display: 'inline' }} />
+                </a>
+              )}
+              <a href={`https://wa.me/${phone}`} target="_blank" rel="noreferrer">
+                WhatsApp <ArrowUpRight size={11} style={{ display: 'inline' }} />
+              </a>
             </div>
           </div>
 
           <div>
-            <div style={{ fontSize: '0.7rem', color: 'var(--amber-light)', textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: '1rem' }}>
-              Studio
+            <div style={{ fontSize: '0.7rem', color: 'var(--amber-light)', textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: '0.85rem', fontWeight: 600 }}>
+              Studio & Admin
             </div>
-            <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+            <div style={{ fontSize: '0.86rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>
               {storeInfo?.address}
             </div>
-            <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.75rem' }}>
+            <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
               {storeInfo?.hours_weekday}
             </div>
             <button
               onClick={onSwitchToAdmin}
               style={{
                 marginTop: '1.25rem',
-                background: 'transparent',
+                background: 'rgba(200, 151, 90, 0.08)',
                 border: '1px solid var(--border-subtle)',
-                color: 'var(--text-muted)',
-                padding: '6px 12px',
+                color: 'var(--amber-light)',
+                padding: '8px 14px',
                 borderRadius: 'var(--radius-full)',
-                fontSize: '0.75rem',
+                fontSize: '0.78rem',
                 cursor: 'pointer',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '6px'
               }}
             >
-              <Shield size={11} /> Admin
+              <Shield size={13} /> Admin Portal
             </button>
           </div>
         </div>
 
-        <div style={{ paddingTop: '2rem', borderTop: '1px solid var(--border-subtle)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-          <div>© {year} {name}</div>
-          <div>Made with care in Khammam</div>
+        {/* Bottom Bar */}
+        <div
+          className="footer-bottom"
+          style={{
+            paddingTop: '1.75rem',
+            borderTop: '1px solid var(--border-subtle)',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            fontSize: '0.8rem',
+            color: 'var(--text-muted)',
+            flexWrap: 'wrap',
+            gap: '8px'
+          }}
+        >
+          <div>© {year} {name}. All rights reserved.</div>
+          <div>Handcrafted with care in Khammam, Telangana</div>
         </div>
       </div>
 
       <style>{`
-        @media (max-width: 800px) {
-          .footer-grid { grid-template-columns: 1fr 1fr !important; gap: 2.5rem !important; }
+        @media (max-width: 900px) {
+          .footer-grid {
+            grid-template-columns: 1fr 1fr !important;
+            gap: 2rem !important;
+          }
         }
-        @media (max-width: 500px) {
-          .footer-grid { grid-template-columns: 1fr !important; }
+        @media (max-width: 540px) {
+          .footer-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1.75rem !important;
+          }
+          .footer-bottom {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 6px !important;
+          }
         }
       `}</style>
     </footer>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useStore } from '../../context/StoreContext';
-import { Plus, Search, Filter, Download, MessageCircle, Calendar, Clock, User, Phone, CheckCircle, XCircle, AlertCircle, Mail, Send, Check } from 'lucide-react';
+import { Plus, Search, Filter, Download, MessageCircle, Calendar, Clock, User, Phone, CheckCircle, XCircle, AlertCircle, Mail, Send, Check, X } from 'lucide-react';
 
 const AdminBookings = () => {
   const { bookings, updateBookingStatus, addBooking, sendConfirmationEmailForBooking, services } = useStore();
@@ -94,7 +94,7 @@ const AdminBookings = () => {
       return;
     }
 
-    const created = await addBooking({
+    await addBooking({
       ...manualBooking,
       email: manualBooking.email.trim(),
       amount: Number(manualBooking.amount) || 0,
@@ -115,7 +115,7 @@ const AdminBookings = () => {
       name: '',
       phone: '',
       email: '',
-      service: services[0]?.name || '',
+      service: services[0]?.name || 'Bridal HD Airbrush Makeup',
       date: new Date().toISOString().split('T')[0],
       time: '11:00 AM',
       amount: '',
@@ -124,9 +124,9 @@ const AdminBookings = () => {
   };
 
   const exportCSV = () => {
-    const headers = ['ID,Customer Name,Phone,Email,Service,Date,Time,Amount,Status,Source,Created At\n'];
-    const rows = filteredBookings.map(b => (
-      `"${b.id}","${b.name}","${b.phone}","${b.email || ''}","${b.service}","${b.date}","${b.time}","${b.amount || 0}","${b.status}","${b.source || 'website'}","${b.created_at}"\n`
+    const headers = 'ID,Name,Phone,Email,Service,Date,Time,Amount,Status,Source,Created\n';
+    const rows = bookings.map(b => (
+      `"${b.id}","${b.name}","${b.phone}","${b.email || ''}","${b.service}","${b.date}","${b.time}","${b.amount || 0}","${b.status}","${b.source || 'website'}","${b.created_at || ''}"\n`
     ));
     const blob = new Blob([headers, ...rows], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
@@ -139,21 +139,21 @@ const AdminBookings = () => {
   return (
     <div>
       {/* Header */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
         <div>
-          <h2 style={{ fontSize: '2rem', color: 'var(--text-primary)', marginBottom: '4px' }}>
-            Appointments & Client Leads Central
+          <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', color: 'var(--text-primary)', marginBottom: '4px' }}>
+            Bookings & Client Leads
           </h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-            Live status management for client leads. Changing status to Confirmed automatically sends a confirmation email to clients with an email on file.
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.86rem' }}>
+            Live status management. Approving a booking automatically dispatches an EmailJS confirmation to clients.
           </p>
         </div>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <button onClick={exportCSV} className="btn btn-outline" style={{ gap: '8px' }}>
-            <Download size={16} /> Export CSV
+        <div className="bookings-header-actions" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', width: 'auto' }}>
+          <button onClick={exportCSV} className="btn btn-ghost btn-sm" style={{ gap: '6px' }}>
+            <Download size={14} /> Export CSV
           </button>
-          <button onClick={() => setShowAddModal(true)} className="btn btn-primary" style={{ gap: '8px' }}>
-            <Plus size={18} /> Add Walk-in / Phone Client
+          <button onClick={() => setShowAddModal(true)} className="btn btn-primary btn-sm" style={{ gap: '6px' }}>
+            <Plus size={16} /> Add Walk-in
           </button>
         </div>
       </div>
@@ -162,57 +162,58 @@ const AdminBookings = () => {
       {actionFeedback && (
         <div
           style={{
-            padding: '12px 18px',
+            padding: '10px 14px',
             borderRadius: 'var(--radius-sm)',
-            marginBottom: '1.5rem',
+            marginBottom: '1.25rem',
             display: 'flex',
             alignItems: 'center',
-            gap: '10px',
-            fontSize: '0.9rem',
+            gap: '8px',
+            fontSize: '0.86rem',
             fontWeight: '500',
-            animation: 'fadeIn 0.2s ease-in',
             background:
               actionFeedback.type === 'success'
-                ? 'rgba(16, 185, 129, 0.15)'
+                ? 'rgba(90, 155, 110, 0.15)'
                 : actionFeedback.type === 'warning'
-                ? 'rgba(245, 158, 11, 0.15)'
-                : 'rgba(59, 130, 246, 0.15)',
-            border:
+                ? 'rgba(212, 162, 58, 0.15)'
+                : 'rgba(90, 139, 194, 0.15)',
+            border: `1px solid ${
               actionFeedback.type === 'success'
-                ? '1px solid #10b981'
+                ? 'var(--success)'
                 : actionFeedback.type === 'warning'
-                ? '1px solid #f59e0b'
-                : '1px solid #3b82f6',
+                ? 'var(--warning)'
+                : 'var(--info)'
+            }`,
             color:
               actionFeedback.type === 'success'
-                ? '#10b981'
+                ? 'var(--success)'
                 : actionFeedback.type === 'warning'
-                ? '#f59e0b'
-                : '#60a5fa'
+                ? 'var(--warning)'
+                : 'var(--info)'
           }}
         >
-          {actionFeedback.type === 'success' && <CheckCircle size={18} />}
-          {actionFeedback.type === 'warning' && <AlertCircle size={18} />}
-          {actionFeedback.type === 'info' && <Mail size={18} />}
+          {actionFeedback.type === 'success' && <CheckCircle size={16} />}
+          {actionFeedback.type === 'warning' && <AlertCircle size={16} />}
+          {actionFeedback.type === 'info' && <Mail size={16} />}
           <span>{actionFeedback.message}</span>
         </div>
       )}
 
       {/* Filter and Search Bar */}
       <div
-        className="glass-card"
+        className="surface"
         style={{
-          padding: '1.25rem',
-          marginBottom: '1.75rem',
+          padding: '1.1rem 1.25rem',
+          marginBottom: '1.5rem',
           display: 'flex',
           flexWrap: 'wrap',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: '1rem'
+          gap: '1rem',
+          borderRadius: 'var(--radius-md)'
         }}
       >
-        {/* Status Tabs */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+        {/* Status Tabs (Swipeable on mobile) */}
+        <div className="mobile-scroll-x" style={{ margin: 0, padding: 0 }}>
           {['all', 'pending', 'confirmed', 'completed', 'cancelled'].map(st => (
             <button
               key={st}
@@ -220,47 +221,49 @@ const AdminBookings = () => {
               style={{
                 padding: '6px 14px',
                 borderRadius: 'var(--radius-full)',
-                fontSize: '0.82rem',
-                fontWeight: '600',
-                textTransform: 'capitalize',
+                fontSize: '0.8rem',
+                fontWeight: 500,
                 cursor: 'pointer',
                 border: '1px solid',
-                background: statusFilter === st ? 'var(--gold-gradient)' : 'rgba(255, 255, 255, 0.04)',
-                borderColor: statusFilter === st ? 'var(--gold-primary)' : 'var(--border-subtle)',
-                color: statusFilter === st ? '#080c16' : 'var(--text-secondary)'
+                textTransform: 'capitalize',
+                background: statusFilter === st ? 'var(--bg-tertiary)' : 'transparent',
+                borderColor: statusFilter === st ? 'var(--amber)' : 'transparent',
+                color: statusFilter === st ? 'var(--amber-light)' : 'var(--text-muted)',
+                whiteSpace: 'nowrap',
+                transition: 'var(--transition)'
               }}
             >
-              {st} {st === 'pending' && `(${bookings.filter(b => b.status === 'pending').length})`}
+              {st} ({st === 'all' ? bookings.length : bookings.filter(b => b.status === st).length})
             </button>
           ))}
         </div>
 
         {/* Search Input */}
-        <div style={{ position: 'relative', width: '100%', maxWidth: '300px' }}>
+        <div style={{ position: 'relative', width: '100%', maxWidth: '300px' }} className="booking-search-box">
           <input
             type="text"
             className="form-input"
-            style={{ paddingLeft: '2.4rem', paddingRight: '1rem', fontSize: '0.86rem' }}
-            placeholder="Search by client, phone, or email..."
+            style={{ padding: '0.65rem 1rem 0.65rem 2.2rem', fontSize: '0.85rem' }}
+            placeholder="Search by name, phone, service..."
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
           />
-          <Search size={15} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+          <Search size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
         </div>
       </div>
 
-      {/* Bookings Table */}
-      <div className="admin-table-container">
+      {/* DESKTOP TABLE VIEW (Screens >= 768px) */}
+      <div className="admin-table-container hide-on-mobile">
         <table className="admin-table">
           <thead>
             <tr>
               <th>Date & Slot</th>
-              <th>Customer</th>
+              <th>Client Information</th>
               <th>Service</th>
               <th>Amount</th>
               <th>Source</th>
-              <th>Current Status</th>
-              <th style={{ textAlign: 'right' }}>Update Status / Email</th>
+              <th>Status</th>
+              <th style={{ textAlign: 'right' }}>Update / Email</th>
             </tr>
           </thead>
           <tbody>
@@ -276,7 +279,7 @@ const AdminBookings = () => {
                   {/* Date & Slot */}
                   <td>
                     <div style={{ fontWeight: '600', color: 'var(--text-primary)' }}>{b.date}</div>
-                    <div style={{ fontSize: '0.78rem', color: 'var(--gold-light)', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px' }}>
+                    <div style={{ fontSize: '0.78rem', color: 'var(--amber-light)', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px' }}>
                       <Clock size={12} /> {b.time}
                     </div>
                   </td>
@@ -290,12 +293,11 @@ const AdminBookings = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{ color: '#25D366', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '3px' }}
-                        title="Chat with customer on WhatsApp"
                       >
                         <MessageCircle size={13} /> {b.phone}
                       </a>
                       {b.email && (
-                        <span style={{ color: 'var(--gold-light)', fontSize: '0.78rem', display: 'flex', alignItems: 'center', gap: '3px' }} title={`Customer Email: ${b.email}`}>
+                        <span style={{ color: 'var(--amber-light)', fontSize: '0.78rem', display: 'flex', alignItems: 'center', gap: '3px' }} title={`Customer Email: ${b.email}`}>
                           <Mail size={12} /> {b.email}
                         </span>
                       )}
@@ -313,13 +315,13 @@ const AdminBookings = () => {
                   </td>
 
                   {/* Amount */}
-                  <td style={{ fontWeight: '700', color: 'var(--gold-light)' }}>
+                  <td style={{ fontWeight: '700', color: 'var(--amber-light)' }}>
                     ₹{Number(b.amount || 0).toLocaleString()}
                   </td>
 
                   {/* Source */}
                   <td>
-                    <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-muted)', background: 'rgba(255,255,255,0.05)', padding: '2px 8px', borderRadius: '4px' }}>
+                    <span style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: 'var(--text-muted)', background: 'rgba(255,255,255,0.05)', padding: '2px 8px', borderRadius: '4px' }}>
                       {b.source || 'website'}
                     </span>
                   </td>
@@ -352,17 +354,16 @@ const AdminBookings = () => {
                           onClick={() => handleManualEmailSend(b)}
                           disabled={sendingEmailId === b.id}
                           style={{
-                            background: 'rgba(212, 175, 55, 0.08)',
+                            background: 'rgba(200, 151, 90, 0.08)',
                             border: '1px solid var(--border-subtle)',
                             borderRadius: 'var(--radius-sm)',
                             padding: '3px 8px',
                             fontSize: '0.72rem',
-                            color: 'var(--gold-light)',
+                            color: 'var(--amber-light)',
                             cursor: 'pointer',
                             display: 'inline-flex',
                             alignItems: 'center',
-                            gap: '4px',
-                            transition: 'var(--transition)'
+                            gap: '4px'
                           }}
                           title={`Dispatch confirmation email to ${b.email}`}
                         >
@@ -378,109 +379,235 @@ const AdminBookings = () => {
         </table>
       </div>
 
+      {/* DEDICATED MOBILE CARD VIEW (Screens < 768px) */}
+      <div className="show-on-mobile" style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
+        {filteredBookings.length === 0 ? (
+          <div className="surface" style={{ padding: '3rem 1.5rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+            No bookings found matching filter.
+          </div>
+        ) : (
+          filteredBookings.map(b => (
+            <div
+              key={b.id}
+              className="surface"
+              style={{
+                padding: '1.25rem',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+                borderRadius: 'var(--radius-md)',
+                border: '1px solid var(--border-subtle)'
+              }}
+            >
+              {/* Top Row: Client & Status */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <div>
+                  <div style={{ fontWeight: '600', color: 'var(--bone)', fontSize: '1.05rem' }}>
+                    {b.name}
+                  </div>
+                  <div style={{ fontSize: '0.85rem', color: 'var(--amber-light)', marginTop: '2px', fontWeight: 500 }}>
+                    {b.service}
+                  </div>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <span className={`badge badge-${b.status}`}>
+                    {b.status}
+                  </span>
+                  <div style={{ fontWeight: '700', color: 'var(--bone)', fontSize: '1.1rem', marginTop: '4px' }}>
+                    ₹{Number(b.amount || 0).toLocaleString()}
+                  </div>
+                </div>
+              </div>
+
+              {/* Middle Row: Date, Slot & Source */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.82rem', color: 'var(--text-muted)', paddingTop: '6px', borderTop: '1px solid var(--border-subtle)' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <Clock size={13} style={{ color: 'var(--amber-light)' }} /> {b.date} · {b.time}
+                </span>
+                <span style={{ fontSize: '0.72rem', textTransform: 'uppercase', background: 'rgba(255,255,255,0.05)', padding: '2px 8px', borderRadius: '4px' }}>
+                  {b.source || 'website'}
+                </span>
+              </div>
+
+              {/* Direct Communication Strip */}
+              <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap', fontSize: '0.85rem' }}>
+                <a
+                  href={`https://wa.me/${b.phone.replace(/\D/g, '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: '#25D366', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 500 }}
+                >
+                  <MessageCircle size={15} /> {b.phone}
+                </a>
+                {b.email && (
+                  <span style={{ color: 'var(--amber-light)', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <Mail size={13} /> {b.email}
+                  </span>
+                )}
+              </div>
+
+              {b.message && (
+                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', background: 'rgba(0,0,0,0.2)', padding: '6px 10px', borderRadius: '4px' }}>
+                  Note: {b.message}
+                </div>
+              )}
+
+              {/* Action Dropdown & Email Trigger */}
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center', paddingTop: '8px', borderTop: '1px solid var(--border-subtle)' }}>
+                <select
+                  className="form-select"
+                  style={{ padding: '8px 10px', fontSize: '0.88rem', flexGrow: 1, margin: 0 }}
+                  value={b.status}
+                  onChange={e => handleStatusChange(b.id, e.target.value)}
+                >
+                  <option value="pending">⏳ Pending</option>
+                  <option value="confirmed">✅ Confirmed</option>
+                  <option value="completed">✨ Completed</option>
+                  <option value="cancelled">❌ Cancelled</option>
+                </select>
+
+                {b.email && (
+                  <button
+                    type="button"
+                    onClick={() => handleManualEmailSend(b)}
+                    disabled={sendingEmailId === b.id}
+                    className="btn btn-ghost btn-sm"
+                    style={{ gap: '4px', padding: '8px 12px' }}
+                    title="Send confirmation email"
+                  >
+                    <Mail size={13} /> {sendingEmailId === b.id ? 'Sending...' : 'Email'}
+                  </button>
+                )}
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
       {/* Manual Booking Modal */}
       {showAddModal && (
         <div className="modal-backdrop" onClick={() => setShowAddModal(false)}>
-          <div className="modal-card" onClick={e => e.stopPropagation()}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-              <h3 style={{ fontSize: '1.6rem', color: 'var(--text-primary)' }}>Record Walk-in / Phone Client</h3>
-              <button onClick={() => setShowAddModal(false)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
-                ✕
+          <div className="modal-card" style={{ maxWidth: '520px' }} onClick={e => e.stopPropagation()}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+              <h3 style={{ color: 'var(--bone)', fontSize: '1.25rem' }}>
+                Add Walk-in or Phone Client
+              </h3>
+              <button
+                onClick={() => setShowAddModal(false)}
+                style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
+              >
+                <X size={20} />
               </button>
             </div>
 
             <form onSubmit={handleAddManualBooking}>
-              <div className="form-group">
-                <label className="form-label">Customer Name *</label>
-                <input
-                  type="text"
-                  className="form-input"
-                  placeholder="Client name"
-                  value={manualBooking.name}
-                  onChange={e => setManualBooking({ ...manualBooking, name: e.target.value })}
-                  required
-                />
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <div className="form-group">
+              <div className="admin-grid-2" style={{ marginBottom: '1rem' }}>
+                <div className="form-group" style={{ margin: 0 }}>
+                  <label className="form-label">Customer Name *</label>
+                  <input
+                    type="text"
+                    required
+                    className="form-input"
+                    value={manualBooking.name}
+                    onChange={e => setManualBooking({ ...manualBooking, name: e.target.value })}
+                  />
+                </div>
+                <div className="form-group" style={{ margin: 0 }}>
                   <label className="form-label">Phone Number *</label>
                   <input
                     type="tel"
+                    required
                     className="form-input"
-                    placeholder="10-digit number"
                     value={manualBooking.phone}
                     onChange={e => setManualBooking({ ...manualBooking, phone: e.target.value })}
-                    required
                   />
                 </div>
+              </div>
 
-                <div className="form-group">
-                  <label className="form-label">Customer Email (optional)</label>
+              <div className="admin-grid-2" style={{ marginBottom: '1rem' }}>
+                <div className="form-group" style={{ margin: 0 }}>
+                  <label className="form-label">Email (Optional)</label>
                   <input
                     type="email"
                     className="form-input"
-                    placeholder="For confirmation receipt"
                     value={manualBooking.email}
                     onChange={e => setManualBooking({ ...manualBooking, email: e.target.value })}
+                    placeholder="Sends instant booking email"
                   />
+                </div>
+                <div className="form-group" style={{ margin: 0 }}>
+                  <label className="form-label">Treatment</label>
+                  <select
+                    className="form-select"
+                    value={manualBooking.service}
+                    onChange={e => setManualBooking({ ...manualBooking, service: e.target.value })}
+                  >
+                    {services.map(s => <option key={s.id} value={s.name}>{s.name} ({s.price})</option>)}
+                  </select>
                 </div>
               </div>
 
-              <div className="form-group">
-                <label className="form-label">Service</label>
-                <select
-                  className="form-select"
-                  value={manualBooking.service}
-                  onChange={e => setManualBooking({ ...manualBooking, service: e.target.value })}
-                >
-                  {services.map(s => <option key={s.id} value={s.name}>{s.name} ({s.price})</option>)}
-                </select>
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
-                <div className="form-group">
+              <div className="admin-grid-2" style={{ marginBottom: '1rem' }}>
+                <div className="form-group" style={{ margin: 0 }}>
                   <label className="form-label">Date</label>
                   <input
                     type="date"
+                    required
                     className="form-input"
                     value={manualBooking.date}
                     onChange={e => setManualBooking({ ...manualBooking, date: e.target.value })}
-                    required
                   />
                 </div>
-
-                <div className="form-group">
+                <div className="form-group" style={{ margin: 0 }}>
                   <label className="form-label">Time</label>
                   <input
                     type="text"
                     className="form-input"
                     value={manualBooking.time}
-                    placeholder="11:00 AM"
+                    placeholder="e.g. 11:30 AM"
                     onChange={e => setManualBooking({ ...manualBooking, time: e.target.value })}
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">Amount (₹)</label>
-                  <input
-                    type="number"
-                    className="form-input"
-                    placeholder="e.g. 15000"
-                    value={manualBooking.amount}
-                    onChange={e => setManualBooking({ ...manualBooking, amount: e.target.value })}
                   />
                 </div>
               </div>
 
-              <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '1rem', padding: '0.85rem' }}>
-                Save Appointment & Confirm
-              </button>
+              <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+                <label className="form-label">Estimated Bill / Amount (₹)</label>
+                <input
+                  type="number"
+                  className="form-input"
+                  value={manualBooking.amount}
+                  placeholder="e.g. 2999"
+                  onChange={e => setManualBooking({ ...manualBooking, amount: e.target.value })}
+                />
+              </div>
+
+              <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
+                <button type="button" onClick={() => setShowAddModal(false)} className="btn btn-ghost">
+                  Cancel
+                </button>
+                <button type="submit" className="btn btn-primary" style={{ gap: '6px' }}>
+                  <Plus size={16} /> Save Appointment
+                </button>
+              </div>
             </form>
           </div>
         </div>
       )}
+
+      <style>{`
+        @media (max-width: 640px) {
+          .bookings-header-actions {
+            width: 100% !important;
+          }
+          .bookings-header-actions button {
+            flex-grow: 1 !important;
+            justify-content: center !important;
+          }
+          .booking-search-box {
+            max-width: 100% !important;
+          }
+        }
+      `}</style>
     </div>
   );
 };

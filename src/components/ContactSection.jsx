@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useStore } from '../context/StoreContext';
-import { MapPin, Phone, MessageCircle, Clock, Mail, Star, ExternalLink, Navigation, Copy, Check, Maximize2 } from 'lucide-react';
+import { MapPin, Phone, MessageCircle, Clock, Mail, Star, ExternalLink, Navigation, Copy, Check, Maximize2, X } from 'lucide-react';
 
 const ContactSection = () => {
   const { storeInfo } = useStore();
@@ -16,7 +16,6 @@ const ContactSection = () => {
     ? `https://www.google.com/maps/place/Sri+Madhuri's+Makeovers+%26+Beauty+Saloon/@${lat},${lng},17z`
     : 'https://maps.app.goo.gl/dJHpaipbUKYNW7SA7';
 
-  // Compute reliable Google Maps embed URL
   const getMapEmbedSrc = () => {
     if (storeInfo?.map_embed_url && storeInfo.map_embed_url.trim()) {
       return storeInfo.map_embed_url.trim();
@@ -32,8 +31,6 @@ const ContactSection = () => {
 
   const mapSrc = getMapEmbedSrc();
 
-  const externalMapUrl = directionsUrl;
-
   const copyAddress = () => {
     if (storeInfo?.address) {
       navigator.clipboard?.writeText(storeInfo.address);
@@ -45,98 +42,105 @@ const ContactSection = () => {
   return (
     <section id="contact" className="section" style={{ background: 'var(--bg-primary)' }}>
       <div className="container">
-        <div style={{ marginBottom: '4rem', maxWidth: 640 }}>
+        {/* Header */}
+        <div style={{ marginBottom: '3.5rem', maxWidth: 640 }}>
+          <div style={{ fontSize: '0.72rem', color: 'var(--amber-light)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: '0.75rem', fontWeight: 600 }}>
+            Location & Hours
+          </div>
           <h2 style={{ color: 'var(--bone)' }}>
             Come visit<em> the studio.</em>
           </h2>
-          <p className="section-subtitle" style={{ margin: '1.25rem 0 0', textAlign: 'left' }}>
+          <p className="section-subtitle" style={{ margin: '0.75rem 0 0', textAlign: 'left' }}>
             Consultations are by appointment. We are happy to talk through your day over a chai before any commitment.
           </p>
         </div>
 
         <div
-          style={{ display: 'grid', gridTemplateColumns: '0.9fr 1.1fr', gap: '3rem', alignItems: 'stretch' }}
+          style={{ display: 'grid', gridTemplateColumns: '0.9fr 1.1fr', gap: '2.5rem', alignItems: 'stretch' }}
           className="contact-grid"
         >
-          <div className="surface" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
+          {/* Details Card */}
+          <div className="surface contact-card" style={{ padding: '2.25rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <div>
-              <div style={{ fontSize: '0.7rem', color: 'var(--amber-light)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.75rem' }}>
-                Studio
+              <div style={{ fontSize: '0.7rem', color: 'var(--amber-light)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.5rem', fontWeight: 600 }}>
+                Studio Address
               </div>
-              <div style={{ fontSize: '1.05rem', color: 'var(--bone)', lineHeight: 1.5 }}>
+              <div style={{ fontSize: '1rem', color: 'var(--bone)', lineHeight: 1.55 }}>
                 {storeInfo?.address}
               </div>
             </div>
 
             <div>
-              <div style={{ fontSize: '0.7rem', color: 'var(--amber-light)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.75rem' }}>
-                Reach us
+              <div style={{ fontSize: '0.7rem', color: 'var(--amber-light)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.5rem', fontWeight: 600 }}>
+                Direct Contact
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                <a href={`tel:${storeInfo?.phone_clean || whatsapp}`} style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--bone)' }}>
-                  <Phone size={16} style={{ color: 'var(--amber)' }} /> {phone}
+                <a href={`tel:${storeInfo?.phone_clean || whatsapp}`} style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--bone)', fontSize: '0.95rem' }}>
+                  <Phone size={16} style={{ color: 'var(--amber)', flexShrink: 0 }} /> {phone}
                 </a>
-                <a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--bone)' }}>
-                  <MessageCircle size={16} style={{ color: 'var(--amber)' }} /> WhatsApp direct
+                <a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--bone)', fontSize: '0.95rem' }}>
+                  <MessageCircle size={16} style={{ color: 'var(--amber)', flexShrink: 0 }} /> WhatsApp direct (+{whatsapp})
                 </a>
                 {storeInfo?.email && (
-                  <a href={`mailto:${storeInfo.email}`} style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--bone)' }}>
-                    <Mail size={16} style={{ color: 'var(--amber)' }} /> {storeInfo.email}
+                  <a href={`mailto:${storeInfo.email}`} style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--bone)', fontSize: '0.95rem', wordBreak: 'break-all' }}>
+                    <Mail size={16} style={{ color: 'var(--amber)', flexShrink: 0 }} /> {storeInfo.email}
                   </a>
                 )}
               </div>
             </div>
 
             <div>
-              <div style={{ fontSize: '0.7rem', color: 'var(--amber-light)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.75rem' }}>
-                Hours
+              <div style={{ fontSize: '0.7rem', color: 'var(--amber-light)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.5rem', fontWeight: 600 }}>
+                Working Hours
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', color: 'var(--text-secondary)' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
                 <div>Mon - Fri · {storeInfo?.hours_weekday || '10:00 AM - 9:00 PM'}</div>
                 <div>Saturday · {storeInfo?.hours_saturday || '10:00 AM - 9:00 PM'}</div>
                 <div>Sunday · {storeInfo?.hours_sunday || 'By appointment'}</div>
               </div>
             </div>
 
-            {storeInfo?.google_review_url && (
-              <a href={storeInfo.google_review_url} target="_blank" rel="noreferrer" className="btn btn-ghost" style={{ marginTop: 'auto', gap: '8px' }}>
-                <Star size={14} fill="var(--amber)" color="var(--amber)" /> Rate us on Google
-                <ExternalLink size={12} style={{ opacity: 0.6 }} />
-              </a>
-            )}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: 'auto', paddingTop: '1rem' }}>
+              {storeInfo?.google_review_url && (
+                <a href={storeInfo.google_review_url} target="_blank" rel="noreferrer" className="btn btn-ghost" style={{ gap: '8px', width: '100%' }}>
+                  <Star size={14} fill="var(--amber)" color="var(--amber)" /> Rate us on Google
+                  <ExternalLink size={12} style={{ opacity: 0.6 }} />
+                </a>
+              )}
 
-            <a href={directionsUrl} target="_blank" rel="noreferrer" className="btn btn-primary" style={{ gap: '8px' }}>
-              <Navigation size={14} /> Get directions
-            </a>
+              <a href={directionsUrl} target="_blank" rel="noreferrer" className="btn btn-primary" style={{ gap: '8px', width: '100%' }}>
+                <Navigation size={14} /> Get Directions on Maps
+              </a>
+            </div>
           </div>
 
-          {/* MAP WIDGET */}
+          {/* MAP CONTAINER */}
           <div
-            className="surface"
-            style={{ padding: 0, overflow: 'hidden', height: 520, position: 'relative' }}
+            className="surface map-card"
+            style={{ padding: 0, overflow: 'hidden', height: 490, position: 'relative', borderRadius: 'var(--radius-md)' }}
           >
             <iframe
               title="Sri Madhuri Makeovers location"
               src={mapSrc}
               width="100%"
               height="100%"
-              style={{ border: 0, width: '100%', height: '100%', display: 'block', minHeight: '520px' }}
+              style={{ border: 0, width: '100%', height: '100%', display: 'block' }}
               allowFullScreen=""
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
 
-            {/* Floating action bar over the map */}
+            {/* Floating top bar */}
             <div
               style={{
                 position: 'absolute',
-                top: 16,
-                left: 16,
-                right: 16,
+                top: 12,
+                left: 12,
+                right: 12,
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                gap: '12px',
+                gap: '8px',
                 pointerEvents: 'none'
               }}
             >
@@ -145,48 +149,49 @@ const ContactSection = () => {
                   background: 'rgba(12, 20, 16, 0.95)',
                   backdropFilter: 'blur(10px)',
                   border: '1px solid var(--border-medium)',
-                  borderRadius: 'var(--radius-md)',
-                  padding: '10px 16px',
+                  borderRadius: 'var(--radius-sm)',
+                  padding: '7px 12px',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '10px',
+                  gap: '8px',
                   pointerEvents: 'auto',
-                  maxWidth: '60%'
+                  maxWidth: '70%'
                 }}
               >
-                <MapPin size={16} style={{ color: 'var(--amber)', flexShrink: 0 }} />
+                <MapPin size={15} style={{ color: 'var(--amber)', flexShrink: 0 }} />
                 <div style={{ minWidth: 0 }}>
-                  <div style={{ fontFamily: 'Playfair Display, serif', fontSize: '0.95rem', color: 'var(--bone)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <div style={{ fontFamily: 'Playfair Display, serif', fontSize: '0.88rem', color: 'var(--bone)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     Sri Madhuri Makeovers
                   </div>
-                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.12em' }}>
+                  <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                     Khammam
                   </div>
                 </div>
               </div>
+
               <a
                 href={directionsUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="btn btn-primary btn-sm"
-                style={{ gap: '6px', pointerEvents: 'auto' }}
+                style={{ gap: '4px', pointerEvents: 'auto', padding: '6px 12px', fontSize: '0.78rem' }}
                 onClick={(e) => e.stopPropagation()}
               >
-                <Navigation size={13} /> Directions
+                <Navigation size={12} /> Directions
               </a>
             </div>
 
-            {/* Bottom info chip with copy address */}
+            {/* Bottom bar with copy address */}
             <div
               style={{
                 position: 'absolute',
-                bottom: 16,
-                left: 16,
-                right: 16,
+                bottom: 12,
+                left: 12,
+                right: 12,
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                gap: '10px',
+                gap: '8px',
                 pointerEvents: 'none'
               }}
             >
@@ -196,78 +201,91 @@ const ContactSection = () => {
                   background: 'rgba(12, 20, 16, 0.95)',
                   backdropFilter: 'blur(10px)',
                   border: '1px solid var(--border-medium)',
-                  borderRadius: 'var(--radius-md)',
-                  padding: '10px 14px',
-                  color: 'var(--bone)',
-                  fontSize: '0.82rem',
-                  cursor: 'pointer',
+                  borderRadius: 'var(--radius-sm)',
+                  padding: '7px 12px',
+                  fontSize: '0.78rem',
+                  color: copied ? '#10b981' : 'var(--bone)',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '8px',
-                  maxWidth: '70%',
-                  pointerEvents: 'auto'
+                  gap: '6px',
+                  cursor: 'pointer',
+                  pointerEvents: 'auto',
+                  transition: 'var(--transition)'
                 }}
               >
-                {copied ? <Check size={14} style={{ color: 'var(--amber)' }} /> : <Copy size={14} style={{ color: 'var(--amber)' }} />}
-                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {copied ? 'Address copied' : (storeInfo?.address || 'Copy address')}
-                </span>
+                {copied ? <Check size={13} color="#10b981" /> : <Copy size={13} style={{ color: 'var(--amber)' }} />}
+                <span>{copied ? 'Address Copied!' : 'Copy Address'}</span>
               </button>
+
               <button
-                onClick={(e) => { e.stopPropagation(); setLightbox(true); }}
+                onClick={() => setLightbox(true)}
                 style={{
                   background: 'rgba(12, 20, 16, 0.95)',
                   backdropFilter: 'blur(10px)',
                   border: '1px solid var(--border-medium)',
-                  borderRadius: '50%',
-                  width: 40,
-                  height: 40,
+                  borderRadius: 'var(--radius-sm)',
+                  padding: '7px 10px',
+                  color: 'var(--amber-light)',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--bone)',
+                  gap: '4px',
                   cursor: 'pointer',
-                  pointerEvents: 'auto'
+                  pointerEvents: 'auto',
+                  fontSize: '0.75rem'
                 }}
-                aria-label="View larger map"
-                title="Open larger map"
+                title="Expand Map"
               >
-                <Maximize2 size={15} />
+                <Maximize2 size={13} />
               </button>
             </div>
           </div>
         </div>
 
-        {/* Map lightbox */}
-        {lightbox && embedSrc && (
+        {/* Fullscreen Map Modal */}
+        {lightbox && (
           <div
+            className="modal-backdrop"
             onClick={() => setLightbox(false)}
-            style={{
-              position: 'fixed', inset: 0, zIndex: 1100,
-              background: 'rgba(8, 12, 10, 0.95)',
-              backdropFilter: 'blur(12px)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              padding: '2rem'
-            }}
+            style={{ zIndex: 1200, padding: '1rem' }}
           >
-            <div style={{ width: '100%', maxWidth: 1100, height: 'min(80vh, 720px)', position: 'relative' }} onClick={e => e.stopPropagation()}>
+            <div
+              style={{
+                position: 'relative',
+                width: '100%',
+                maxWidth: '960px',
+                height: '80vh',
+                background: 'var(--bg-secondary)',
+                borderRadius: 'var(--radius-md)',
+                overflow: 'hidden',
+                border: '1px solid var(--border-medium)'
+              }}
+              onClick={e => e.stopPropagation()}
+            >
               <button
                 onClick={() => setLightbox(false)}
                 style={{
-                  position: 'absolute', top: -50, right: 0,
-                  background: 'transparent', border: '1px solid var(--border-medium)',
-                  color: 'var(--bone)', width: 40, height: 40, borderRadius: '50%',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  cursor: 'pointer'
+                  position: 'absolute',
+                  top: 14,
+                  right: 14,
+                  width: 40,
+                  height: 40,
+                  borderRadius: '50%',
+                  background: 'rgba(12, 20, 16, 0.9)',
+                  border: '1px solid var(--border-medium)',
+                  color: '#fff',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  zIndex: 10
                 }}
-                aria-label="Close"
               >
-                ×
+                <X size={20} />
               </button>
               <iframe
-                title="Sri Madhuri Makeovers location enlarged"
+                title="Expanded Map"
                 src={mapSrc}
-                style={{ width: '100%', height: '100%', border: 0, borderRadius: 'var(--radius-md)' }}
+                style={{ width: '100%', height: '100%', border: 0 }}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />
@@ -277,17 +295,20 @@ const ContactSection = () => {
 
         {/* FAQs */}
         {storeInfo?.faqs && storeInfo.faqs.length > 0 && (
-          <div style={{ marginTop: '6rem', maxWidth: 760 }}>
-            <h3 style={{ color: 'var(--bone)', fontSize: '1.8rem', marginBottom: '2.5rem' }}>
+          <div style={{ marginTop: '5rem', maxWidth: 760 }}>
+            <div style={{ fontSize: '0.72rem', color: 'var(--amber-light)', textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: '0.5rem', fontWeight: 600 }}>
+              Helpful Information
+            </div>
+            <h3 style={{ color: 'var(--bone)', fontSize: 'clamp(1.4rem, 3.5vw, 1.8rem)', marginBottom: '2rem' }}>
               Before you <em>ask.</em>
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               {storeInfo.faqs.map((faq, i) => (
-                <div key={i} style={{ padding: '1.5rem 0', borderTop: '1px solid var(--border-subtle)' }}>
-                  <div style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.1rem', color: 'var(--bone)', marginBottom: '0.5rem' }}>
+                <div key={i} style={{ padding: '1.25rem 0', borderTop: '1px solid var(--border-subtle)' }}>
+                  <div style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.05rem', color: 'var(--bone)', marginBottom: '0.4rem', fontWeight: 500 }}>
                     {faq.question}
                   </div>
-                  <div style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+                  <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
                     {faq.answer}
                   </div>
                 </div>
@@ -299,7 +320,8 @@ const ContactSection = () => {
 
       <style>{`
         @media (max-width: 900px) {
-          .contact-grid { grid-template-columns: 1fr !important; }
+          .contact-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
+          .map-card { height: 350px !important; }
         }
       `}</style>
     </section>

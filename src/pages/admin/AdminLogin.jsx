@@ -155,7 +155,7 @@ const AdminLogin = ({ onBackToSite }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '2rem 1.5rem',
+        padding: '1.5rem 1rem',
         background: 'radial-gradient(circle at center, #0d1527 0%, #080c16 100%)'
       }}
     >
@@ -164,7 +164,7 @@ const AdminLogin = ({ onBackToSite }) => {
         style={{
           width: '100%',
           maxWidth: '460px',
-          padding: '2.5rem',
+          padding: 'clamp(1.25rem, 5vw, 2.5rem)',
           border: '1px solid var(--border-medium)',
           boxShadow: 'var(--shadow-lg)'
         }}

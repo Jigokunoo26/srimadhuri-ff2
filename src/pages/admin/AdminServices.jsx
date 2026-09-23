@@ -109,8 +109,8 @@ const AdminServices = () => {
         </button>
       </div>
 
-      {/* Services List Table */}
-      <div className="admin-table-container">
+      {/* Services List Table (Desktop & Tablet) */}
+      <div className="admin-table-container hide-on-mobile">
         <table className="admin-table">
           <thead>
             <tr>
@@ -300,6 +300,182 @@ const AdminServices = () => {
         </table>
       </div>
 
+      {/* Mobile Service Cards (< 768px) */}
+      <div className="show-on-mobile" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        {services.map(service => {
+          const isEditing = editingId === service.id;
+
+          return (
+            <div
+              key={service.id}
+              className="glass-card"
+              style={{
+                padding: '1.15rem',
+                border: isEditing ? '1px solid var(--gold-primary)' : '1px solid var(--border-color)',
+                background: isEditing ? 'rgba(212, 175, 55, 0.05)' : 'var(--bg-secondary)',
+                borderRadius: 'var(--radius-md)'
+              }}
+            >
+              {isEditing ? (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+                  <div>
+                    <label style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px', display: 'block' }}>Service Name</label>
+                    <input
+                      type="text"
+                      className="form-input"
+                      value={editForm.name}
+                      onChange={e => setEditForm({ ...editForm, name: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="admin-grid-2">
+                    <div>
+                      <label style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px', display: 'block' }}>Price</label>
+                      <input
+                        type="text"
+                        className="form-input"
+                        value={editForm.price}
+                        placeholder="e.g. ₹15,000"
+                        onChange={e => setEditForm({ ...editForm, price: e.target.value })}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px', display: 'block' }}>Duration</label>
+                      <input
+                        type="text"
+                        className="form-input"
+                        value={editForm.duration}
+                        placeholder="e.g. 90 mins"
+                        onChange={e => setEditForm({ ...editForm, duration: e.target.value })}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="admin-grid-2">
+                    <div>
+                      <label style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px', display: 'block' }}>Category</label>
+                      <select
+                        className="form-select"
+                        value={editForm.category}
+                        onChange={e => setEditForm({ ...editForm, category: e.target.value })}
+                      >
+                        {categories.map(c => <option key={c} value={c}>{c}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px', display: 'block' }}>Badge</label>
+                      <input
+                        type="text"
+                        className="form-input"
+                        value={editForm.badge || ''}
+                        placeholder="e.g. Bestseller"
+                        onChange={e => setEditForm({ ...editForm, badge: e.target.value })}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px', display: 'block' }}>Description</label>
+                    <textarea
+                      className="form-textarea"
+                      rows="2"
+                      value={editForm.description || ''}
+                      onChange={e => setEditForm({ ...editForm, description: e.target.value })}
+                    />
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '4px' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.88rem' }}>
+                      <input
+                        type="checkbox"
+                        checked={editForm.is_active}
+                        onChange={e => setEditForm({ ...editForm, is_active: e.target.checked })}
+                      />
+                      <span>Active on Website</span>
+                    </label>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '0.5rem' }}>
+                    <button
+                      onClick={() => handleSaveEdit(service.id)}
+                      className="btn btn-primary"
+                      style={{ justifyContent: 'center', padding: '10px' }}
+                    >
+                      <Check size={16} /> Save
+                    </button>
+                    <button
+                      onClick={cancelEdit}
+                      className="btn btn-outline"
+                      style={{ justifyContent: 'center', padding: '10px' }}
+                    >
+                      <X size={16} /> Cancel
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px', marginBottom: '8px' }}>
+                    <div>
+                      <h4 style={{ fontSize: '1.05rem', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '4px' }}>
+                        {service.name}
+                      </h4>
+                      <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                        <span className="badge badge-gold" style={{ fontSize: '0.7rem' }}>
+                          {service.category || 'General'}
+                        </span>
+                        {service.badge && (
+                          <span style={{ fontSize: '0.7rem', color: 'var(--gold-primary)', background: 'rgba(212,175,55,0.1)', padding: '2px 6px', borderRadius: '4px' }}>
+                            {service.badge}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <span className={service.is_active ? 'badge badge-completed' : 'badge badge-cancelled'} style={{ fontSize: '0.75rem' }}>
+                      {service.is_active ? 'Visible' : 'Hidden'}
+                    </span>
+                  </div>
+
+                  {service.description && (
+                    <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', margin: '8px 0', lineHeight: 1.4 }}>
+                      {service.description}
+                    </p>
+                  )}
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '12px', paddingTop: '10px', borderTop: '1px solid var(--border-color)' }}>
+                    <div>
+                      <div style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--gold-light)', fontFamily: 'Cormorant Garamond, serif' }}>
+                        {service.price}
+                      </div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                        <Clock size={12} style={{ display: 'inline', verticalAlign: '-1px', marginRight: '3px' }} />
+                        {service.duration || '60 mins'}
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <button
+                        onClick={() => startEdit(service)}
+                        className="btn btn-outline btn-sm"
+                        style={{ padding: '8px 12px' }}
+                      >
+                        <Edit3 size={15} /> Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(service.id, service.name)}
+                        className="btn btn-danger btn-sm"
+                        style={{ padding: '8px 10px' }}
+                      >
+                        <Trash2 size={15} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
       {/* Add New Service Modal */}
       {showAddModal && (
         <div className="modal-backdrop" onClick={() => setShowAddModal(false)}>
@@ -324,7 +500,7 @@ const AdminServices = () => {
                 />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div className="admin-grid-2">
                 <div className="form-group">
                   <label className="form-label">Price (INR)</label>
                   <input
@@ -349,7 +525,7 @@ const AdminServices = () => {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div className="admin-grid-2">
                 <div className="form-group">
                   <label className="form-label">Duration</label>
                   <input

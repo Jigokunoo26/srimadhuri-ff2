@@ -24,7 +24,7 @@ const Hero = ({ onOpenBooking }) => {
         minHeight: '100dvh',
         display: 'flex',
         alignItems: 'center',
-        padding: '7rem 0 4rem',
+        padding: '6.5rem 0 3.5rem',
         overflow: 'hidden'
       }}
     >
@@ -33,69 +33,117 @@ const Hero = ({ onOpenBooking }) => {
           style={{
             display: 'grid',
             gridTemplateColumns: '1.1fr 0.9fr',
-            gap: '4rem',
+            gap: '3.5rem',
             alignItems: 'center'
           }}
           className="hero-grid"
         >
           {/* Left: Editorial copy */}
           <div className="fade-up" style={{ maxWidth: 620 }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', marginBottom: '2rem' }}>
-              <span style={{ width: 32, height: 1, background: 'var(--amber)' }} />
-              <span style={{ fontSize: '0.72rem', color: 'var(--amber-light)', textTransform: 'uppercase', letterSpacing: '0.22em', fontWeight: 500 }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', marginBottom: '1.25rem' }}>
+              <span style={{ width: 28, height: 1, background: 'var(--amber)' }} />
+              <span style={{ fontSize: '0.72rem', color: 'var(--amber-light)', textTransform: 'uppercase', letterSpacing: '0.22em', fontWeight: 600 }}>
                 Khammam, since 2019
               </span>
             </div>
 
-            <h1 style={{ fontSize: 'clamp(2.8rem, 5.4vw, 4.6rem)', marginBottom: '1.5rem', color: 'var(--bone)' }}>
+            <h1
+              style={{
+                fontSize: 'clamp(2.35rem, 5.2vw, 4.4rem)',
+                marginBottom: '1.25rem',
+                color: 'var(--bone)',
+                lineHeight: 1.12
+              }}
+            >
               {heroTitle.split(',')[0]}<em>{heroTitle.split(',').slice(1).join(',')}</em>
             </h1>
 
-            <p style={{ fontSize: '1.08rem', color: 'var(--text-secondary)', maxWidth: 520, marginBottom: '2.5rem', lineHeight: 1.7 }}>
+            <p
+              style={{
+                fontSize: 'clamp(0.95rem, 2.5vw, 1.08rem)',
+                color: 'var(--text-secondary)',
+                maxWidth: 520,
+                marginBottom: '2rem',
+                lineHeight: 1.65
+              }}
+            >
               {heroSubtitle}
             </p>
 
-            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '3.5rem' }}>
-              <button onClick={onOpenBooking} className="btn btn-primary" style={{ gap: '8px' }}>
+            {/* Action buttons */}
+            <div
+              className="hero-actions"
+              style={{
+                display: 'flex',
+                gap: '12px',
+                flexWrap: 'wrap',
+                marginBottom: '2.5rem'
+              }}
+            >
+              <button
+                onClick={onOpenBooking}
+                className="btn btn-primary hero-btn"
+                style={{ gap: '8px' }}
+              >
                 <Calendar size={16} /> {heroCta}
               </button>
-              <button onClick={handleWhatsApp} className="btn btn-ghost" style={{ gap: '8px' }}>
+              <button
+                onClick={handleWhatsApp}
+                className="btn btn-ghost hero-btn"
+                style={{ gap: '8px' }}
+              >
                 <MessageCircle size={16} /> Chat with us
                 <ArrowUpRight size={14} style={{ opacity: 0.6 }} />
               </button>
             </div>
 
-            {/* Inline trust strip — minimal, no fake logos */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '2.5rem', paddingTop: '2rem', borderTop: '1px solid var(--border-subtle)' }}>
+            {/* Inline trust strip */}
+            <div
+              className="hero-trust-strip"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '2rem',
+                paddingTop: '1.75rem',
+                borderTop: '1px solid var(--border-subtle)'
+              }}
+            >
               <div>
-                <div style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.8rem', color: 'var(--bone)', fontWeight: 500 }}>
+                <div style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(1.5rem, 4vw, 1.8rem)', color: 'var(--bone)', fontWeight: 500, lineHeight: 1 }}>
                   {happyClients}
                 </div>
-                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.15em', marginTop: '2px' }}>
+                <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.14em', marginTop: '4px' }}>
                   Brides served
                 </div>
               </div>
               <div>
-                <div style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.8rem', color: 'var(--bone)', fontWeight: 500 }}>
+                <div style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(1.5rem, 4vw, 1.8rem)', color: 'var(--bone)', fontWeight: 500, lineHeight: 1 }}>
                   {ratingScore}<span style={{ color: 'var(--amber-light)' }}>★</span>
                 </div>
-                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.15em', marginTop: '2px' }}>
+                <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.14em', marginTop: '4px' }}>
                   Client rating
                 </div>
               </div>
               <div>
-                <div style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.8rem', color: 'var(--bone)', fontWeight: 500 }}>
+                <div style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(1.5rem, 4vw, 1.8rem)', color: 'var(--bone)', fontWeight: 500, lineHeight: 1 }}>
                   {expYears}<em> yrs</em>
                 </div>
-                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.15em', marginTop: '2px' }}>
+                <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.14em', marginTop: '4px' }}>
                   Studio practice
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Right: Real photograph */}
-          <div style={{ position: 'relative', height: 'min(78vh, 640px)' }} className="hero-image">
+          {/* Right: Studio photograph */}
+          <div
+            style={{
+              position: 'relative',
+              height: 'min(74vh, 600px)',
+              width: '100%'
+            }}
+            className="hero-image"
+          >
             <div
               style={{
                 position: 'absolute',
@@ -113,31 +161,32 @@ const Hero = ({ onOpenBooking }) => {
               />
             </div>
 
-            {/* Floating info card */}
+            {/* Floating info badge */}
             <div
               style={{
                 position: 'absolute',
-                bottom: -20,
-                left: -20,
-                background: 'var(--bg-secondary)',
+                bottom: 16,
+                left: 16,
+                background: 'rgba(19, 29, 24, 0.95)',
+                backdropFilter: 'blur(12px)',
                 border: '1px solid var(--border-medium)',
                 borderRadius: 'var(--radius-md)',
-                padding: '1rem 1.4rem',
-                maxWidth: 240,
+                padding: '0.85rem 1.15rem',
+                maxWidth: 220,
                 boxShadow: 'var(--shadow-md)'
               }}
               className="hero-card"
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--success)' }} />
-                <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.12em' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
+                <span style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--success)' }} />
+                <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.12em', fontWeight: 600 }}>
                   Booking open
                 </span>
               </div>
-              <div style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.1rem', color: 'var(--bone)' }}>
+              <div style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.05rem', color: 'var(--bone)' }}>
                 Wedding season<em> slots</em>
               </div>
-              <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
                 Oct-Mar dates filling
               </div>
             </div>
@@ -147,9 +196,36 @@ const Hero = ({ onOpenBooking }) => {
 
       <style>{`
         @media (max-width: 900px) {
-          .hero-grid { grid-template-columns: 1fr !important; gap: 3rem !important; }
-          .hero-image { height: 60vh !important; }
-          .hero-card { left: 12px !important; }
+          .hero-grid {
+            grid-template-columns: 1fr !important;
+            gap: 2.5rem !important;
+          }
+          .hero-image {
+            height: 44vh !important;
+            min-height: 280px !important;
+          }
+          .hero-trust-strip {
+            gap: 1.25rem !important;
+            justify-content: space-between !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .hero-actions {
+            flex-direction: column !important;
+            width: 100% !important;
+          }
+          .hero-btn {
+            width: 100% !important;
+            justify-content: center !important;
+          }
+          .hero-image {
+            height: 38vh !important;
+          }
+          .hero-card {
+            bottom: 10px !important;
+            left: 10px !important;
+            padding: 0.65rem 0.9rem !important;
+          }
         }
       `}</style>
     </section>

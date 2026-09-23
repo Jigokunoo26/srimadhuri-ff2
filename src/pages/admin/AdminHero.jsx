@@ -38,7 +38,7 @@ const AdminHero = () => {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
         <div>
           <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '2rem', color: 'var(--text-primary)', marginBottom: '4px' }}>
             Hero & <span className="text-gold-gradient">Branding Customizer</span>
@@ -60,13 +60,13 @@ const AdminHero = () => {
 
       <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
         {/* Hero Section Configuration */}
-        <div className="glass-card" style={{ padding: '1.75rem' }}>
+        <div className="glass-card" style={{ padding: 'clamp(1rem, 4vw, 1.75rem)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '0.75rem' }}>
             <Sparkles size={20} style={{ color: 'var(--gold-primary)' }} />
             <h3 style={{ fontSize: '1.15rem', color: 'var(--text-primary)', margin: 0 }}>Hero Banner Details</h3>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.25rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }}>
             <div>
               <label className="form-label">Hero Badge Pill</label>
               <input
@@ -134,7 +134,7 @@ const AdminHero = () => {
         </div>
 
         {/* Brand Highlights & Counter Stats */}
-        <div className="glass-card" style={{ padding: '1.75rem' }}>
+        <div className="glass-card" style={{ padding: 'clamp(1rem, 4vw, 1.75rem)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '0.75rem' }}>
             <Sliders size={20} style={{ color: 'var(--gold-primary)' }} />
             <h3 style={{ fontSize: '1.15rem', color: 'var(--text-primary)', margin: 0 }}>Stats & About Text</h3>
